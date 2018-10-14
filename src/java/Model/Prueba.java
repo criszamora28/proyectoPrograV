@@ -11,4 +11,5 @@ package Model;
  */
 public class Prueba {
     String hola;
+    String variablePrueba;
 }
