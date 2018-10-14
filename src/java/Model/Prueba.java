@@ -10,5 +10,5 @@ package Model;
  * @author Ernesto PC
  */
 public class Prueba {
-    
+    String hola;
 }
