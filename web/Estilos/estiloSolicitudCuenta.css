@@ -1,0 +1,22 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 4, 2018, 11:24:29 AM
+    Author     : crisz
+*/
+#cajaPrincipal{
+    position: relative;
+    width: 500px;
+    margin: 0 auto;
+    top: 100px;
+    
+}
+
+#tituloCreacionCuenta{
+    background-color: #191970;
+    border-radius: 3px;
+    color: white;
+}
