@@ -9,6 +9,6 @@ package Model;
  *
  * @author Ernesto PC
  */
-public class pruebaModel {
+public class Distrito {
     
 }
