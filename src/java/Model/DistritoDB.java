@@ -16,26 +16,27 @@ import java.util.LinkedList;
  *
  * @author Ernesto PC
  */
-public class CantonDB 
-{
- private AccesoDatos accesoDatos = new AccesoDatos();
+public class DistritoDB {
+    
+    
+     private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;  
 
-    private LinkedList<Canton> listaP = new LinkedList<Canton>();  
+    private LinkedList<Distrito> listaP = new LinkedList<Distrito>();  
     
     
- public CantonDB (Connection conn) {
+ public DistritoDB (Connection conn) {
         accesoDatos = new AccesoDatos();    
         accesoDatos.setDbConn(conn);
     }
     
-    public CantonDB() {
+    public DistritoDB() {
         super();
     }
     
-    public  LinkedList<Canton> moTodo() throws SNMPExceptions,SQLException {
+    public  LinkedList<Distrito> moTodo() throws SNMPExceptions,SQLException {
       String select = "";
-      LinkedList<Canton> listaCan = new LinkedList<Canton>();
+      LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
           
           try {
     
@@ -44,8 +45,8 @@ public class CantonDB
 
               //Se crea la sentencia de búsqueda
               select =
-                      "SELECT idProvincia,idCanton," +
-                            "nombrecanton  FROM Canton"; 
+                      "SELECT idProvincia,idCanton,idDistrito," +
+                            "nombreDistrito  FROM Distrito"; 
                       
                       
               //Se ejecuta la sentencia SQL
@@ -55,11 +56,12 @@ public class CantonDB
 
                 int idProvincia = rsPA.getInt("idProvincia");
                 int idCanton = rsPA.getInt("idCanton");
-                String nombrecanton = rsPA.getString("nombrecanton");
+                int idDistrito=rsPA.getInt("idDistrito");
+                String nombrecanton = rsPA.getString("nombreDistrito");
                 
                 
-               Canton perCanton = new Canton(idProvincia,idCanton, nombrecanton);
-                 listaCan.add(perCanton);
+               Distrito perDistrito = new Distrito(idProvincia,idCanton,idDistrito,nombrecanton);
+                 listaDis.add(perDistrito);
               }
               rsPA.close();
               
@@ -73,11 +75,9 @@ public class CantonDB
               
           }
          
-          return listaCan;
+          return listaDis;
       }
     
  
-    
-    
     
 }

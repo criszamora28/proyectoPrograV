@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form> 
+            <h:selectOneMenu label="pro" value="#{beanRegistro.idCanton}" onchange="submit()" id="pro">
+                      <f:selectItems value="#{beanRegistro.listaCanton}"/>
+            </h:selectOneMenu>
+            <br></br>
+            <br></br>
+            <h:selectOneMenu label="pro" value="#{beanRegistro.idCanton}" onchange="submit()" id="pro1">
+                <f:selectItems value="#{beanRegistro.listaProvincia}"/>
+            </h:selectOneMenu>
+            <br></br>
+            <br></br>
+            <h:selectOneMenu label="pro" value="#{beanRegistro.idDistrito}" onchange="submit()" id="pro2">
+                 <f:selectItems value="#{beanRegistro.listaDistrito}"/>
+            </h:selectOneMenu>
+       </h:form>     
+    </h:body>
+</html>
+

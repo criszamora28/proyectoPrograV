@@ -16,26 +16,26 @@ import java.util.LinkedList;
  *
  * @author Ernesto PC
  */
-public class CantonDB 
+public class ProvinciaDB 
 {
- private AccesoDatos accesoDatos = new AccesoDatos();
+    private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;  
 
-    private LinkedList<Canton> listaP = new LinkedList<Canton>();  
+    private LinkedList<Provincia> listaP = new LinkedList<Provincia>();  
     
     
- public CantonDB (Connection conn) {
+ public ProvinciaDB (Connection conn) {
         accesoDatos = new AccesoDatos();    
         accesoDatos.setDbConn(conn);
     }
     
-    public CantonDB() {
+    public ProvinciaDB() {
         super();
     }
     
-    public  LinkedList<Canton> moTodo() throws SNMPExceptions,SQLException {
+    public  LinkedList<Provincia> moTodo() throws SNMPExceptions,SQLException {
       String select = "";
-      LinkedList<Canton> listaCan = new LinkedList<Canton>();
+      LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
           
           try {
     
@@ -44,8 +44,8 @@ public class CantonDB
 
               //Se crea la sentencia de búsqueda
               select =
-                      "SELECT idProvincia,idCanton," +
-                            "nombrecanton  FROM Canton"; 
+                      "SELECT idProvincia," +
+                            "nombreprovincia FROM Provincia"; 
                       
                       
               //Se ejecuta la sentencia SQL
@@ -54,12 +54,11 @@ public class CantonDB
               while (rsPA.next()) {
 
                 int idProvincia = rsPA.getInt("idProvincia");
-                int idCanton = rsPA.getInt("idCanton");
-                String nombrecanton = rsPA.getString("nombrecanton");
+                String nombreProvincia = rsPA.getString("nombreprovincia");
                 
                 
-               Canton perCanton = new Canton(idProvincia,idCanton, nombrecanton);
-                 listaCan.add(perCanton);
+               Provincia perProvincia = new Provincia(idProvincia,nombreProvincia);
+                 listaPro.add(perProvincia);
               }
               rsPA.close();
               
@@ -73,11 +72,7 @@ public class CantonDB
               
           }
          
-          return listaCan;
+          return listaPro;
       }
-    
- 
-    
-    
     
 }
