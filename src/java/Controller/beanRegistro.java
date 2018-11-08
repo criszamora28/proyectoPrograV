@@ -12,6 +12,8 @@ import Model.Distrito;
 import Model.DistritoDB;
 import Model.Provincia;
 import Model.ProvinciaDB;
+import Model.Usuario;
+import Model.UsuarioDB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -37,6 +39,13 @@ public class beanRegistro implements Serializable {
    //distrito
     int idDistrito;
     String nombreDistrito;
+    //Usuario
+    String nombre;
+    String apellido1;
+    String apellido2;
+   /// String  direccion;
+
+
 
     
     LinkedList<SelectItem> listaCanton = new LinkedList<>();
@@ -67,6 +76,15 @@ public class beanRegistro implements Serializable {
      public beanRegistro(){
      }
 
+     
+     
+   public void insertarUsuario() throws SNMPExceptions, SQLException
+   {
+   Usuario nuevoUsuario= new Usuario(this.getNombre(),this.getApellido1(), this.getApellido2(),"hola");
+   UsuarioDB usuDB= new UsuarioDB();
+   
+   usuDB.InsertarUsuario(nuevoUsuario);
+   }
 
 
     public LinkedList<SelectItem> getListaCanton()throws SNMPExceptions, SQLException{
@@ -193,5 +211,30 @@ public class beanRegistro implements Serializable {
 
     public void setNombreDistrito(String nombreDistrito) {
         this.nombreDistrito = nombreDistrito;
+    }
+    
+    //sets and gets usuarios 
+        public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido1() {
+        return apellido1;
+    }
+
+    public void setApellido1(String apellido1) {
+        this.apellido1 = apellido1;
+    }
+
+    public String getApellido2() {
+        return apellido2;
+    }
+
+    public void setApellido2(String apellido2) {
+        this.apellido2 = apellido2;
     }
 }
