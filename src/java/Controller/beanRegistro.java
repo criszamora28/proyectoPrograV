@@ -8,6 +8,7 @@ package Controller;
 import DAO.SNMPExceptions;
 import Model.Canton;
 import Model.CantonDB;
+import Model.Correo;
 import Model.Distrito;
 import Model.DistritoDB;
 import Model.Provincia;
@@ -48,29 +49,15 @@ public class beanRegistro implements Serializable {
 
 
     
-    LinkedList<SelectItem> listaCanton = new LinkedList<>();
-    LinkedList<SelectItem> listaProvincia= new LinkedList<>();
-    LinkedList<SelectItem> listaDistrito= new LinkedList<>();
+    LinkedList<SelectItem> listaCanton1 = new LinkedList<>();
+    LinkedList<SelectItem> listaProvincia1= new LinkedList<>();
+    LinkedList<SelectItem> listaDistrito1= new LinkedList<>();
     
       
    
     /**
      * Creates a new instance of beanRegistro
      */
-    //EJEMPLO DE TABLA
- public LinkedList<Canton> getListaTablaProvincia()throws SNMPExceptions, SQLException {
-        
-        LinkedList<Canton> lista = new LinkedList<Canton>();
-        CantonDB pDB = new CantonDB();
-        
-        lista = pDB.moTodo();
-        
-        LinkedList resultLista = new LinkedList();
-           
-        resultLista=lista;       
-        return resultLista; 
-
-    }
 
    
      public beanRegistro(){
@@ -97,8 +84,14 @@ public class beanRegistro implements Serializable {
         lista = cDB.moTodo();
         
         LinkedList resultList = new LinkedList();
-        resultList.add(new SelectItem(0, "Seleccione Canton"));
-        
+     //   resultList.add(new SelectItem(0, "Seleccione Canton"));
+      for(int i=0; listaProvincia1.size()>=0; i++)
+      {
+          boolean t=false;
+         
+      }
+      
+      
         for (Iterator iter= lista.iterator(); iter.hasNext();) {
         
             Canton pro = (Canton) iter.next();
@@ -119,7 +112,7 @@ public class beanRegistro implements Serializable {
         lista = pDB.moTodo();
         
         LinkedList resultList = new LinkedList();
-        resultList.add(new SelectItem(0, "Seleccione Provincia"));
+   //     resultList.add(new SelectItem(0, "Seleccione Provincia"));
         
         for (Iterator iter= lista.iterator(); iter.hasNext();) {
         
@@ -127,7 +120,8 @@ public class beanRegistro implements Serializable {
             idProvincia=pro.getIdProvincia();
             nombreProvincia=pro.getNombreprovincia();
             resultList.add(new SelectItem(idProvincia, nombreProvincia));
-         }         
+         }  
+        listaProvincia1=resultList;
          return resultList; 
         
     }
@@ -138,7 +132,7 @@ public class beanRegistro implements Serializable {
         
         LinkedList<Distrito> lista = new LinkedList<Distrito>();
         DistritoDB dDB = new DistritoDB();
-        
+       
         lista = dDB.moTodo();
         
         LinkedList resultList = new LinkedList();
@@ -155,7 +149,12 @@ public class beanRegistro implements Serializable {
         
     }    
     
-    
+    //Correo
+     public void enviarCorreo()
+     {
+     Correo co= new Correo();
+     co.enviar();
+     }
     
     
     
@@ -194,9 +193,6 @@ public class beanRegistro implements Serializable {
         this.nombreProvincia = nombreProvincia;
     }
     
-    public void setListCanton(LinkedList<SelectItem>listcant) {
-        this.listaCanton= listcant;
-    }
        public int getIdDistrito() {
         return idDistrito;
     }

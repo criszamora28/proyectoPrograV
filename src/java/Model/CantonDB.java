@@ -76,6 +76,48 @@ public class CantonDB
           return listaCan;
       }
     
+     public  LinkedList<Canton> seleccionarCantones(int id) throws SNMPExceptions,SQLException {
+      String select = "";
+      LinkedList<Canton> listaCan = new LinkedList<Canton>();
+          
+          try {
+    
+              //Se instancia la clase de acceso a datos
+              AccesoDatos accesoDatos = new AccesoDatos();  
+
+              //Se crea la sentencia de búsqueda
+              select =
+                      "SELECT idProvincia,idCanton," +
+                            "nombrecanton  FROM Canton where idProvincia="+id; 
+                      
+                      
+              //Se ejecuta la sentencia SQL
+              ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             //Se llena el arryaList con los proyectos   
+              while (rsPA.next()) {
+
+                int idProvincia = rsPA.getInt("idProvincia");
+                int idCanton = rsPA.getInt("idCanton");
+                String nombrecanton = rsPA.getString("nombrecanton");
+                
+                
+               Canton perCanton = new Canton(idProvincia,idCanton, nombrecanton);
+                 listaCan.add(perCanton);
+              }
+              rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return listaCan;
+      }
  
     
     

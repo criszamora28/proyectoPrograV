@@ -49,7 +49,8 @@ public class UsuarioDB
             "INSERT INTO usuario1(nombre,apellido1,"
                     + "apellido2) VALUES "
          + "(" + "'" + usuario.getNombre()+ "'" + "," 
-               + "'"+ usuario.getApellido1()+"'"+ ")";
+               + "'"+ usuario.getApellido1()+"'"+","
+               + "'"+ usuario.getApellido2()+"'"+ ")";
                //+ "'"+ usuario.getDireccion()+"'" + ")";
                             
    
