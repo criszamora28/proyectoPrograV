@@ -2,7 +2,7 @@
 .main #principal
 {   
     position: relative;
-    top: 50px;
+    top: 40px;
     background: white; 
     margin: 0 auto;
     width: 30%;
@@ -18,7 +18,7 @@
     font-family: serif;
     font-size: 20px;
     text-align: center;
-    background:#191970; 
+    background:#102b70; 
     color:white;
     height: 30px;
     margin: 0 auto; 
@@ -34,14 +34,6 @@
 {
     padding-right: 10px;
     width: 200px;
-}
-
-
-.inputs{
-    width: 330px; 
-    margin: 0 auto;
-    position: relative;
-    top: 5px;
 }
 
 #imgLogo{

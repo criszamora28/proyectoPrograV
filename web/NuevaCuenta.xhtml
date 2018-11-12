@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    
+
     <h:head>
         <!--LINKS css-->
         <link href="Estilos/estiloNuevaCuenta.css" rel="stylesheet" type="text/css"/>
@@ -15,69 +15,77 @@
         <title>Sistema DEAS</title>
     </h:head>
     <h:body>
-        <div class="main">
-            <div id="principal">
-                <div id="cuadroInterior">
-                    <h:outputText value="Registro DEAS" ></h:outputText> 
-                </div>      
-                <h:form class="form-horizontal " id="form" >
-                    <legend>Ingrese sus Datos</legend>
-                    <div class="form-group">
-                        <h:outputText value="Nombre:" class="control-label"  ></h:outputText>
-                        <h:inputText value="#{beanRegistro.nombre}" class="form-control"></h:inputText>
-                    </div>
-                    <div class="form-group">
-                        <h:outputText value="Primer apellido:" class="control-label"  ></h:outputText>
-                        <h:inputText value="#{beanRegistro.apellido1}" class="form-control"></h:inputText>
-                    </div>
-                    <div class="form-group">
-                        <h:outputText value="Segundo Apellido" class="control-label"  ></h:outputText>
-                        <h:inputText value="#{beanRegistro.apellido2}" class="form-control"></h:inputText>
-                    </div>
-                    <div class="form-group">
-                        <h:outputText value="Telefono:" class="control-label"  ></h:outputText>
-                        <h:inputText  class="form-control"></h:inputText>
-                    </div>
-                    <div class="form-group">
-                        <h:outputText value="Correo electronico:" class="control-label"  ></h:outputText>
-                        <h:inputText  class="form-control"></h:inputText>
-                    </div>
-                    <div class="form-group">
-                        <h:outputText value="Fecha nacimiento:" class="control-label"  ></h:outputText>
-                        <p:outputLabel for="inline" value="fecha" />
-                        <p:calendar id="inline" value="#{calendarView.date1}" mode="inline" ></p:calendar>
-                    </div>
-                    <div class="form-group">
-                        <h:outputText value="Direccion" class="control-label"  ></h:outputText>
-                        <div class="form-inline">
-                            <div class="dropdown"> 
-                                <h:selectOneMenu label="pro" value="#{beanRegistro.idProvincia}">
-                                        <f:selectItems  value="#{beanRegistro.listaProvincia}"/>
-                                  </h:selectOneMenu>
-                            </div> 
-                            <div class="dropdown"> 
-                                  <h:selectOneMenu label="pro" value="#{beanRegistro.idCanton}">
-                                            <f:selectItems  value="#{beanRegistro.listaCanton}"/>
-                                  </h:selectOneMenu>
-                            </div>
-                             <div class="dropdown"> 
-                                  <h:selectOneMenu label="pro" value="#{beanRegistro.idDistrito}">
-                                        <f:selectItems value="#{beanRegistro.listaDistrito}"/>
-                                  </h:selectOneMenu>
-                            </div> 
-                         </div>   
-                    </div>
-                    <div class="form-inline" style="margin-left: 30%">
-                        <div style="margin-right: 15px">
-                            <h:commandButton value="Registrar" class="btn btn-lg" style="background:#191970; color:white" actionListener="#{beanRegistro.insertarUsuario()}"></h:commandButton> 
-                        </div>
-                        <div  style="margin-left: 15px">
-                            <h:commandButton value="Regresar" class="btn btn-lg" style="background:#191970; color:white"></h:commandButton>
-                        </div>
-                    </div>
-                </h:form>  
+        <header style="width: 100%; height: 140px; background: #102b70;">
+            <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="155" height="120"/>
+        </header>
+        <div class="container-fluid row">
+            <div class="col-2" style="background-color: #102b70">
+
             </div>
-        </div>   
+            <div class="col-10">
+                <div id="principal">
+                    <div id="cuadroInterior">
+                        <h:outputText value="Registro DEAS" ></h:outputText> 
+                    </div>      
+                    <h:form class="form-horizontal " id="form" >
+                        <legend>Ingrese sus Datos</legend>
+                        <div class="form-group">
+                            <h:outputText value="Nombre:" class="control-label"  ></h:outputText>
+                            <h:inputText  class="form-control"></h:inputText>
+                        </div>
+                        <div class="form-group">
+                            <h:outputText value="Primer apellido:" class="control-label"  ></h:outputText>
+                            <h:inputText  class="form-control"></h:inputText>
+                        </div>
+                        <div class="form-group">
+                            <h:outputText value="Segundo Apellido" class="control-label"  ></h:outputText>
+                            <h:inputText  class="form-control"></h:inputText>
+                        </div>
+                        <div class="form-group">
+                            <h:outputText value="Telefono:" class="control-label"  ></h:outputText>
+                            <h:inputText  class="form-control"></h:inputText>
+                        </div>
+                        <div class="form-group">
+                            <h:outputText value="Correo electronico:" class="control-label"  ></h:outputText>
+                            <h:inputText  class="form-control"></h:inputText>
+                        </div>
+                        <div class="form-group">
+                            <h:outputText value="Fecha nacimiento:" class="control-label"  ></h:outputText>
+                            <p:outputLabel for="inline" value="fecha" />
+                            <p:calendar id="inline" mode="inline" ></p:calendar>
+                        </div>
+                        <div class="form-group">
+                            <h:outputText value="Direccion" class="control-label"  ></h:outputText>
+                            <div class="form-inline">
+                                <div class="dropdown"> 
+                                    <h:selectOneMenu label="pro">
+                                        <f:selectItems/>
+                                    </h:selectOneMenu>
+                                </div> 
+                                <div class="dropdown"> 
+                                    <h:selectOneMenu label="pro">
+                                        <f:selectItems/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="dropdown"> 
+                                    <h:selectOneMenu label="pro">
+                                        <f:selectItems/>
+                                    </h:selectOneMenu>
+                                </div> 
+                            </div>   
+                        </div>
+                        <div class="form-inline" style="margin-left: 30%">
+                            <div style="margin-right: 15px">
+                                <h:commandButton value="Registrar" class="btn btn-lg" style="background:#191970; color:white" actionListener="#{beanRegistro.insertarUsuario()}"></h:commandButton> 
+                            </div>
+                            <div  style="margin-left: 15px">
+                                <h:commandButton value="Regresar" class="btn btn-lg" style="background:#191970; color:white"></h:commandButton>
+                            </div>
+                        </div>
+                    </h:form>  
+                </div>
+            </div>
+        </div>
     </h:body>
 </html>
 
