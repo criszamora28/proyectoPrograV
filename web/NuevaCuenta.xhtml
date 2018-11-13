@@ -2,90 +2,57 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
+          
 
     <h:head>
-        <!--LINKS css-->
-        <link href="Estilos/estiloNuevaCuenta.css" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"></link>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+            <!--LINKS css-->
+        
         <title>Sistema DEAS</title>
     </h:head>
     <h:body>
-        <header style="width: 100%; height: 140px; background: #102b70;">
-            <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="155" height="120"/>
-        </header>
-        <div class="container-fluid row">
-            <div class="col-2" style="background-color: #102b70">
+            <h:form>   
+                  <h:panelGrid columns="2" cellpadding="2">
 
-            </div>
-            <div class="col-10">
-                <div id="principal">
-                    <div id="cuadroInterior">
-                        <h:outputText value="Registro DEAS" ></h:outputText> 
-                    </div>      
-                    <h:form class="form-horizontal " id="form" >
-                        <legend>Ingrese sus Datos</legend>
-                        <div class="form-group">
-                            <h:outputText value="Nombre:" class="control-label"  ></h:outputText>
-                            <h:inputText  class="form-control"></h:inputText>
-                        </div>
-                        <div class="form-group">
-                            <h:outputText value="Primer apellido:" class="control-label"  ></h:outputText>
-                            <h:inputText  class="form-control"></h:inputText>
-                        </div>
-                        <div class="form-group">
-                            <h:outputText value="Segundo Apellido" class="control-label"  ></h:outputText>
-                            <h:inputText  class="form-control"></h:inputText>
-                        </div>
-                        <div class="form-group">
-                            <h:outputText value="Telefono:" class="control-label"  ></h:outputText>
-                            <h:inputText  class="form-control"></h:inputText>
-                        </div>
-                        <div class="form-group">
-                            <h:outputText value="Correo electronico:" class="control-label"  ></h:outputText>
-                            <h:inputText  class="form-control"></h:inputText>
-                        </div>
-                        <div class="form-group">
-                            <h:outputText value="Fecha nacimiento:" class="control-label"  ></h:outputText>
-                            <p:outputLabel for="inline" value="fecha" />
-                            <p:calendar id="inline" mode="inline" ></p:calendar>
-                        </div>
-                        <div class="form-group">
-                            <h:outputText value="Direccion" class="control-label"  ></h:outputText>
-                            <div class="form-inline">
-                                <div class="dropdown"> 
-                                    <h:selectOneMenu label="pro">
-                                        <f:selectItems/>
-                                    </h:selectOneMenu>
-                                </div> 
-                                <div class="dropdown"> 
-                                    <h:selectOneMenu label="pro">
-                                        <f:selectItems/>
-                                    </h:selectOneMenu>
-                                </div>
-                                <div class="dropdown"> 
-                                    <h:selectOneMenu label="pro">
-                                        <f:selectItems/>
-                                    </h:selectOneMenu>
-                                </div> 
-                            </div>   
-                        </div>
-                        <div class="form-inline" style="margin-left: 30%">
-                            <div style="margin-right: 15px">
-                                <h:commandButton value="Registrar" class="btn btn-lg" style="background:#191970; color:white" actionListener="#{beanRegistro.insertarUsuario()}"></h:commandButton> 
-                            </div>
-                            <div  style="margin-left: 15px">
-                                <h:commandButton value="Regresar" class="btn btn-lg" style="background:#191970; color:white"></h:commandButton>
-                            </div>
-                        </div>
-                    </h:form>  
-                </div>
-            </div>
-        </div>
+                    <h:outputLabel value="Nombre:" style="font-weight:normal; font-size: larger"  />
+                    <p:inputText  value="#{basicView.text}" />
+
+                    <h:outputLabel  value="Primer apellido:" style="font-weight:normal; font-size: larger"  />
+                    <p:inputText  value="#{basicView.text}" />
+
+                    <h:outputLabel  value="Segundo apellido:" style="font-weight:normal; font-size: larger"  />
+                    <p:inputText  value="#{basicView.text}" />
+
+                    <h:outputLabel  value="Correo:" style="font-weight:normal; font-size: larger"  />
+                    <p:inputText  value="#{basicView.text}" />
+
+                    <h:outputLabel  value="Numero de telefono:" style="font-weight:normal; font-size: larger"  />
+                    <p:inputMask id="phone" value="#{maskView.phone}"  mask="9999-9999"/>
+                    
+                    <h:outputLabel  value="Fecha de Nacimiento:" style="font-weight:normal; font-size: larger"  />
+                    <p:calendar  value="#{calendarView.date5}" locale="de" navigator="true" pattern="yyyy-MMM-dd" />
+                    <div id="items"> 
+                        <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                         <p:selectOneMenu  value="#{beanRegistro.idProvincia}" onchange="submit()">
+                             <f:selectItems value="#{beanRegistro.listaProvincia}"/>
+                         </p:selectOneMenu>
+                         <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                         <p:selectOneMenu  value="#{beanRegistro.idCanton}" onchange="submit()">
+                             <f:selectItems value="#{beanRegistro.listaCanton}"/>
+                         </p:selectOneMenu>
+                        <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                         <p:selectOneMenu  value="#{beanRegistro.idDistrito}" onchange="submit()" >
+                                <f:selectItems value="#{beanRegistro.listaDistrito}"/>
+                         </p:selectOneMenu>
+                    </div>
+                  </h:panelGrid>
+                
+                <p:commandButton value="Registrar" id="ajax" actionListener="#{beanRegistro.insertarUsuario()}" style="margin-right:20px;"  />
+             </h:form>
+       
+  
     </h:body>
 </html>
 

@@ -15,12 +15,15 @@ import Model.Provincia;
 import Model.ProvinciaDB;
 import Model.Usuario;
 import Model.UsuarioDB;
+import static com.sun.javafx.logging.PulseLogger.addMessage;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -53,89 +56,83 @@ public class beanRegistro implements Serializable {
      public beanRegistro(){
      }
      
-//   public void insertarUsuario() throws SNMPExceptions, SQLException
-//   {
-//   Usuario nuevoUsuario= new Usuario(this.getNombre(),this.getApellido1(), this.getApellido2(),"hola");
-//   UsuarioDB usuDB= new UsuarioDB();
-//   
-//   usuDB.InsertarUsuario(nuevoUsuario);
-//   }
-//
-//
-//    public LinkedList<SelectItem> getListaCanton()throws SNMPExceptions, SQLException{
-//    int idCanton=0;
-//    String nombrecanton="";
-//        
-//        LinkedList<Canton> lista = new LinkedList<Canton>();
-//        CantonDB cDB = new CantonDB();
-//        
-//        lista = cDB.moTodo();
-//        
-//        LinkedList resultList = new LinkedList();
-//     //   resultList.add(new SelectItem(0, "Seleccione Canton"));
-//      for(int i=0; listaProvincia1.size()>=0; i++)
-//      {
-//          boolean t=false;
-//         
-//      }
-//      
-//      
-//        for (Iterator iter= lista.iterator(); iter.hasNext();) {
-//        
-//            Canton pro = (Canton) iter.next();
-//            idCanton=pro.getIdCanton();
-//            nombrecanton=pro.getNombreCanton();
-//            resultList.add(new SelectItem(idCanton, nombrecanton));
-//         }         
-//         return resultList; 
-//        
-//    }
-//        public LinkedList<SelectItem> getListaProvincia()throws SNMPExceptions, SQLException{
-//        int idProvincia=0;
-//        String nombreProvincia="";
-//        
-//        LinkedList<Provincia> lista = new LinkedList<Provincia>();
-//        ProvinciaDB pDB = new ProvinciaDB();
-//        
-//        lista = pDB.moTodo();
-//        
-//        LinkedList resultList = new LinkedList();
-//   //     resultList.add(new SelectItem(0, "Seleccione Provincia"));
-//        
-//        for (Iterator iter= lista.iterator(); iter.hasNext();) {
-//        
-//            Provincia pro = (Provincia) iter.next();
-//            idProvincia=pro.getIdProvincia();
-//            nombreProvincia=pro.getNombreprovincia();
-//            resultList.add(new SelectItem(idProvincia, nombreProvincia));
-//         }  
-//        listaProvincia1=resultList;
-//         return resultList; 
-//        
-//    }
-//     
-//     public LinkedList<SelectItem> getListaDistrito()throws SNMPExceptions, SQLException{
-//        int idDistrito=0;
-//        String nombreDistrito="";
-//        
-//        LinkedList<Distrito> lista = new LinkedList<Distrito>();
-//        DistritoDB dDB = new DistritoDB();
-//       
-//        lista = dDB.moTodo();
-//        
-//        LinkedList resultList = new LinkedList();
-//        resultList.add(new SelectItem(0, "Seleccione distrito"));
-//        
-//        for (Iterator iter= lista.iterator(); iter.hasNext();) {
-//        
-//            Distrito pro = (Distrito) iter.next();
-//            idDistrito=pro.getIdDistrito();
-//            nombreDistrito=pro.getNombreDistrito();
-//            resultList.add(new SelectItem(idDistrito, nombreDistrito));
-//         }         
-//         return resultList; 
-//        
-//    }    
+   public void insertarUsuario() throws SNMPExceptions, SQLException
+   {
+   Usuario nuevoUsuario= new Usuario(this.getNombre(),this.getApellido1(), this.getApellido2(),"hola");
+   UsuarioDB usuDB= new UsuarioDB();
+   
+   usuDB.InsertarUsuario(nuevoUsuario);
+   }
+
+
+    public LinkedList<SelectItem> getListaCanton()throws SNMPExceptions, SQLException{
+    int idCanton=0;
+    String nombrecanton="";
+        
+        LinkedList<Canton> lista = new LinkedList<Canton>();
+        CantonDB cDB = new CantonDB();
+        
+        lista = cDB.moTodo();
+        
+        LinkedList resultList = new LinkedList();
+       resultList.add(new SelectItem(0, "Seleccione Canton"));
+
+      
+      
+        for (Iterator iter= lista.iterator(); iter.hasNext();) {
+        
+            Canton pro = (Canton) iter.next();
+            idCanton=pro.getIdCanton();
+            nombrecanton=pro.getNombreCanton();
+            resultList.add(new SelectItem(idCanton, nombrecanton));
+         }         
+         return resultList; 
+        
+    }
+        public LinkedList<SelectItem> getListaProvincia()throws SNMPExceptions, SQLException{
+        int idProvincia=0;
+        String nombreProvincia="";
+        
+        LinkedList<Provincia> lista = new LinkedList<Provincia>();
+        ProvinciaDB pDB = new ProvinciaDB();
+        
+        lista = pDB.moTodo();
+        
+        LinkedList resultList = new LinkedList();
+   //     resultList.add(new SelectItem(0, "Seleccione Provincia"));
+        
+        for (Iterator iter= lista.iterator(); iter.hasNext();) {
+        
+            Provincia pro = (Provincia) iter.next();
+            idProvincia=pro.getIdProvincia();
+            nombreProvincia=pro.getNombreprovincia();
+            resultList.add(new SelectItem(idProvincia, nombreProvincia));
+         }  
+         return resultList; 
+        
+    }
+     
+     public LinkedList<SelectItem> getListaDistrito()throws SNMPExceptions, SQLException{
+        int idDistrito=0;
+        String nombreDistrito="";
+        
+        LinkedList<Distrito> lista = new LinkedList<Distrito>();
+        DistritoDB dDB = new DistritoDB();
+       
+        lista = dDB.moTodo();
+        
+        LinkedList resultList = new LinkedList();
+        resultList.add(new SelectItem(0, "Seleccione distrito"));
+        
+        for (Iterator iter= lista.iterator(); iter.hasNext();) {
+        
+            Distrito pro = (Distrito) iter.next();
+            idDistrito=pro.getIdDistrito();
+            nombreDistrito=pro.getNombreDistrito();
+            resultList.add(new SelectItem(idDistrito, nombreDistrito));
+         }         
+         return resultList;       
+    }    
     
     //Correo
      public void enviarCorreo()
@@ -143,6 +140,7 @@ public class beanRegistro implements Serializable {
      Correo co= new Correo();
      co.enviar();
      }
+     
      
     //setters and getters
         public int getIdCanton() {

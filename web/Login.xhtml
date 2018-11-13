@@ -2,62 +2,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 
     <h:head>
         <link href="Estilos/estiloLogin.css" rel="stylesheet" type="text/css"/>
         <!--bootstrap Script-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"></link>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+       
         <title>Sistema DEAS</title>
     </h:head>
     <h:body>
         <header style="width: 100%; height: 140px; background: #102b70;">
             <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="155" height="120"/>
         </header>
-        
+
         <div class="main">
 
             <div id="principal" >  
-                
+
                 <div id="cuadroInterior">
                     <h:outputText value="Ingreso al Sistema" ></h:outputText>   
                 </div> 
-                
+
                 <h:form style="background: white" class="form-inline">
-                    
-                    <div class="form-group" style="width: 330px; margin: 0 auto; position: relative; top: 10px;">   
-                        <h:outputText value="Usuario:" class="control-label" ></h:outputText>
-                        <h:inputText value="" class="form-control" style="width: 100%"></h:inputText>
-                    </div>
-                    
-                    <div class="form-group" style="width: 330px; margin: 0 auto; position: relative; top: 15px;"> 
-                        <h:outputText value="Contraseña:" class="control-label" ></h:outputText>
-                        <h:inputSecret value="" class="form-control " style="width: 100%"></h:inputSecret>
-                    </div>
+                    <h:panelGrid columns="1" cellpadding="4"> 
+                     
+                        
+                        <p:outputLabel  value="Identificacion:"></p:outputLabel>
+                        <p:inputText style="margin-left:30%;" value="#{passwordView.password1}" />   
+                        
+                        <p:outputLabel  value="Contranseña:"></p:outputLabel>
+                        <p:password style="margin-left:30%;" value="#{passwordView.password1}" />   
 
-                    <div class="form-group" style="width: 330px; margin: 0 auto; position: relative; top: 20px;"> 
-                        <h:outputText value="Tipo de usuario" class="control-label" style="width: 100%" ></h:outputText>
-                        <h:selectOneMenu class="form-control" style="width: 100%">
-                            <f:selectItem itemValue="Funcionario"></f:selectItem>
-                            <f:selectItem itemValue="Coordinador"></f:selectItem>
-                        </h:selectOneMenu>
-                    </div>
+                        <p:outputLabel value="Tipo de usuario:"  ></p:outputLabel>
+                        <p:selectOneMenu style="margin-left:30%;" value="#{beanLogin.tipoFun}">
+                            <f:selectItems value="#{beanLogin.listaTipoFuncionario}"></f:selectItems> 
+                        </p:selectOneMenu>
+                  
 
-                    <div style="width: 270px; height: 50px; margin: 0 auto; top: 30px; position: relative">
-                        <h:commandButton id="btnIngresar" value="Ingresar" 
-                                         class="btn btn-lg" 
-                                         style=" background:#102b70; color:white; width: 100%;height: 100%">
-                        </h:commandButton>
-                    </div>
-
-                    <div style="width: 270px; position: relative;top: 45px; margin-left: 25px;">
-                        <a href="NuevaCuenta.xhtml">Crear cuenta</a>
-                    </div>
-
+          
+                       <div style=" position: relative;top: 20px; margin-left:50%;">
+                            <a href="NuevaCuenta.xhtml">Crear cuenta</a>
+                        </div>
+                    </h:panelGrid>
                 </h:form>
             </div>    
         </div>  
