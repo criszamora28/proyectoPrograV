@@ -6,16 +6,17 @@
 package Controller;
 
 import DAO.SNMPExceptions;
-import Model.Provincia;
-import Model.ProvinciaDB;
 import Model.TipoFuncionario;
 import Model.TipoFuncionarioDB;
+import Model.Usuario;
+import Model.UsuarioDB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -31,22 +32,22 @@ public class beanLogin implements Serializable {
      */
     String identicacion;
     String contrasena;
-    TipoFuncionario tipoFun;
+    int tipoFun;
 
     
     
-      public LinkedList<SelectItem> getListaTipoFuncionario()throws SNMPExceptions, SQLException{
+   public LinkedList<SelectItem> getListaTipoFuncionario()throws SNMPExceptions, SQLException{
         int id=0;
         String tipo="";
         
         LinkedList<TipoFuncionario> lista = new LinkedList<TipoFuncionario>();
         TipoFuncionarioDB fDB = new TipoFuncionarioDB();
-        
-        lista = fDB.seleccionarTiposFuncionarios();
+        TipoFuncionario n= new TipoFuncionario();
+       lista = fDB.seleccionarTiposFuncionarios();
+    
         
         LinkedList resultList = new LinkedList();
-   //     resultList.add(new SelectItem(0, "Seleccione Provincia"));
-        
+   
         for (Iterator iter= lista.iterator(); iter.hasNext();) {
         
             TipoFuncionario tipoFun = (TipoFuncionario) iter.next();
@@ -57,6 +58,31 @@ public class beanLogin implements Serializable {
          return resultList; 
         
     }
+   
+    public void autenticar(){
+     int tipo=0;
+     int identi=0;
+     String contrasena="";
+     tipo=this.getTipoFun();
+     identi=Integer.parseInt(this.getIdenticacion());
+     contrasena=this.getContrasena();
+     
+     
+     
+     
+       try{
+           LinkedList<Usuario>lista=new UsuarioDB().validarUsuario(identi,tipo,contrasena);
+           Usuario usuario= lista.get(0);
+           
+           if (usuario != null){
+               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario",usuario);
+               FacesContext.getCurrentInstance().getExternalContext().redirect("Principal.xhtml");
+           }
+       }catch (Exception e){
+       
+       }
+       
+   }
     
     public String getIdenticacion() {
         return identicacion;
@@ -74,11 +100,11 @@ public class beanLogin implements Serializable {
         this.contrasena = contrasena;
     }
 
-    public TipoFuncionario getTipoFun() {
+    public int getTipoFun() {
         return tipoFun;
     }
 
-    public void setTipoFun(TipoFuncionario tipoFun) {
+    public void setTipoFun(int tipoFun) {
         this.tipoFun = tipoFun;
     }
     public beanLogin() {

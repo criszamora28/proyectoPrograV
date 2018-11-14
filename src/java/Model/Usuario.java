@@ -14,6 +14,11 @@ import java.sql.Date;
 public class Usuario {
     
  //actualizar datos del usuario
+    public int identificacion;
+    public TipoFuncionario tipoFuncionario;
+    public String contrasena;
+
+
     public String nombre;
     public String apellido1;
     public String apellido2;
@@ -62,5 +67,26 @@ public class Usuario {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
+     public int getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(int identificacion) {
+        this.identificacion = identificacion;
+    }
+
+    public TipoFuncionario getTipoFuncionario() {
+        return tipoFuncionario;
+    }
+
+    public void setTipoFuncionario(TipoFuncionario tipoFuncionario) {
+        this.tipoFuncionario = tipoFuncionario;
+    }
+        public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
 }

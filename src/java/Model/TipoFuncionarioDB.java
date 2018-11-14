@@ -31,11 +31,11 @@ public class TipoFuncionarioDB {
     public TipoFuncionarioDB() {
         super();
     }
-    
-    public  LinkedList<TipoFuncionario> seleccionarTiposFuncionarios() throws SNMPExceptions,SQLException {
+        
+    public LinkedList<TipoFuncionario> seleccionarTiposFuncionarios() throws SNMPExceptions,SQLException {
       String select = "";
       LinkedList<TipoFuncionario> listaFun = new LinkedList<TipoFuncionario>();
-          
+          //TipoFuncionario n=  new  TipoFuncionario();
           try {
     
               //Se instancia la clase de acceso a datos
@@ -59,6 +59,7 @@ public class TipoFuncionarioDB {
                TipoFuncionario tipoU = new TipoFuncionario();
                tipoU.Id=id;
                tipoU.TipoUsuario=tipo;
+              
                  listaFun.add(tipoU);
               }
               rsPA.close();

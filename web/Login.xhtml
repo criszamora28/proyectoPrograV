@@ -29,16 +29,19 @@
                     <h:panelGrid columns="1" cellpadding="4"> 
                      
                         
-                        <p:outputLabel  value="Identificacion:"></p:outputLabel>
-                        <p:inputText style="margin-left:30%;" value="#{passwordView.password1}" />   
+                        <p:outputLabel  value="Identificacion:"></p:outputLabel>  
+                        <p:inputMask style="margin-left:30%;" value="#{beanLogin.identicacion}"  mask="9999" />
+                         
                         
                         <p:outputLabel  value="Contranseña:"></p:outputLabel>
-                        <p:password style="margin-left:30%;" value="#{passwordView.password1}" />   
+                        <p:password  style="margin-left:30%;" value="#{beanLogin.contrasena}" />   
 
                         <p:outputLabel value="Tipo de usuario:"  ></p:outputLabel>
-                        <p:selectOneMenu style="margin-left:30%;" value="#{beanLogin.tipoFun}">
+                       <p:selectOneMenu style="margin-left:30%;" value="#{beanLogin.tipoFun}">
                             <f:selectItems value="#{beanLogin.listaTipoFuncionario}"></f:selectItems> 
                         </p:selectOneMenu>
+                        
+                        <h:commandButton value="Ingresar" actionListener="#{beanLogin.autenticar()}">  </h:commandButton>
                   
 
           
