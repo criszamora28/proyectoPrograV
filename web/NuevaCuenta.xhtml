@@ -2,57 +2,65 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-          
+
 
     <h:head>
-            <!--LINKS css-->
-        
+        <!--LINKS css-->
+
         <title>Sistema DEAS</title>
     </h:head>
     <h:body>
-            <h:form>   
-                  <h:panelGrid columns="2" cellpadding="2">
-
-                    <h:outputLabel value="Nombre:" style="font-weight:normal; font-size: larger"  />
-                    <p:inputText  value="#{basicView.text}" />
-
-                    <h:outputLabel  value="Primer apellido:" style="font-weight:normal; font-size: larger"  />
-                    <p:inputText  value="#{basicView.text}" />
-
-                    <h:outputLabel  value="Segundo apellido:" style="font-weight:normal; font-size: larger"  />
-                    <p:inputText  value="#{basicView.text}" />
-
-                    <h:outputLabel  value="Correo:" style="font-weight:normal; font-size: larger"  />
-                    <p:inputText  value="#{basicView.text}" />
-
-                    <h:outputLabel  value="Numero de telefono:" style="font-weight:normal; font-size: larger"  />
-                    <p:inputMask id="phone" value="#{maskView.phone}"  mask="9999-9999"/>
-                    
-                    <h:outputLabel  value="Fecha de Nacimiento:" style="font-weight:normal; font-size: larger"  />
-                    <p:calendar  value="#{calendarView.date5}" locale="de" navigator="true" pattern="yyyy-MMM-dd" />
-                    <div id="items"> 
-                        <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
-                         <p:selectOneMenu  value="#{beanRegistro.idProvincia}" onchange="submit()">
-                             <f:selectItems value="#{beanRegistro.listaProvincia}"/>
-                         </p:selectOneMenu>
-                         <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
-                         <p:selectOneMenu  value="#{beanRegistro.idCanton}" onchange="submit()">
-                             <f:selectItems value="#{beanRegistro.listaCanton}"/>
-                         </p:selectOneMenu>
-                        <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
-                         <p:selectOneMenu  value="#{beanRegistro.idDistrito}" onchange="submit()" >
-                                <f:selectItems value="#{beanRegistro.listaDistrito}"/>
-                         </p:selectOneMenu>
-                    </div>
-                  </h:panelGrid>
+        <h:form>   
+            <h:panelGrid columns="1" cellpadding="4">
+`
+                 <h:outputLabel value="Tipo identificacion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                 <p:selectOneMenu  value="#{beanRegistro.tipoIdentificacion}" onchange="submit()">
+                     <f:selectItems value="#{beanRegistro.listaTipoIdentificacion}"/>
+                    </p:selectOneMenu>
                 
-                <p:commandButton value="Registrar" id="ajax" actionListener="#{beanRegistro.insertarUsuario()}" style="margin-right:20px;"  />
-             </h:form>
-       
-  
+                <p:outputLabel style="font-weight:normal; font-size: larger"  value="Identificacion:"></p:outputLabel>  
+                <p:inputMask  value="#{beanRegistro.indentificacion}"  mask="9999" />
+
+                <h:outputLabel value="Nombre:" style="font-weight:normal; font-size: larger"  />
+                <p:inputText value="#{beanRegistro.nombre}"/>
+
+                <h:outputLabel  value="Primer apellido:" style="font-weight:normal; font-size: larger"  />
+                <p:inputText value="#{beanRegistro.apellido1}" />
+
+                <h:outputLabel  value="Segundo apellido:" style="font-weight:normal; font-size: larger"  />
+                <p:inputText value="#{beanRegistro.apellido2}"   />
+
+                <h:outputLabel  value="Correo:" style="font-weight:normal; font-size: larger"  />
+                <p:inputText  value="#{beanRegistro.correo}" />
+
+                <h:outputLabel  value="Numero de telefono:" style="font-weight:normal; font-size: larger"  />
+                <p:inputMask  value="#{beanRegistro.telefono}"   mask="9999-9999"/>
+
+                <h:outputLabel  value="Fecha de Nacimiento:" style="font-weight:normal; font-size: larger"  />
+                <p:calendar value="#{beanRegistro.fechaNacimiento}" locale="de" navigator="true" pattern="yyyy-MMM-dd" />
+                <div id="items"> 
+                    <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                    <p:selectOneMenu  value="#{beanRegistro.idProvincia}" onchange="submit()">
+                        <f:selectItems value="#{beanRegistro.listaProvincia}"/>
+                    </p:selectOneMenu>
+
+                    <p:selectOneMenu  value="#{beanRegistro.idCanton}" onchange="submit()">
+                        <f:selectItems value="#{beanRegistro.listaCanton}"/>
+                    </p:selectOneMenu>
+
+                    <p:selectOneMenu  value="#{beanRegistro.idDistrito}" onchange="submit()" >
+                        <f:selectItems value="#{beanRegistro.listaDistrito}"/>
+                    </p:selectOneMenu>
+                </div>
+            </h:panelGrid>
+
+            <p:commandButton value="Registrar"  actionListener="#{beanRegistro.insertarUsuario()}" style="margin-right:20px;"  />
+        </h:form>
+
+
     </h:body>
 </html>
 

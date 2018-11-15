@@ -9,25 +9,26 @@
     </h:head>
     <h:body>
         <h:form> 
-            <h:selectOneMenu label="pro" value="#{beanRegistro.idCanton}" onchange="submit()" id="pro">
-                      <f:selectItems value="#{beanRegistro.listaCanton}"/>
-            </h:selectOneMenu>
-            <br></br>
-            <br></br>
-            <h:selectOneMenu label="pro" value="#{beanRegistro.idCanton}" onchange="submit()" id="pro1">
-                <f:selectItems value="#{beanRegistro.listaProvincia}"/>
-            </h:selectOneMenu>
-            <br></br>
-            <br></br>
-            
-            <div class="form-group">
-            <p:outputLabel for="inline" value="Inline:" />
-            <p:calendar id="inline" value="#{calendarView.date1}" mode="inline" />
-            </div>
-            <h:selectOneMenu label="pro" value="#{beanRegistro.idDistrito}" onchange="submit()" id="pro2">
-                 <f:selectItems value="#{beanRegistro.listaDistrito}"/>
-            </h:selectOneMenu>
-            
+          <p:panel header="Select a Location" style="margin-bottom:10px;">
+        <h:panelGrid columns="2" cellpadding="5">
+            <p:outputLabel for="country" value="Country: " />
+            <p:selectOneMenu id="country" value="#{beanPrueba.country}" style="width:150px">
+                <p:ajax listener="#{beanPrueba.onCountryChange}" update="city" />
+                <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
+                <f:selectItems value="#{beanPrueba.countries}" />
+            </p:selectOneMenu>
+ 
+            <p:outputLabel for="city" value="City: " />
+            <p:selectOneMenu id="city" value="#{beanPrueba.city}" style="width:150px">
+                <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true" />
+                <f:selectItems value="#{beanPrueba.cities}" />
+            </p:selectOneMenu>
+        </h:panelGrid>
+ 
+        <p:separator />
+ 
+        <p:commandButton value="Submit" update="msgs" action="#{dropdownView.displayLocation}" icon="pi pi-check" />
+    </p:panel>
                 
        </h:form>     
     </h:body>
