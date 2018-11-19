@@ -41,6 +41,19 @@
     border-radius: 25px; 
     padding: 5px; 
     position: relative; 
-    top: 10px;
+    top: 6px;
     border: 4px solid white;
 }
+
+#formLogin{
+/*    background-color: red;*/
+    position: relative;
+    top: 30px;
+    border-radius: 10px;
+    align-items: center;
+    padding-bottom: 3px;
+    box-shadow: 2px 2px 5px black;
+    height: 350px;
+    
+}
+

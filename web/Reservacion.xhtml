@@ -2,13 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <link href="Estilos/estiloReservacion.css" rel="stylesheet" type="text/css"/>
         <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-<!--        <script type="text/javascript">
+        <script type="text/javascript">
             PrimeFaces.locales['tr'] = {
                 closeText: 'kapat',
                 prevText: 'geri',
@@ -36,15 +34,34 @@
             .value {
                 width: 1000px;
             }
+
+            *{
+                padding: 0;
+                margin: 0;
+            }
         </style>
+    </h:head>
+    <h:body>
+        <header class="ui-g" style="width: 100%; height: 140px; background: #102b70;">
+            <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="150" height="110"/>
+        </header>
 
-
-        <h:form>
-            <p:growl id="messages" showDetail="true" />
+        <h:form class="iu-g"> 
+            
+            <div class="ui-g-3">
+                <p:panelMenu >
+                    <p:submenu label="Inicio" >
+                        <p:menuitem value="Volver a ingresar" url="Login.xhtml" />
+                       
+                    </p:submenu>
+                </p:panelMenu>
+            </div>
+            
+            <p:growl  autoUpdate="true" id="messages" showDetail="true" />
 
             <h:panelGrid columnClasses="value">
-                <h3 style="margin-top: 0">Editable Schedule</h3>
-                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+2">
+
+                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT-6">
 
                     <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                     <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
@@ -53,11 +70,11 @@
 
                 </p:schedule>
 
-                <h3 style="visibility: hidden;; width: 0px">Locale Support ( Example: Turkish )</h3>
-                <p:schedule style="visibility: hidden;; width: 0px" id="scheduleLocale" value="#{scheduleView.eventModel}" locale="tr" />
+                <!--                <h3 style="visibility: hidden;; width: 0px">Locale Support ( Example: Turkish )</h3>
+                                <p:schedule style="visibility: hidden;; width: 0px" id="scheduleLocale" value="" locale="tr" />-->
 
-                <h3 style="visibility: hidden;; width: 0px">Lazy Schedule</h3>
-                <p:schedule style="visibility: hidden; width: 0px" value="#{scheduleView.lazyEventModel}" />
+                <!--                <h3 style="visibility: hidden;; width: 0px">Lazy Schedule</h3>
+                                <p:schedule style="visibility: hidden; width: 0px" value="" />-->
             </h:panelGrid>
 
             <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
@@ -66,10 +83,10 @@
                     <p:inputText id="title" value="#{scheduleView.event.title}" required="true" />
 
                     <p:outputLabel for="from" value="From:" />
-                    <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+                    <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT-6" pattern="dd/MM/yyyy HH:mm"/>
 
                     <p:outputLabel for="to" value="To:" />
-                    <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+                    <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT-6" pattern="dd/MM/yyyy HH:mm"/>
 
                     <p:outputLabel for="allDay" value="All Day:" />
                     <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
@@ -78,30 +95,7 @@
                     <p:commandButton id="addButton" value="Save" action="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
                 </h:panelGrid>
             </p:dialog>    
-        </h:form>-->
-        <!--        <h:form> 
-                  <p:panel header="Select a Location" style="margin-bottom:10px;">
-                <h:panelGrid columns="2" cellpadding="5">
-                    <p:outputLabel for="country" value="Country: " />
-                    <p:selectOneMenu id="country" value="#{beanPrueba.country}" style="width:150px">
-                        <p:ajax listener="#{beanPrueba.onCountryChange}" update="city" />
-                        <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{beanPrueba.countries}" />
-                    </p:selectOneMenu>
-         
-                    <p:outputLabel for="city" value="City: " />
-                    <p:selectOneMenu id="city" value="#{beanPrueba.city}" style="width:150px">
-                        <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{beanPrueba.cities}" />
-                    </p:selectOneMenu>
-                </h:panelGrid>
-         
-                <p:separator />
-         
-                <p:commandButton value="Submit" update="msgs" action="#{dropdownView.displayLocation}" icon="pi pi-check" />
-            </p:panel>
-                        
-               </h:form>     -->
+        </h:form>
     </h:body>
 </html>
 
