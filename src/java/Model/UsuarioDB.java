@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import javax.smartcardio.ResponseAPDU;
 
 /**
  *
@@ -66,7 +67,7 @@ public class UsuarioDB {
         }
     }
 
-    public LinkedList<Usuario> moTodo() throws SNMPExceptions, SQLException {
+    public LinkedList<Usuario> seleccionarUsuariosAdministrativos() throws SNMPExceptions, SQLException {
         String select = "";
         LinkedList<Usuario> listaUsuarios = new LinkedList<Usuario>();
 
@@ -77,20 +78,25 @@ public class UsuarioDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT idProvincia,idCanton,"
-                    + "nombrecanton  FROM usuario1";
+                    = "SELECT identificacion, nombre, apellido1, apellido2, "
+                    + "correo FROM usuario";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
-
+                
+                int identificacion=rsPA.getInt("identificacion");
                 String nombre = rsPA.getString("nombre");
                 String apellido1 = rsPA.getString("apellido1");
                 String apellido2 = rsPA.getString("apellido2");
-                String direccion = rsPA.getString("direccion");
+                String correo = rsPA.getString("correo");
 
-                Usuario perUsuarios = new Usuario(nombre, apellido1, apellido2, direccion);
+                Usuario perUsuarios = new Usuario();
+                perUsuarios.nombre=nombre;
+                perUsuarios.apellido1=apellido1;
+                perUsuarios.apellido2=apellido2;
+                perUsuarios.correo=correo;
                 listaUsuarios.add(perUsuarios);
             }
             rsPA.close();
