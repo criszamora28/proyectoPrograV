@@ -30,7 +30,7 @@ public class CursoDeasDB {
     
     
     
-     public LinkedList<CursoDeas> seleccionarCursosDeasId(CursoDeas deas) throws SNMPExceptions, SQLException {
+     public LinkedList<CursoDeas> seleccionarCursosDeasId(int deas) throws SNMPExceptions, SQLException {
         String select = "";
         LinkedList<CursoDeas> listaCursoDeas = new LinkedList<CursoDeas>();
 
@@ -42,7 +42,7 @@ public class CursoDeasDB {
             //Se crea la sentencia de búsqueda
             select
                     = "SELECT idPrograma, nombreCurso, "
-                    + "descripcion FROM cursoDeas where idPrograma="+deas.idPrograma;
+                    + "descripcion FROM cursoDeas where idPrograma="+deas;
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);

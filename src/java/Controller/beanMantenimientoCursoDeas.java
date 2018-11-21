@@ -29,12 +29,12 @@ public class beanMantenimientoCursoDeas implements Serializable {
     /**
      * Creates a new instance of beanMantenimientoCursoDeas
      */
-    
     CursoDeas cursoDeas;
-    public beanMantenimientoCursoDeas() 
-    {
+
+    public beanMantenimientoCursoDeas() {
     }
-      public List<CursoDeas> getListaCursos() throws SNMPExceptions, SQLException {
+
+    public List<CursoDeas> getListaCursos() throws SNMPExceptions, SQLException {
         int id = 0;
         String tipo = "";
 
@@ -46,47 +46,39 @@ public class beanMantenimientoCursoDeas implements Serializable {
         return lista;
     }
 
-//        public void actualizar() throws SNMPExceptions, SQLException {
-//        CursoDeas us = this.getCursoDeas();
-//
-//        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
-//       if (lista == null) {
-//
-//        } else {
-//            Usuario usuarioUp = lista.get(0);
-//            usuarioUp.nombre = us.nombre;
-//            usuarioUp.apellido1 = us.apellido1;
-//            usuarioUp.apellido2 = us.apellido2;
-//            usuarioUp.correo = us.correo;
-//
-//            UsuarioDB upUser = new UsuarioDB();
-//            upUser.ActualizarUsuario(usuarioUp);
-//            getListaAdministrativos();
- //       }
+    public void actualizar() throws SNMPExceptions, SQLException {
+        CursoDeas us = this.getCursoDeas();
 
- //   }
+        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.idPrograma);
+        if (lista == null) {
 
-    public void eliminar() throws SNMPExceptions, SQLException 
-    {
-//        Usuario us = this.getUsuario();
-//
-//        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
-//        if (lista == null) {
-//
-//        } else {
-//            Usuario usuarioDel = lista.get(0);
-//
-//            UsuarioDB upUser = new UsuarioDB();
-//            upUser.EliminarUsuario(usuarioDel);
-//            getListaAdministrativos();
+        } else {
+            CursoDeas cursoDeasUp = lista.get(0);
+            cursoDeasUp.nombreCurso = us.nombreCurso;
+            cursoDeasUp.descripcion = us.descripcion;
 
-   //     }
-    }  
-      
-      
-    
-      
-      
+            CursoDeasDB upUser = new CursoDeasDB();
+            upUser.ActualizarCurso(cursoDeasUp);
+
+        }
+
+    }
+
+    public void eliminar() throws SNMPExceptions, SQLException {
+        CursoDeas us = this.getCursoDeas();
+
+        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.getIdPrograma());
+        if (lista == null) {
+
+        } else {
+            CursoDeas cursoDel = lista.get(0);
+
+            CursoDeasDB upUser = new CursoDeasDB();
+            upUser.EliminarCurso(cursoDel);
+
+        }
+    }
+
     public CursoDeas getCursoDeas() {
         return cursoDeas;
     }
@@ -94,6 +86,5 @@ public class beanMantenimientoCursoDeas implements Serializable {
     public void setCursoDeas(CursoDeas cursoDeas) {
         this.cursoDeas = cursoDeas;
     }
-      
-      
+
 }
