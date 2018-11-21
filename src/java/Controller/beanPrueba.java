@@ -109,34 +109,53 @@ public class beanPrueba {
 
     public beanPrueba() {
     }
-
-    ///mensaje
+// mensaje
     private String message;
-    private String message1;
-
-   
  
-
-    public void saveMessage() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        Correo pruebaCorreo = new Correo();
-        pruebaCorreo.enviarConGMail();
-        
-      //  this.message= generateRandom();
-
-        context.addMessage(null, new FacesMessage("Successful", "Your message: " + message));
-        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
-    }
-
     public String getMessage() {
         return message;
     }
-
+ 
     public void setMessage(String message) {
         this.message = message;
     }
-
+     
+    public void saveMessage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+         String sd="holis";
+        context.addMessage(null, new FacesMessage("Successful",  "Your message: " + message) );
+        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
+        context.addMessage(null, new FacesMessage("Hola", "micaFunciona" +sd));
+    }
+   
+    
+    //SEGUNDO MENSAJE 
+     private String username;
+    private String email;
+ 
+    public String getUsername() {
+        return username;
+    }
+ 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+ 
+    public String getEmail() {
+        return email;
+    }
+ 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+     
+    public void save() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User Saved"));
+        username = null;
+        email = null;
+    }
+    
+    ///Generar random
     public String generateRandom() {
         SecureRandom random = new SecureRandom();
         String text = new BigInteger(130, random).toString(32);

@@ -6,8 +6,6 @@
 package Controller;
 
 import DAO.SNMPExceptions;
-import Model.TipoFuncionario;
-import Model.TipoFuncionarioDB;
 import Model.Usuario;
 import Model.UsuarioDB;
 import javax.inject.Named;
@@ -28,10 +26,14 @@ import javax.faces.model.SelectItem;
 @SessionScoped
 public class beanMentenimientoUsuario implements Serializable {
 
-    private List<Usuario> listaUsuarios;
-     
-    private Usuario Usuario;
-    
+    List<Usuario> listaUsuarios;
+    Usuario Usuario;
+    int id;
+    String nombre;
+    String apellido1;
+    String apellido2;
+    String corre;
+
 //    @PostConstruct
 //    public void init() {
 //        Usuario = new Usuario("Cris", "Zamora", "Reyes", "Ninguna");
@@ -39,31 +41,54 @@ public class beanMentenimientoUsuario implements Serializable {
 //        listaUsuarios.add(Usuario);
 //        
 //    }
-    public List<Usuario> getListaAdministrativos()throws SNMPExceptions, SQLException{
-        int id=0;
-        String tipo="";
-        
+    public List<Usuario> getListaAdministrativos() throws SNMPExceptions, SQLException {
+        int id = 0;
+        String tipo = "";
+
         LinkedList<Usuario> lista = new LinkedList<Usuario>();
         UsuarioDB fDB = new UsuarioDB();
-        Usuario n= new Usuario();
-       lista = fDB.seleccionarUsuariosAdministrativos();
-    
-        
-//        LinkedList resultList = new LinkedList();
-//   
-//        for (Iterator iter= lista.iterator(); iter.hasNext();) {
-//        
-//            Usuario tipoFun = (Usuario) iter.next();
-//            id=tipoFun.getId();
-//            tipo=tipoFun.getTipoUsuario();
-//            resultList.add(new SelectItem(id, tipo));
-//         }  
-         return lista; 
-        
+        Usuario n = new Usuario();
+        lista = fDB.seleccionarUsuariosAdministrativos();
+
+        return lista;
     }
-  
- 
-    
+
+    public void actualizar() throws SNMPExceptions, SQLException {
+        Usuario us = this.getUsuario();
+
+        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
+        if (lista == null) {
+
+        } else {
+            Usuario usuarioUp = lista.get(0);
+            usuarioUp.nombre = us.nombre;
+            usuarioUp.apellido1 = us.apellido1;
+            usuarioUp.apellido2 = us.apellido2;
+            usuarioUp.correo = us.correo;
+
+            UsuarioDB upUser = new UsuarioDB();
+            upUser.ActualizarUsuario(usuarioUp);
+            getListaAdministrativos();
+        }
+
+    }
+
+    public void eliminar() throws SNMPExceptions, SQLException 
+    {
+        Usuario us = this.getUsuario();
+
+        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
+        if (lista == null) {
+
+        } else {
+            Usuario usuarioDel = lista.get(0);
+
+            UsuarioDB upUser = new UsuarioDB();
+            upUser.EliminarUsuario(usuarioDel);
+            getListaAdministrativos();
+
+        }
+    }
 
     public List<Usuario> getListaUsuarios() {
         return listaUsuarios;
@@ -80,5 +105,9 @@ public class beanMentenimientoUsuario implements Serializable {
     public void setUsuario(Usuario Usuario) {
         this.Usuario = Usuario;
     }
-    
+
+ 
+
+
+
 }

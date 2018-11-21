@@ -21,7 +21,6 @@
         <header class="ui-g" style="width: 100%; height: 140px; background: #102b70;">
             <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="150" height="110"/>
         </header>
-
         <h:form id="form" class="iu-g"> 
 
             <div class="ui-g-3">
@@ -44,24 +43,24 @@
             </div>
 
             <div class="ui-g-9">                                                                                 <!--paginator="true"   rowsPerPageTemplate="6,12,16"-->
-                <p:dataGrid var="usu" value="#{beanMentenimientoUsuario.listaAdministrativos}" columns="3" layout="grid"  rows="6" >
+                <p:dataGrid var="curso" value="#{beanMantenimientoCursoDeas.listaCursos}" columns="3" layout="grid"  rows="6" >
 
                     <f:facet name="header">
-                        Lista de Usuarios
+                        Lista de Cursos DEAS
                     </f:facet>
 
-                    <p:panel header="#{usu.nombre}" style="text-align:center">
+                    <p:panel header="#{curso.nombreCurso}" style="text-align:center">
                         <h:panelGrid columns="1" style="width:100%">
 
                             <f:facet name="header">
                                 <img src="Imagenes/deas.jpg" alt="" width="100" height="100"/>
                             </f:facet>
 
-                            <h:outputText value="#{usu.nombre}" />
+                            <h:outputText value="#{curso.nombreCurso}" />
 
-                            <p:commandLink update=":form:usuDetalles" oncomplete="PF('usuDialog').show()" title="Detalles">
+                            <p:commandLink update=":form:cursoDetalles" oncomplete="PF('cursoDialog').show()" title="Detalles">
                                 <h:outputText value="Detalles" style="margin:0 auto;"/>
-                                <f:setPropertyActionListener value="#{usu}" target="#{beanMentenimientoUsuario.usuario}" />
+                                <f:setPropertyActionListener value="#{curso}" target="#{beanMantenimientoCursoDeas.cursoDeas}" />
                             </p:commandLink>
                         </h:panelGrid>
                     </p:panel>
@@ -69,39 +68,31 @@
                 </p:dataGrid>
             </div>
 
-            <p:dialog header="Informacion del Usuario" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="usuDetalles" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty beanMentenimientoUsuario.usuario}" columnClasses="label,value">
+            <p:dialog header="Informacion del curso" widgetVar="cursoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="cursoDetalles" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty beanMantenimientoCursoDeas.cursoDeas}" columnClasses="label,value">
                         <f:facet name="header">
                             <img src="Imagenes/deas.jpg" alt=""/>
                         </f:facet>
 
-                        <h:outputText value="Identificacion:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.identificacion}" disabled="true" />
+                        <h:outputText value="Codigo curso:" />
+                        <h:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.idPrograma}" disabled="true" />
 
                         <h:outputText value="Nombre:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.nombre}" />
+                        <h:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.nombreCurso}" />
 
-                        <h:outputText value="Apellido:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.apellido1}" />
-
-                        <h:outputText value="Apellido2:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.apellido2}" />
-
-                        <h:outputText value="Correo" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.correo}" />
-
+                        <h:outputText value="Descripcion:" />
+                        <h:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.descripcion}" />
 
                     </p:panelGrid>
                     <p:commandButton value="Ayuda" />
                     <p:commandButton value="Nuevo" />
-                    <p:commandButton value="Modificar" actionListener="#{beanMentenimientoUsuario.actualizar()}" />
-                    <p:commandButton value="Eliminar"  actionListener="#{beanMentenimientoUsuario.eliminar()}" />
+                    <p:commandButton value="Modificar" actionListener="#/{beanMentenimientoUsuario.actualizar()}" />
+                    <p:commandButton value="Eliminar"  actionListener="#//{beanMentenimientoUsuario.eliminar()}" />
                 </p:outputPanel>
             </p:dialog>
             <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
         </h:form>
-
     </h:body>
 </html>
 

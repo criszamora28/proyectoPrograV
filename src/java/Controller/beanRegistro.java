@@ -74,11 +74,11 @@ public class beanRegistro implements Serializable {
         TipoFuncionario tnuevo = new TipoFuncionario();
         tnuevo.Id = 2;
         tnuevo.TipoUsuario = "Docente";
-        
-        TipoIdentificacion tipoIden= new TipoIdentificacion();
-        tipoIden.id=this.getTipoIdentificacion();
-        tipoIden.tipo="tipo";
-        
+
+        TipoIdentificacion tipoIden = new TipoIdentificacion();
+        tipoIden.id = this.getTipoIdentificacion();
+        tipoIden.tipo = "tipo";
+
         UsuarioDB usDB = new UsuarioDB();
 
         Usuario nuevoUsuario = new Usuario();
@@ -90,7 +90,7 @@ public class beanRegistro implements Serializable {
         nuevoUsuario.identificacion = Integer.parseInt(this.getIndentificacion());
         nuevoUsuario.correo = this.getCorreo();
         nuevoUsuario.tipoFuncionario = tnuevo;
-        nuevoUsuario.tipoIdentificacion=tipoIden;
+        nuevoUsuario.tipoIdentificacion = tipoIden;
         usDB.InsertarUsuario(nuevoUsuario);
     }
 
@@ -150,7 +150,7 @@ public class beanRegistro implements Serializable {
         lista = dDB.moTodo();
 
         LinkedList resultList = new LinkedList();
-      //  resultList.add(new SelectItem(0, "Seleccione distrito"));
+     
 
         for (Iterator iter = lista.iterator(); iter.hasNext();) {
 

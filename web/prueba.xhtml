@@ -104,26 +104,41 @@
                </h:form>     -->
 
         <h:form>   
-            <p:growl id="growl" showDetail="true" sticky="true"> </p:growl>
+            <p:growl id="growl" showDetail="true" sticky="true" />  
 
-            <p:panel header="Growl"> 
-
+            <p:panel header="Growl">  
                 <h:panelGrid columns="2" cellpadding="5">  
                     <p:outputLabel for="msg" value="Message:" />   
-                    <p:inputText id="msg" value="#{beanPrueba.message}" required="true" /> 
-
+                    <p:inputText id="msg" value="#{beanPrueba.message}" required="true" />  
                 </h:panelGrid>  
 
                 <p:commandButton value="Save" action="#{beanPrueba.saveMessage()}" update="@form" />
-            </p:panel>  
-
-
-
-            <p:commandButton value="Ajax Submit" id="ajax" update="growl" action="#{beanPrueba.buttonAction()}" style="margin-right:20px;" styleClass="ui-priority-primary" />
-
-            <p:commandButton value="Non-Ajax Submit" id="nonAjax" action="#{beanPrueba.buttonAction()}" style="margin-right:20px;" ajax="false" /> 
-      
+            </p:panel>     
         </h:form>
+        <h:form>
+            <p:panel id="panel" header="Register">
+
+                <p:focus context="panel"/>
+
+                <p:messages />
+
+                <h:panelGrid columns="3">
+                    <p:outputLabel for="username" value="Username" />
+                    <p:inputText id="username" value="#{beanPrueba.username}" required="true" label="Firstname">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="username" />
+
+                    <p:outputLabel for="email" value="Email" />
+                    <p:inputText id="email" value="#{beanPrueba.email}" required="true" label="Surname"/>
+                    <p:message for="email" />
+                </h:panelGrid>
+
+                <p:commandButton id="submitButton" value="Save" update="@parent" action="#{beanPrueba.save()}" />
+            </p:panel>
+        </h:form>
+
+
 
 
 
