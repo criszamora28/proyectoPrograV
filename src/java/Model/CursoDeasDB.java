@@ -26,7 +26,10 @@ public class CursoDeasDB {
         accesoDatos.setDbConn(conn);
     }
 
-    public CursoDeasDB(){}
+    public CursoDeasDB()
+    {
+    
+    }
     
     
     
@@ -132,10 +135,10 @@ public class CursoDeasDB {
             deas = curso;
 
             strSQL
-                    = "INSERT INTO usuario (idPrograma,nombrecurso,"
+                    = "INSERT INTO cursoDeas (idPrograma,nombrecurso,"
                     + "descripcion) VALUES ("
                     + deas.idPrograma + ","
-                    + "'" + deas.nombreCurso + "'"
+                    + "'" + deas.nombreCurso + "'"+","
                     + "'" + deas.descripcion + "'"
                     + ")";
 

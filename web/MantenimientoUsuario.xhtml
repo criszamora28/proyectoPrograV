@@ -71,38 +71,55 @@
 
             <p:dialog header="Informacion del Usuario" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="usuDetalles" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty beanMentenimientoUsuario.usuario}" columnClasses="label,value">
+                    <h:panelGrid  columns="4" rendered="#{not empty beanMentenimientoUsuario.usuario}" columnClasses="label,value" cellspacing="20" style="margin:0 auto;"   >
                         <f:facet name="header">
                             <img src="Imagenes/deas.jpg" alt=""/>
                         </f:facet>
 
-                        <h:outputText value="Identificacion:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.identificacion}"   disabled="#{beanMentenimientoUsuario.disable}"/>
+                        <h:outputLabel value="Tipo identificacion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                        <p:selectOneMenu  value="#{beanMentenimientoUsuario.tipoIdentificacion}" style=" width:78%">
+                            <f:selectItems value="#{beanMentenimientoUsuario.listaTipoIdentificacion}" />  
+                        </p:selectOneMenu>
 
-                        <h:outputText value="Nombre:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.nombre}" />
+                        <p:outputLabel value="Identificacion:" style="font-weight:normal; font-size: larger" ></p:outputLabel>
+                        <p:inputMask value="#{beanMentenimientoUsuario.usuario.identificacion}"   disabled="#{beanMentenimientoUsuario.disable}" mask="9999"></p:inputMask>
+                       
 
-                        <h:outputText value="Apellido:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.apellido1}" />
+                        <p:outputLabel value="Tipo funcionario:" style="font-weight:normal; font-size: larger"></p:outputLabel>
+                        <p:selectOneMenu value="#{beanMentenimientoUsuario.tipoFun}" style=" width:78%">
+                            <f:selectItems value="#{beanMentenimientoUsuario.listaTipoFuncionario}"></f:selectItems> 
+                        </p:selectOneMenu>
 
-                        <h:outputText value="Apellido2:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.apellido2}" />
+                        <p:outputLabel value="Nombre:" style="font-weight:normal; font-size: larger" ></p:outputLabel>
+                        <p:inputText value="#{beanMentenimientoUsuario.usuario.nombre}" ></p:inputText>
 
-                        <h:outputText value="Correo" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.correo}" />
+                        <p:outputLabel value="Primer apellido:" style="font-weight:normal; font-size: larger" ></p:outputLabel>
+                        <p:inputText value="#{beanMentenimientoUsuario.usuario.apellido1}" />
+
+                        <p:outputLabel value="Segundo apellido:" style="font-weight:normal; font-size: larger" ></p:outputLabel>
+                        <p:inputText value="#{beanMentenimientoUsuario.usuario.apellido2}" />
+
+                        <p:outputLabel value="Correo:"  style="font-weight:normal; font-size: larger"/>
+                        <p:inputText value="#{beanMentenimientoUsuario.usuario.correo}" />
+
+                        <p:outputLabel  value="Numero de telefono:"  style="font-weight:normal; font-size: larger" />
+                        <p:inputMask  value="#{beanMentenimientoUsuario.usuario.telefono}"   mask="9999-9999"/>
+
+                        <p:outputLabel  value="Fecha de Nacimiento:" style="font-weight:normal; font-size: larger"   />
+                        <p:calendar value="#{beanMentenimientoUsuario.usuario.fechaNacimiento}" locale="de" navigator="true" pattern="yyyy-MMM-dd" />
 
 
 
 
-                    </p:panelGrid>
-                    <p:commandButton value="Agregar" rendered="#{beanMentenimientoUsuario.visible}"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Agregar" rendered="#{beanMentenimientoUsuario.visible}" actionListener="#{beanMentenimientoUsuario.insertarUsuario()}"/>
                 </p:outputPanel>
-
-                <p:commandButton value="Ayudar"  update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" oncomplete="PF('usuDialog').show()"  ajax="true"/>
-                <p:commandButton value="Nuevo"  update=":form:usuDetalles"  action="#{beanMentenimientoUsuario.limpiaCampos()}" oncomplete="PF('usuDialog').show()"  ajax="true" />  
-                <p:commandButton value="Modificar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.actualizar()}" oncomplete="PF('usuDialog').show()"  ajax="true" />
-                <p:commandButton value="Eliminar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.eliminar()}" oncomplete="PF('usuDialog').show()"  ajax="true" />
-                
+                <div style="position: relative; margin: 0 auto; text-align: center;"> 
+                    <p:commandButton value="Ayudar"  update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" oncomplete="PF('usuDialog').show()"  ajax="true" style="margin-right: 10px"/>
+                    <p:commandButton value="Nuevo"  update=":form:usuDetalles"  action="#{beanMentenimientoUsuario.limpiaCampos()}" oncomplete="PF('usuDialog').show()"  ajax="true"  style="margin-right: 10px"/>  
+                    <p:commandButton value="Modificar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.actualizar()}" oncomplete="PF('usuDialog').show()"  ajax="true"  style="margin-right: 10px"/>
+                    <p:commandButton value="Eliminar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.eliminar()}" oncomplete="@all"  ajax="true" style="margin-right: 10px" />
+                </div>
             </p:dialog>
             <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
         </h:form>

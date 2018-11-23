@@ -6,6 +6,10 @@
 package Controller;
 
 import DAO.SNMPExceptions;
+import Model.TipoFuncionario;
+import Model.TipoFuncionarioDB;
+import Model.TipoIdentificacion;
+import Model.TipoIdentificacionDB;
 import Model.Usuario;
 import Model.UsuarioDB;
 import javax.inject.Named;
@@ -32,13 +36,16 @@ public class beanMentenimientoUsuario implements Serializable {
     String nombre;
     String apellido1;
     String apellido2;
-    String corre;
+    String correo;
+    int tipoFun;
+    int tipoIdentificacion;
+    String fechaNacimiento;
+
     boolean visible;
     boolean disable;
-    
-    public beanMentenimientoUsuario()
-    {
-    disable=true;
+
+    public beanMentenimientoUsuario() {
+        disable = true;
     }
 
     public List<Usuario> getListaAdministrativos() throws SNMPExceptions, SQLException {
@@ -51,6 +58,36 @@ public class beanMentenimientoUsuario implements Serializable {
         lista = fDB.seleccionarUsuariosAdministrativos();
 
         return lista;
+    }
+
+    public void insertarUsuario() throws SNMPExceptions, SQLException {
+       Usuario us = this.getUsuario();
+       
+       LinkedList<TipoFuncionario> listat= new TipoFuncionarioDB().seleccionarTiposFuncionariosid(this.getTipoFun());
+       TipoFuncionario t=listat.get(0);
+       
+       LinkedList<TipoIdentificacion>listai=new TipoIdentificacionDB().seleccionarId(this.getTipoIdentificacion());
+       TipoIdentificacion i= listai.get(0);
+       
+        
+       
+        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
+        if (lista.isEmpty()) {
+            Usuario usuarioUp= new Usuario();
+            usuarioUp.identificacion=us.identificacion;
+            usuarioUp.nombre = us.nombre;
+            usuarioUp.apellido1 = us.apellido1;
+            usuarioUp.apellido2 = us.apellido2;
+            usuarioUp.correo = us.correo;
+            usuarioUp.telefono=us.telefono;
+            usuarioUp.tipoFuncionario=t;
+            usuarioUp.tipoIdentificacion=i;
+
+            UsuarioDB upUser = new UsuarioDB();
+            upUser.InsertarUsuario(usuarioUp);
+        } else {
+           //mensajes
+        }
     }
 
     public void actualizar() throws SNMPExceptions, SQLException {
@@ -90,14 +127,65 @@ public class beanMentenimientoUsuario implements Serializable {
         }
     }
 
+    public LinkedList<SelectItem> getListaTipoIdentificacion() throws SNMPExceptions, SQLException {
+        int id = 0;
+        String tipo = "";
+
+        LinkedList<TipoIdentificacion> lista = new LinkedList<TipoIdentificacion>();
+        TipoIdentificacionDB fDB = new TipoIdentificacionDB();
+        TipoIdentificacion n = new TipoIdentificacion();
+        lista = fDB.moTodo();
+
+        LinkedList resultList = new LinkedList();
+
+        for (Iterator iter = lista.iterator(); iter.hasNext();) {
+
+            TipoIdentificacion tipoFun = (TipoIdentificacion) iter.next();
+            id = tipoFun.getId();
+            tipo = tipoFun.getTipo();
+            resultList.add(new SelectItem(id, tipo));
+        }
+        return resultList;
+
+    }
+
+    public LinkedList<SelectItem> getListaTipoFuncionario() throws SNMPExceptions, SQLException {
+        int id = 0;
+        String tipo = "";
+
+        LinkedList<TipoFuncionario> lista = new LinkedList<TipoFuncionario>();
+        TipoFuncionarioDB fDB = new TipoFuncionarioDB();
+        TipoFuncionario n = new TipoFuncionario();
+        lista = fDB.seleccionarTiposFuncionarios();
+
+        LinkedList resultList = new LinkedList();
+
+        for (Iterator iter = lista.iterator(); iter.hasNext();) {
+
+            TipoFuncionario tipoFun = (TipoFuncionario) iter.next();
+            id = tipoFun.getId();
+            tipo = tipoFun.getTipoUsuario();
+            resultList.add(new SelectItem(id, tipo));
+        }
+        return resultList;
+
+    }
+
     public void limpiaCampos() {
         visible = true;
         disable = false;
+        this.Usuario.nombre="";
+        this.Usuario.apellido1="";
+        this.Usuario.apellido2="";
+        this.Usuario.correo="";
+        this.Usuario.telefono="";
+        this.Usuario.identificacion=0;
+   
     }
 
     public void ocultar() {
         visible = false;
-         disable = true;
+        disable = true;
     }
 
     public boolean isDisable() {
@@ -130,6 +218,30 @@ public class beanMentenimientoUsuario implements Serializable {
 
     public void setUsuario(Usuario Usuario) {
         this.Usuario = Usuario;
+    }
+
+    public int getTipoFun() {
+        return tipoFun;
+    }
+
+    public void setTipoFun(int tipoFun) {
+        this.tipoFun = tipoFun;
+    }
+
+    public int getTipoIdentificacion() {
+        return tipoIdentificacion;
+    }
+
+    public void setTipoIdentificacion(int tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
 }

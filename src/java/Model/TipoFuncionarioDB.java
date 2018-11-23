@@ -77,4 +77,49 @@ public class TipoFuncionarioDB {
           return listaFun;
       }
        
+    
+    public LinkedList<TipoFuncionario> seleccionarTiposFuncionariosid(int idf) throws SNMPExceptions,SQLException {
+      String select = "";
+      LinkedList<TipoFuncionario> listaFun = new LinkedList<TipoFuncionario>();
+          //TipoFuncionario n=  new  TipoFuncionario();
+          try {
+    
+              //Se instancia la clase de acceso a datos
+              AccesoDatos accesoDatos = new AccesoDatos();  
+
+              //Se crea la sentencia de búsqueda
+              select =
+                      "SELECT id,tipo," +
+                            "descripcion FROM tipoFuncionario where id="+idf; 
+                      
+                      
+              //Se ejecuta la sentencia SQL
+              ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             //Se llena el arryaList con los proyectos   
+              while (rsPA.next()) {
+
+                int id = rsPA.getInt("id");
+                String tipo = rsPA.getString("tipo");
+                
+                
+               TipoFuncionario tipoU = new TipoFuncionario();
+               tipoU.Id=id;
+               tipoU.TipoUsuario=tipo;
+              
+                 listaFun.add(tipoU);
+              }
+              rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return listaFun;
+      }
 }

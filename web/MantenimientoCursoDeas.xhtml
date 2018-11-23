@@ -75,21 +75,26 @@
                             <img src="Imagenes/deas.jpg" alt=""/>
                         </f:facet>
 
-                        <h:outputText value="Codigo curso:" />
-                        <h:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.idPrograma}" disabled="true" />
+                        <p:outputLabel value="Codigo curso:" ></p:outputLabel>
+                        <p:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.idPrograma}" disabled="#{beanMantenimientoCursoDeas.disable}" />
 
-                        <h:outputText value="Nombre:" />
-                        <h:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.nombreCurso}" />
+                        <p:outputLabel value="Nombre:" ></p:outputLabel>
+                        <p:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.nombreCurso}" />
 
-                        <h:outputText value="Descripcion:" />
-                        <h:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.descripcion}" />
+                        <p:outputLabel value="Descripcion:" ></p:outputLabel>
+                        <p:inputText value="#{beanMantenimientoCursoDeas.cursoDeas.descripcion}" />
 
                     </p:panelGrid>
-                    <p:commandButton value="Ayuda" />
-                    <p:commandButton value="Nuevo" />
-                    <p:commandButton value="Modificar" actionListener="#/{beanMentenimientoUsuario.actualizar()}" />
-                    <p:commandButton value="Eliminar"  actionListener="#//{beanMentenimientoUsuario.eliminar()}" />
+                    <p:commandButton value="Agregar" rendered="#{beanMantenimientoCursoDeas.visible}" actionListener="#{beanMantenimientoCursoDeas.insertarCurso()}"/>
+                    
+                   
                 </p:outputPanel>
+                  <div> 
+                      <p:commandButton value="Ayuda"  update=":form:cursoDetalles" action="#{beanMantenimientoCursoDeas.ocultar()}" oncomplete="PF('cursoDialog').show()"  ajax="true"/>
+                    <p:commandButton value="Nuevo"  update=":form:cursoDetalles"  action="#{beanMantenimientoCursoDeas.limpiaCampos()}" oncomplete="PF('cursoDialog').show()"  ajax="true" />  
+                    <p:commandButton value="Modificar" update=":form:cursoDetalles" action="#{beanMantenimientoCursoDeas.ocultar()}" actionListener="#{beanMantenimientoCursoDeas.actualizar()}" oncomplete="PF('cursoDialog').show()"  ajax="true" />
+                    <p:commandButton value="Eliminar" update=":form:cursoDetalles" action="#{beanMantenimientoCursoDeas.ocultar()}" actionListener="#{beanMantenimientoCursoDeas.eliminar()}" oncomplete="@all"  ajax="true" />
+                </div>
             </p:dialog>
             <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
         </h:form>
