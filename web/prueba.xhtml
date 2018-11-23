@@ -103,16 +103,16 @@
                         
                </h:form>     -->
 
-        <h:form>   
+        <!--<h:form>   
             <p:growl id="growl" showDetail="true" sticky="true" />  
 
             <p:panel header="Growl">  
                 <h:panelGrid columns="2" cellpadding="5">  
                     <p:outputLabel for="msg" value="Message:" />   
-                    <p:inputText id="msg" value="#{beanPrueba.message}" required="true" />  
+                    <p:inputText id="msg" value="#//{beanPrueba.message}" required="true" />  
                 </h:panelGrid>  
 
-                <p:commandButton value="Save" action="#{beanPrueba.saveMessage()}" update="@form" />
+                <p:commandButton value="Save" action="#//{beanPrueba.saveMessage()}" update="@form" />
             </p:panel>     
         </h:form>
         <h:form>
@@ -124,24 +124,63 @@
 
                 <h:panelGrid columns="3">
                     <p:outputLabel for="username" value="Username" />
-                    <p:inputText id="username" value="#{beanPrueba.username}" required="true" label="Firstname">
+                    <p:inputText id="username" value="#//{beanPrueba.username}" required="true" label="Firstname">
                         <f:validateLength minimum="2" />
                     </p:inputText>
                     <p:message for="username" />
 
                     <p:outputLabel for="email" value="Email" />
-                    <p:inputText id="email" value="#{beanPrueba.email}" required="true" label="Surname"/>
+                    <p:inputText id="email" value="#//{beanPrueba.email}" required="true" label="Surname"/>
                     <p:message for="email" />
                 </h:panelGrid>
 
-                <p:commandButton id="submitButton" value="Save" update="@parent" action="#{beanPrueba.save()}" />
-            </p:panel>
-        </h:form>
+                <p:commandButton id="submitButton" value="Save" update="@parent" action="#//{beanPrueba.save()}" />
+            </p:panel>-->
+        <h:form> 
+            <!--    <br></br>
+                <h:commandButton id="buton1" value="buton1" actionListener="#//{beanPrueba.cambioStatus()}"> </h:commandButton>
+                <br></br>
+                <br></br>
+                <h:commandButton id="buton2" value="buton2"  disabled="#//{beanPrueba.yes}" > </h:commandButton>
+               <p:inputText id="text1"  disabled="#//{beanPrueba.yes}"></p:inputText>-->
+            <p:commandButton id="btn1" style="display: none"></p:commandButton>
+            <h:commandButton id="btn2" value="click me" onclick="document.getElementById('btn1').hidden=true;"/>
+            <br>       
+            </br>
+            
+            <h:commandButton value="habilitar" action="#{beanPrueba.show()}" >
+                <f:ajax execute="@form" render="@form"></f:ajax>
+            </h:commandButton>
+            <h:commandButton value="hide" action="#{beanPrueba.hide()}" >
+                <f:ajax execute="@form" render="@form"></f:ajax>
+            </h:commandButton>
+            <h:inputText rendered="#{beanPrueba.disable}" disabled="#{beanPrueba.disable}"></h:inputText>
+            <h:inputText  disabled="#{beanPrueba.disable}"></h:inputText>
+            
+             <br>       
+            </br>
+            <br>       
+            </br>
+            <h:commandButton   actionListener="#//{beanPrueba.button1}" value="button1"  rendered="#{beanPrueba.disable}" > 
+
+            </h:commandButton> 
 
 
 
+            </h:form>
+        <script type='text/javascript'>
+            function habilitar()
+            {
+                var but2 = document.getElementById("buton2");
+                var tex1 = document.getElementById("text1");
+                //  alert('sds');
 
+                but2.hidden = true;
 
+                tex1.textContent = "";
+
+            }
+        </script>
 
 
     </h:body>

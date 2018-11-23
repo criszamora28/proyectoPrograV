@@ -33,14 +33,14 @@ public class beanMentenimientoUsuario implements Serializable {
     String apellido1;
     String apellido2;
     String corre;
+    boolean visible;
+    boolean disable;
+    
+    public beanMentenimientoUsuario()
+    {
+    disable=true;
+    }
 
-//    @PostConstruct
-//    public void init() {
-//        Usuario = new Usuario("Cris", "Zamora", "Reyes", "Ninguna");
-//        listaUsuarios = new LinkedList<>();
-//        listaUsuarios.add(Usuario);
-//        
-//    }
     public List<Usuario> getListaAdministrativos() throws SNMPExceptions, SQLException {
         int id = 0;
         String tipo = "";
@@ -73,8 +73,8 @@ public class beanMentenimientoUsuario implements Serializable {
 
     }
 
-    public void eliminar() throws SNMPExceptions, SQLException 
-    {
+    public void eliminar() throws SNMPExceptions, SQLException {
+
         Usuario us = this.getUsuario();
 
         LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
@@ -88,6 +88,32 @@ public class beanMentenimientoUsuario implements Serializable {
             getListaAdministrativos();
 
         }
+    }
+
+    public void limpiaCampos() {
+        visible = true;
+        disable = false;
+    }
+
+    public void ocultar() {
+        visible = false;
+         disable = true;
+    }
+
+    public boolean isDisable() {
+        return disable;
+    }
+
+    public void setDisable(boolean disable) {
+        this.disable = disable;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public List<Usuario> getListaUsuarios() {
@@ -105,9 +131,5 @@ public class beanMentenimientoUsuario implements Serializable {
     public void setUsuario(Usuario Usuario) {
         this.Usuario = Usuario;
     }
-
- 
-
-
 
 }

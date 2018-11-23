@@ -5,36 +5,40 @@
  */
 package Controller;
 
-import Model.Correo;
+import javax.inject.Named;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
-import javax.inject.Named;
-import javax.enterprise.context.Dependent;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultMenuModel;
-import org.primefaces.model.menu.DefaultSubMenu;
-import org.primefaces.model.menu.MenuModel;
+
 
 /**
  *
  * @author Ernesto PC
  */
 @Named(value = "beanPrueba")
-@Dependent
-public class beanPrueba {
+@SessionScoped
+@ManagedBean
+public class beanPrueba implements Serializable {
 
     /**
      * Creates a new instance of beanPrueba
      */
-    private Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
-    private String country;
-    private String city;
-    private Map<String, String> countries;
-    private Map<String, String> cities;
+  
+        
+    /**
+     * Creates a new instance of beanPrueba
+     */
+     Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
+     String country;
+     String city;
+     Map<String, String> countries;
+     Map<String, String> cities;
 
 //    public void init() {
 //        countries  = new HashMap<String, String>();
@@ -107,10 +111,9 @@ public class beanPrueba {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public beanPrueba() {
-    }
+
 // mensaje
-    private String message;
+     String message;
  
     public String getMessage() {
         return message;
@@ -130,8 +133,8 @@ public class beanPrueba {
    
     
     //SEGUNDO MENSAJE 
-     private String username;
-    private String email;
+      String username;
+     String email;
  
     public String getUsername() {
         return username;
@@ -161,6 +164,30 @@ public class beanPrueba {
         String text = new BigInteger(130, random).toString(32);
         return text;
     }
+    
+    //prueba de habilitaciones de atributos
+   private boolean disable;
+
+    // default constructor 
+    public beanPrueba(){
+       this.disable= true;
+    }
+
+    public boolean isDisable() {
+       return disable;
+    }
+    public void setDisable(boolean disable) {
+       this.disable = disable;
+    }
+    
+    public void hide()
+    {
+     disable=false;
+    }
+    public void show()
+    {
+    disable=true;
+    }    
     ///mensajes 2.0
 //    private MenuModel model;
 //     public void init() {
@@ -218,4 +245,10 @@ public class beanPrueba {
 //        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
 //        FacesContext.getCurrentInstance().addMessage(null, message);
 //    }
+        
+    
+    
+    
+    
+    
 }

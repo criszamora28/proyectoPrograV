@@ -77,7 +77,7 @@
                         </f:facet>
 
                         <h:outputText value="Identificacion:" />
-                        <h:inputText value="#{beanMentenimientoUsuario.usuario.identificacion}" disabled="true" />
+                        <h:inputText value="#{beanMentenimientoUsuario.usuario.identificacion}"   disabled="#{beanMentenimientoUsuario.disable}"/>
 
                         <h:outputText value="Nombre:" />
                         <h:inputText value="#{beanMentenimientoUsuario.usuario.nombre}" />
@@ -92,12 +92,17 @@
                         <h:inputText value="#{beanMentenimientoUsuario.usuario.correo}" />
 
 
+
+
                     </p:panelGrid>
-                    <p:commandButton value="Ayuda" />
-                    <p:commandButton value="Nuevo" />
-                    <p:commandButton value="Modificar" actionListener="#{beanMentenimientoUsuario.actualizar()}" />
-                    <p:commandButton value="Eliminar"  actionListener="#{beanMentenimientoUsuario.eliminar()}" />
+                    <p:commandButton value="Agregar" rendered="#{beanMentenimientoUsuario.visible}"/>
                 </p:outputPanel>
+
+                <p:commandButton value="Ayudar"  update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" oncomplete="PF('usuDialog').show()"  ajax="true"/>
+                <p:commandButton value="Nuevo"  update=":form:usuDetalles"  action="#{beanMentenimientoUsuario.limpiaCampos()}" oncomplete="PF('usuDialog').show()"  ajax="true" />  
+                <p:commandButton value="Modificar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.actualizar()}" oncomplete="PF('usuDialog').show()"  ajax="true" />
+                <p:commandButton value="Eliminar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.eliminar()}" oncomplete="PF('usuDialog').show()"  ajax="true" />
+                
             </p:dialog>
             <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
         </h:form>
