@@ -48,7 +48,7 @@ public class ScheduleView implements Serializable {
 
         try {
             for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
-                if (oReservacion.estadoReservacion == true && oReservacion.estadoRegistro == true) {
+                if (oReservacion.estadoSolicitud == true && oReservacion.estadoRegistro == true) {
                     eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
                             oReservacion.fechaFinal, oReservacion.todoElDia));
                 }
@@ -200,7 +200,7 @@ public class ScheduleView implements Serializable {
             oReservacion.fechaFinal = event.getEndDate();
             oReservacion.todoElDia = event.isAllDay();
             oReservacion.editable = false;
-            oReservacion.estadoReservacion = true;
+            oReservacion.estadoSolicitud = true;
             oReservacion.idUsuarioIngresoRegistro = 1;
             oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
             oReservacion.estadoRegistro = true;

@@ -19,7 +19,7 @@ public class Reservacion {
     public Date fechaFinal;
     public boolean todoElDia;
     public boolean editable;
-    public boolean estadoReservacion;
+    public boolean estadoSolicitud;
     public int idUsuarioIngresoRegistro;
     public Date fechaIngresoRegistro;
     public int idUsuarioEdicionRegistro;
@@ -86,11 +86,11 @@ public class Reservacion {
     }
 
     public boolean isEstadoReservacion() {
-        return estadoReservacion;
+        return estadoSolicitud;
     }
 
     public void setEstadoReservacion(boolean estadoReservacion) {
-        this.estadoReservacion = estadoReservacion;
+        this.estadoSolicitud = estadoReservacion;
     }
 
     public int getIdUsuarioIngresoRegistro() {

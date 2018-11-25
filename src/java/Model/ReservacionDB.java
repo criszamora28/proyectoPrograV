@@ -41,7 +41,7 @@ public class ReservacionDB {
             //Se obtienen los valores del objeto Reservacion
             int todoElDia = pReservacion.todoElDia ? 1 : 0;
             int editable = pReservacion.editable ? 1 : 0;
-            int estadoReservacion = pReservacion.estadoReservacion ? 1 : 0;
+            int estadoReservacion = pReservacion.estadoSolicitud ? 1 : 0;
             int estadoResgistro = pReservacion.estadoRegistro ? 1 : 0;
 
             strSQL
@@ -90,20 +90,26 @@ public class ReservacionDB {
             
             SimpleDateFormat dateFormat = new SimpleDateFormat(
                     "EEE MMM dd HH:mm:ss zz yyyy",Locale.getDefault());
-            //Se llena el arryaList con los proyectos   
+            //Se llena el arryaList con las reservaciones 
             while (rsPA.next()) {
 
                 Reservacion oReservacion = new Reservacion();
                 oReservacion.id = rsPA.getString("id");
                 oReservacion.titulo = rsPA.getString("titule");
+                
+                int todoElDia = Integer.parseInt(rsPA.getString("allDay"));
+                int editable = Integer.parseInt(rsPA.getString("editable"));
+                int estadoReservacion = Integer.parseInt(rsPA.getString("estadoSolicitud"));
+                int estadoResgistro = Integer.parseInt(rsPA.getString("estadoRegistro"));
+                
                 Date fechaFinal = dateFormat.parse(rsPA.getString("endDate"));
                 Date fechaInicio = dateFormat.parse(rsPA.getString("startDate"));
                 oReservacion.fechaInicio = fechaInicio;
                 oReservacion.fechaFinal = fechaFinal;
-                oReservacion.todoElDia = Boolean.parseBoolean(rsPA.getString("allDay"));
-                oReservacion.editable = Boolean.parseBoolean(rsPA.getString("editable"));
-                oReservacion.estadoReservacion = Boolean.parseBoolean(rsPA.getString("estadoSolicitud"));
-                oReservacion.estadoRegistro = Boolean.parseBoolean(rsPA.getString("estadoRegistro"));
+                oReservacion.todoElDia = todoElDia == 1;
+                oReservacion.editable = editable == 1;
+                oReservacion.estadoSolicitud = estadoReservacion == 1;
+                oReservacion.estadoRegistro = estadoResgistro == 1;
 
                 listaReservaciones.add(oReservacion);
             }
