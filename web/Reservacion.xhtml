@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <link href="Estilos/estiloReservacion.css" rel="stylesheet" type="text/css"/>
-        <title>Facelet Title</title>
+        <title>Sistema DEAS</title>
         <script type="text/javascript">
             PrimeFaces.locales['tr'] = {
                 closeText: 'kapat',
@@ -48,25 +48,35 @@
 
         <h:form class="iu-g"> 
             
+            <p:growl id="growl" showDetail="true" sticky="true" />  
+            
             <div class="ui-g-3">
                 <p:panelMenu >
                     <p:submenu label="Inicio" >
                         <p:menuitem value="Volver a ingresar" url="Login.xhtml" />
-                       
+                    </p:submenu>
+                    <p:submenu label="Mantenimientos">
+                        <p:menuitem value="Mantenimiento usuarios" />
+                        <p:menuitem value="Mantenimiento de recursos" />
+                        <p:menuitem value="Mantenimiento de infraestructura" />
+                        <p:menuitem value="Mantenimiento de prestamos" />
+                    </p:submenu>
+                    <p:submenu label="Reportes" >
+                        <p:menuitem value="Reportes de prestamos"  />
+                        <p:menuitem value="Reportes de usuarios" />
+                        <p:menuitem value="Reportes de infraestructuras"  />
                     </p:submenu>
                 </p:panelMenu>
             </div>
             
-            <p:growl  autoUpdate="true" id="messages" showDetail="true" />
-
             <h:panelGrid columnClasses="value">
 
                 <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT-6">
 
                     <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                     <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                    <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
-                    <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
+                    <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="growl" />
+                    <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="growl" />
 
                 </p:schedule>
 
@@ -91,8 +101,10 @@
                     <p:outputLabel for="allDay" value="All Day:" />
                     <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
 
+                    
+                    <p:commandButton id="addButton" value="Save" update="growl" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
                     <p:commandButton type="reset" value="Reset" />
-                    <p:commandButton id="addButton" value="Save" action="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                    <p:commandButton value="Modificar" />
                 </h:panelGrid>
             </p:dialog>    
         </h:form>

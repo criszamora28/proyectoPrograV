@@ -185,36 +185,39 @@ public class ScheduleView implements Serializable {
 
     public void addEvent() {
         if (event.getId() == null) {
-            eventModel.addEvent(event);
+//            eventModel.addEvent(event);
+            try {
+                ReservacionDB oReservacionDB = new ReservacionDB();
+
+                Reservacion oReservacion = new Reservacion();
+                oReservacion.id = event.getId();
+                oReservacion.titulo = event.getTitle();
+                oReservacion.fechaInicio = event.getStartDate();
+                oReservacion.fechaFinal = event.getEndDate();
+                oReservacion.todoElDia = event.isAllDay();
+                oReservacion.editable = false;
+                oReservacion.estadoSolicitud = false;
+                oReservacion.idUsuarioIngresoRegistro = 1;
+                oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
+                oReservacion.estadoRegistro = true;
+
+                oReservacionDB.InsertarReservacion(oReservacion);
+
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("Exito", "Su reservacion ha sido enviada para valoracion"));
+
+            } catch (Exception e) {
+                FacesMessage mensajeError;
+                mensajeError = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Datelle :" + e.getMessage());
+                this.addMessage(mensajeError);
+            }
+
         } else {
             eventModel.updateEvent(event);
+            
         }
 
-        try {
-            ReservacionDB oReservacionDB = new ReservacionDB();
-
-            Reservacion oReservacion = new Reservacion();
-            oReservacion.id = event.getId();
-            oReservacion.titulo = event.getTitle();
-            oReservacion.fechaInicio = event.getStartDate();
-            oReservacion.fechaFinal = event.getEndDate();
-            oReservacion.todoElDia = event.isAllDay();
-            oReservacion.editable = false;
-            oReservacion.estadoSolicitud = true;
-            oReservacion.idUsuarioIngresoRegistro = 1;
-            oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
-            oReservacion.estadoRegistro = true;
-            
-            oReservacionDB.InsertarReservacion(oReservacion);
-            FacesMessage mensajeError;
-            mensajeError = new FacesMessage(FacesMessage.SEVERITY_INFO,"Error", "Reservacion enviada con exito");
-            this.addMessage(mensajeError);
-            
-        } catch (Exception e) {
-            FacesMessage mensajeError;
-            mensajeError = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Datelle :" + e.getMessage());
-            this.addMessage(mensajeError);
-        }
+        
         
 
         event = new DefaultScheduleEvent();
