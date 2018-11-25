@@ -14,6 +14,7 @@ import java.util.Date;
 public class Reservacion {
     public String id;
     public Usuario Usuario;
+    public int TipoReservacion;
     public String titulo;
     public Date fechaInicio;
     public Date fechaFinal;
@@ -27,6 +28,22 @@ public class Reservacion {
     public boolean estadoRegistro;
 
     public Reservacion() {
+    }
+
+    public int getTipoReservacion() {
+        return TipoReservacion;
+    }
+
+    public void setTipoReservacion(int TipoReservacion) {
+        this.TipoReservacion = TipoReservacion;
+    }
+
+    public boolean isEstadoSolicitud() {
+        return estadoSolicitud;
+    }
+
+    public void setEstadoSolicitud(boolean estadoSolicitud) {
+        this.estadoSolicitud = estadoSolicitud;
     }
 
     public String getId() {

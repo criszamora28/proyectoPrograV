@@ -8,6 +8,9 @@ package Controller;
 import DAO.SNMPExceptions;
 import Model.Reservacion;
 import Model.ReservacionDB;
+import Model.TipoReservacion;
+import Model.Usuario;
+import Model.UsuarioDB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -15,9 +18,11 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -36,27 +41,27 @@ import org.primefaces.model.ScheduleModel;
 public class ScheduleView implements Serializable {
 
     private ScheduleModel eventModel;
-
+    
+    int TipoReservacion;
     //private ScheduleModel lazyEventModel;
-
     private ScheduleEvent event = new DefaultScheduleEvent();
 
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-        ReservacionDB oReservacionDB = new ReservacionDB();
-
-        try {
-            for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
-                if (oReservacion.estadoSolicitud == true && oReservacion.estadoRegistro == true) {
-                    eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
-                            oReservacion.fechaFinal, oReservacion.todoElDia));
-                }
-                    
-                    
-            }
-        } catch (Exception e) {
-        }
+//        ReservacionDB oReservacionDB = new ReservacionDB();
+//
+//        try {
+//            for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
+//                if (oReservacion.estadoSolicitud == true && oReservacion.estadoRegistro == true) {
+//                    eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
+//                            oReservacion.fechaFinal, oReservacion.todoElDia));
+//                }
+//                    
+//                    
+//            }
+//        } catch (Exception e) {
+//        }
 
         
 //        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
@@ -77,6 +82,36 @@ public class ScheduleView implements Serializable {
 //        };
     }
 
+    public int getTipoReservacion() {
+        return TipoReservacion;
+    }
+
+    public void setTipoReservacion(int TipoReservacion) {
+        this.TipoReservacion = TipoReservacion;
+    }
+
+    
+
+    public LinkedList<SelectItem> getListaTipoReservacion() {
+        LinkedList listaTipo = new LinkedList();
+        
+        try {
+            ReservacionDB oReservacionDB = new ReservacionDB();
+            
+            
+            for (TipoReservacion tipoReservacion : oReservacionDB.selectTipoReservacion()) {
+                listaTipo.add(new SelectItem(tipoReservacion.getId(),tipoReservacion.getTipo()));
+            }
+            
+        } catch (SNMPExceptions | SQLException e) {
+        }
+        
+        return listaTipo;
+        
+    }
+
+    
+    
     public Date getRandomDate(Date base) {
         Calendar date = Calendar.getInstance();
         date.setTime(base);
@@ -185,12 +220,18 @@ public class ScheduleView implements Serializable {
 
     public void addEvent() {
         if (event.getId() == null) {
-//            eventModel.addEvent(event);
+            
+            eventModel.addEvent(event);
             try {
                 ReservacionDB oReservacionDB = new ReservacionDB();
+                UsuarioDB oUsuarioDB = new UsuarioDB();
+                LinkedList<Usuario> listaUsuario = new LinkedList<>();
+                listaUsuario = oUsuarioDB.seleccionarUsuarioId(123456789);
 
                 Reservacion oReservacion = new Reservacion();
                 oReservacion.id = event.getId();
+                oReservacion.TipoReservacion = TipoReservacion;
+                oReservacion.Usuario = listaUsuario.get(0);
                 oReservacion.titulo = event.getTitle();
                 oReservacion.fechaInicio = event.getStartDate();
                 oReservacion.fechaFinal = event.getEndDate();
@@ -216,13 +257,11 @@ public class ScheduleView implements Serializable {
             eventModel.updateEvent(event);
             
         }
-
-        
-        
-
         event = new DefaultScheduleEvent();
     }
 
+    
+    
     public void onEventSelect(SelectEvent selectEvent) {
         event = (ScheduleEvent) selectEvent.getObject();
     }

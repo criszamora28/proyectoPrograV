@@ -16,3 +16,7 @@ and open the template in the editor.
     top: 6px;
     border: 4px solid white;
 }
+
+.marginB{
+    margin-bottom: 10px;
+}

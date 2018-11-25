@@ -2,33 +2,38 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <link href="Estilos/estiloReservacion.css" rel="stylesheet" type="text/css"/>
         <title>Sistema DEAS</title>
         <script type="text/javascript">
-            PrimeFaces.locales['tr'] = {
-                closeText: 'kapat',
-                prevText: 'geri',
-                nextText: 'ileri',
-                currentText: 'bugün',
-                monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-                    'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
-                monthNamesShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
-                    'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
-                dayNames: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
-                dayNamesShort: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'],
-                dayNamesMin: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'],
-                weekHeader: 'Hf',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: '',
-                month: 'Ay',
-                week: 'Hafta',
-                day: 'Gün',
-                allDayText: 'Tüm Gün'
-            };
+            PrimeFaces.locales['es'] = {
+    closeText: 'Cerrar',
+    prevText: 'Anterior',
+    nextText: 'Siguiente',
+    monthNames: ['Enero','Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+    dayNamesShort: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+                    weekHeader: 'Semana',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    timeOnlyTitle: 'Sólo hora',
+                    timeText: 'Tiempo',
+                    hourText: 'Hora',
+                    minuteText: 'Minuto',
+                    secondText: 'Segundo',
+                    currentText: 'Fecha actual',
+                    ampm: false,
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    allDayText: 'Todo el día'
+                }
         </script>
         <style type="text/css">
             .value {
@@ -71,7 +76,7 @@
             
             <h:panelGrid columnClasses="value">
 
-                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT-6">
+                <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" locale="es" timeZone="GMT-6">
 
                     <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                     <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
@@ -87,24 +92,47 @@
                                 <p:schedule style="visibility: hidden; width: 0px" value="" />-->
             </h:panelGrid>
 
-            <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
-                <h:panelGrid id="eventDetails" columns="2">
-                    <p:outputLabel for="title" value="Titles:" />
-                    <p:inputText id="title" value="#{scheduleView.event.title}" required="true" />
-
-                    <p:outputLabel for="from" value="From:" />
-                    <p:calendar id="from" value="#{scheduleView.event.startDate}" timeZone="GMT-6" pattern="dd/MM/yyyy HH:mm"/>
-
-                    <p:outputLabel for="to" value="To:" />
-                    <p:calendar id="to" value="#{scheduleView.event.endDate}" timeZone="GMT-6" pattern="dd/MM/yyyy HH:mm"/>
-
-                    <p:outputLabel for="allDay" value="All Day:" />
-                    <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
-
+            <p:dialog widgetVar="eventDialog"  header="Detalles del Evento" showEffect="clip" hideEffect="clip">
+                <h:panelGrid id="eventDetails" columns="3" cellspacing="10">
                     
-                    <p:commandButton id="addButton" value="Save" update="growl" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-                    <p:commandButton type="reset" value="Reset" />
+                    <h:outputLabel value="Tipo de Reservacion: "></h:outputLabel>
+                    <p:selectOneMenu value="#{scheduleView.tipoReservacion}" style=" width:78%" required="true">
+                        <f:selectItems value="#{scheduleView.listaTipoReservacion}" />  
+                    </p:selectOneMenu>
+                    <p:outputLabel></p:outputLabel>
+
+                    <p:outputLabel for="title" value="Descripcion del evento:" />
+                    <p:inputText id="title" value="#{scheduleView.event.title}" required="true" />
+                    <p:outputLabel></p:outputLabel>
+
+                    <p:outputLabel for="from" value="Día que inicia:" />
+                    <p:calendar id="from" value="#{scheduleView.event.startDate}" required="true" timeZone="GMT-6" pattern="dd/MM/yyyy HH:mm"/>
+                    <p:outputLabel></p:outputLabel>
+                    
+                    <p:outputLabel for="to" value="Día que termina:" />
+                    <p:calendar id="to" value="#{scheduleView.event.endDate}" required="true" timeZone="GMT-6" pattern="dd/MM/yyyy HH:mm"/>
+                    <p:outputLabel></p:outputLabel>
+                    
+                    <h:outputLabel value="Recurso (os): "></h:outputLabel>
+                    <p:selectManyMenu style=" width:78%" required="true">
+                        <f:selectItems />  
+                    </p:selectManyMenu>
+                    <p:outputLabel></p:outputLabel>
+                    
+                    <h:outputLabel value="Infraestructura (as): "></h:outputLabel>
+                    <p:selectManyMenu style=" width:78%" required="true">
+                        <f:selectItems />  
+                    </p:selectManyMenu>
+                    <p:outputLabel></p:outputLabel>
+                    
+                    <p:outputLabel for="allDay" value="Evento todo el Dia:" />
+                    <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" />
+                    <p:outputLabel></p:outputLabel>
+                    
+                    <p:commandButton id="addButton" value="Guardar" update="growl" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                    <p:commandButton type="reset" value="Limpiar" />
                     <p:commandButton value="Modificar" />
+                    
                 </h:panelGrid>
             </p:dialog>    
         </h:form>
