@@ -39,20 +39,25 @@ public class ReservacionDB {
 
         try {
             //Se obtienen los valores del objeto Reservacion
-            Reservacion oReservacion = new Reservacion();
-            oReservacion = pReservacion;
             int todoElDia = pReservacion.todoElDia ? 1 : 0;
             int editable = pReservacion.editable ? 1 : 0;
+            int estadoReservacion = pReservacion.estadoReservacion ? 1 : 0;
+            int estadoResgistro = pReservacion.estadoRegistro ? 1 : 0;
 
             strSQL
                     = "INSERT INTO reservacion(id,"
-                    + "titule,startDate, endDate, allDay,editable) VALUES "
+                    + "titule,startDate,endDate,allDay,editable,estadoSolicitud,"
+                    + "idUsuarioIngresoRegistro,fechaIngresoRegistro,estadoRegistro) VALUES"
                     + "(" + "'" + pReservacion.id + "'" + ","
                     + "'" + pReservacion.titulo + "'" + ","
                     + "'" + pReservacion.fechaInicio + "'" + ","
                     + "'" + pReservacion.fechaFinal + "'" + ","
                     + todoElDia + ","
-                    + editable
+                    + editable + ","
+                    + estadoReservacion + ","
+                    + "'" + pReservacion.idUsuarioIngresoRegistro + "'" + ","
+                    + "'" + pReservacion.fechaIngresoRegistro + "'" + ","
+                    + estadoResgistro
                     + ")";
             //Se ejecuta la sentencia SQL
             accesoDatos.ejecutaSQL(strSQL);
@@ -77,17 +82,14 @@ public class ReservacionDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT id,titule,startDate,endDate,allDay FROM reservacion";
+                    = "SELECT id,titule,startDate,endDate,allDay,editable,estadoSolicitud,"
+                    + "estadoRegistro FROM reservacion";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             
             SimpleDateFormat dateFormat = new SimpleDateFormat(
                     "EEE MMM dd HH:mm:ss zz yyyy",Locale.getDefault());
-            
-            
-            
-            
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
 
@@ -99,6 +101,9 @@ public class ReservacionDB {
                 oReservacion.fechaInicio = fechaInicio;
                 oReservacion.fechaFinal = fechaFinal;
                 oReservacion.todoElDia = Boolean.parseBoolean(rsPA.getString("allDay"));
+                oReservacion.editable = Boolean.parseBoolean(rsPA.getString("editable"));
+                oReservacion.estadoReservacion = Boolean.parseBoolean(rsPA.getString("estadoSolicitud"));
+                oReservacion.estadoRegistro = Boolean.parseBoolean(rsPA.getString("estadoRegistro"));
 
                 listaReservaciones.add(oReservacion);
             }

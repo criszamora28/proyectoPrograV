@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -47,8 +48,12 @@ public class ScheduleView implements Serializable {
 
         try {
             for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
+                if (oReservacion.estadoReservacion == true && oReservacion.estadoRegistro == true) {
                     eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
                             oReservacion.fechaFinal, oReservacion.todoElDia));
+                }
+                    
+                    
             }
         } catch (Exception e) {
         }
@@ -194,9 +199,16 @@ public class ScheduleView implements Serializable {
             oReservacion.fechaInicio = event.getStartDate();
             oReservacion.fechaFinal = event.getEndDate();
             oReservacion.todoElDia = event.isAllDay();
-            oReservacion.editable = event.isEditable();
+            oReservacion.editable = false;
+            oReservacion.estadoReservacion = true;
+            oReservacion.idUsuarioIngresoRegistro = 1;
+            oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
+            oReservacion.estadoRegistro = true;
             
             oReservacionDB.InsertarReservacion(oReservacion);
+            FacesMessage mensajeError;
+            mensajeError = new FacesMessage(FacesMessage.SEVERITY_INFO,"Error", "Reservacion enviada con exito");
+            this.addMessage(mensajeError);
             
         } catch (Exception e) {
             FacesMessage mensajeError;
