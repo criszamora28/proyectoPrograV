@@ -46,7 +46,7 @@ public class ReservacionDB {
 
             strSQL
                     = "INSERT INTO reservacion(id,"
-                    + "titule,astartDate, endDate, allDay,editable) VALUES "
+                    + "titule,startDate, endDate, allDay,editable) VALUES "
                     + "(" + "'" + pReservacion.id + "'" + ","
                     + "'" + pReservacion.titulo + "'" + ","
                     + "'" + pReservacion.fechaInicio + "'" + ","
@@ -83,11 +83,10 @@ public class ReservacionDB {
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             
             SimpleDateFormat dateFormat = new SimpleDateFormat(
-                    "EEE MMM dd HH:mm:ss zz yyyy");
+                    "EEE MMM dd HH:mm:ss zz yyyy",Locale.getDefault());
             
             
-            Date fechaFinal = dateFormat.parse(rsPA.getString("endDate"));
-            Date fechaInicio = dateFormat.parse(rsPA.getString("startDate"));
+            
             
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
@@ -95,6 +94,8 @@ public class ReservacionDB {
                 Reservacion oReservacion = new Reservacion();
                 oReservacion.id = rsPA.getString("id");
                 oReservacion.titulo = rsPA.getString("titule");
+                Date fechaFinal = dateFormat.parse(rsPA.getString("endDate"));
+                Date fechaInicio = dateFormat.parse(rsPA.getString("startDate"));
                 oReservacion.fechaInicio = fechaInicio;
                 oReservacion.fechaFinal = fechaFinal;
                 oReservacion.todoElDia = Boolean.parseBoolean(rsPA.getString("allDay"));

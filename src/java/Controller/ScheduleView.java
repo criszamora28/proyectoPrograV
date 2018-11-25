@@ -43,13 +43,13 @@ public class ScheduleView implements Serializable {
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-        //ReservacionDB oReservacionDB = new ReservacionDB();
+        ReservacionDB oReservacionDB = new ReservacionDB();
 
         try {
-//            for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
-//                    eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
-//                            oReservacion.fechaFinal, oReservacion.todoElDia));
-//            }
+            for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
+                    eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
+                            oReservacion.fechaFinal, oReservacion.todoElDia));
+            }
         } catch (Exception e) {
         }
 
