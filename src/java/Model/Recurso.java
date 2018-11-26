@@ -9,33 +9,49 @@ import java.util.Date;
 
 /**
  *
- * @author Ernesto PC
+ * @author crisz
  */
-public class Infraestructura {
-
-    private String idInfraestructura;
+public class Recurso {
+    private String id;
+    private String tipo;
     private String descripcion;
-    private int idUsuarioIngresoRegistro;
-    private Date fechaIngresoRegistro;
-    private int idUsuarioEdicionRegistro;
-    private Date fechaEdicionRegistro;
-    private boolean eatdoInfraestructura;
-    private boolean estadoRegistro;
+    public int idUsuarioIngresoRegistro;
+    public Date fechaIngresoRegistro;
+    public int idUsuarioEdicionRegistro;
+    public Date fechaEdicionRegistro;
+    public boolean estadoRecurso;
+    public boolean estadoRegistro;
 
-    public Infraestructura() {
+    public Recurso(String id, String tipo, String descripcion, int idUsuarioIngresoRegistro, Date fechaIngresoRegistro, int idUsuarioEdicionRegistro, Date fechaEdicionRegistro, boolean estadoRecurso, boolean estadoRegistro) {
+        this.id = id;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.idUsuarioIngresoRegistro = idUsuarioIngresoRegistro;
+        this.fechaIngresoRegistro = fechaIngresoRegistro;
+        this.idUsuarioEdicionRegistro = idUsuarioEdicionRegistro;
+        this.fechaEdicionRegistro = fechaEdicionRegistro;
+        this.estadoRecurso = estadoRecurso;
+        this.estadoRegistro = estadoRegistro;
     }
 
-    @Override
-    public String toString(){
-        return this.idInfraestructura + " " + this.getDescripcion();
+    public Recurso() {
     }
+
     
-    public String getIdInfraestructura() {
-        return idInfraestructura;
+    public String getId() {
+        return id;
     }
 
-    public void setIdInfraestructura(String idInfraestructura) {
-        this.idInfraestructura = idInfraestructura;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getDescripcion() {
@@ -78,12 +94,12 @@ public class Infraestructura {
         this.fechaEdicionRegistro = fechaEdicionRegistro;
     }
 
-    public boolean isEatdoInfraestructura() {
-        return eatdoInfraestructura;
+    public boolean isEstadoRecurso() {
+        return estadoRecurso;
     }
 
-    public void setEatdoInfraestructura(boolean eatdoInfraestructura) {
-        this.eatdoInfraestructura = eatdoInfraestructura;
+    public void setEstadoRecurso(boolean estadoRecurso) {
+        this.estadoRecurso = estadoRecurso;
     }
 
     public boolean isEstadoRegistro() {
@@ -93,7 +109,7 @@ public class Infraestructura {
     public void setEstadoRegistro(boolean estadoRegistro) {
         this.estadoRegistro = estadoRegistro;
     }
-
     
-
+    
+    
 }

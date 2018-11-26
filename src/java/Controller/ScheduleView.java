@@ -6,6 +6,8 @@
 package Controller;
 
 import DAO.SNMPExceptions;
+import Model.Infraestructura;
+import Model.InfraestructuraDB;
 import Model.Reservacion;
 import Model.ReservacionDB;
 import Model.TipoReservacion;
@@ -19,6 +21,7 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -43,25 +46,35 @@ public class ScheduleView implements Serializable {
     private ScheduleModel eventModel;
     
     int TipoReservacion;
+    LinkedList listaIn = new LinkedList();
+
+    public LinkedList getListaIn() {
+        return listaIn;
+    }
+
+    public void setListaIn(LinkedList listaIn) {
+        this.listaIn = listaIn;
+    }
+ 
     //private ScheduleModel lazyEventModel;
     private ScheduleEvent event = new DefaultScheduleEvent();
 
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-//        ReservacionDB oReservacionDB = new ReservacionDB();
-//
-//        try {
-//            for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
-//                if (oReservacion.estadoSolicitud == true && oReservacion.estadoRegistro == true) {
-//                    eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
-//                            oReservacion.fechaFinal, oReservacion.todoElDia));
-//                }
-//                    
-//                    
-//            }
-//        } catch (Exception e) {
-//        }
+        ReservacionDB oReservacionDB = new ReservacionDB();
+
+        try {
+            for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
+                if (oReservacion.estadoSolicitud == true && oReservacion.estadoRegistro == true) {
+                    eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
+                            oReservacion.fechaFinal, oReservacion.todoElDia));
+                }
+                    
+                    
+            }
+        } catch (Exception e) {
+        }
 
         
 //        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
@@ -82,6 +95,8 @@ public class ScheduleView implements Serializable {
 //        };
     }
 
+    
+    
     public int getTipoReservacion() {
         return TipoReservacion;
     }
@@ -89,9 +104,7 @@ public class ScheduleView implements Serializable {
     public void setTipoReservacion(int TipoReservacion) {
         this.TipoReservacion = TipoReservacion;
     }
-
     
-
     public LinkedList<SelectItem> getListaTipoReservacion() {
         LinkedList listaTipo = new LinkedList();
         
@@ -107,6 +120,23 @@ public class ScheduleView implements Serializable {
         }
         
         return listaTipo;
+        
+    }
+    
+    public LinkedList<SelectItem> getListaInfraestructura() {
+        LinkedList listaInfra = new LinkedList();
+        
+        try {
+            InfraestructuraDB oInfraestructuraDB = new InfraestructuraDB();
+            
+            for (Infraestructura oInfraestructura : oInfraestructuraDB.seleccionarInfraestructurasDisponibles()) {
+                listaInfra.add(new SelectItem(oInfraestructura.getIdInfraestructura(),oInfraestructura.toString()));
+            }
+            
+        } catch (SNMPExceptions | SQLException e) {
+        }
+        
+        return listaInfra;
         
     }
 
@@ -218,6 +248,8 @@ public class ScheduleView implements Serializable {
         this.event = event;
     }
 
+    
+    
     public void addEvent() {
         if (event.getId() == null) {
             

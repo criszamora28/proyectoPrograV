@@ -120,8 +120,8 @@
                     <p:outputLabel></p:outputLabel>
                     
                     <h:outputLabel value="Infraestructura (as): "></h:outputLabel>
-                    <p:selectManyMenu style=" width:78%" required="true">
-                        <f:selectItems />  
+                    <p:selectManyMenu value="#{scheduleView.listaIn}" style=" width:78%" required="true">
+                        <f:selectItems value="#{scheduleView.listaInfraestructura}" />  
                     </p:selectManyMenu>
                     <p:outputLabel></p:outputLabel>
                     
