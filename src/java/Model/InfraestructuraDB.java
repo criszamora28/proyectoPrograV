@@ -25,9 +25,9 @@ public class InfraestructuraDB {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);
     }
-    
-    public InfraestructuraDB()
-    {}
+
+    public InfraestructuraDB() {
+    }
 
     public LinkedList<Infraestructura> seleccionarInfraestructura() throws SNMPExceptions, SQLException {
         String select = "";
@@ -40,15 +40,15 @@ public class InfraestructuraDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT idInfraestructura, disponibilidad, "
-                    + "descripcion FROM Infraestructura";
+                    = "select idInfraestructura, disponibilidad, "
+                    + "descripcion from Infraestructura where disponibilidad =1";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
 
-                int idInfraestructura = rsPA.getInt("idInfraestructura");
+                String idInfraestructura = rsPA.getString("idInfraestructura");
                 String descripcion = rsPA.getString("descripcion");
 
                 Infraestructura perInfraestructura = new Infraestructura();
@@ -83,15 +83,15 @@ public class InfraestructuraDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT idInfraestructura, "
-                    + "descripcion FROM Infraestructura where idInfraestructura=" + deas.idInfraestructura;
+                    = "SELECT idInfraestructura,disponibilidad, "
+                    + "descripcion FROM Infraestructura where idInfraestructura="+"'"+ deas.idInfraestructura+"'";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
 
-                int idInfraestructura = rsPA.getInt("idInfraestructura");
+                String idInfraestructura = rsPA.getString("idInfraestructura");
                 String descripcion = rsPA.getString("descripcion");
 
                 Infraestructura perInfraestructura = new Infraestructura();
@@ -117,16 +117,17 @@ public class InfraestructuraDB {
 
     public void InsertarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-
+        int valor = (infra.disponibilidad == true) ? 1 : 0;
         try {
             //Se obtienen los valores del objeto Departamento
             Infraestructura deas = new Infraestructura();
             deas = infra;
 
             strSQL
-                    = "INSERT INTO Infraestructura (idInfraestructura,"
+                    = "INSERT INTO Infraestructura (idInfraestructura,disponibilidad,"
                     + "descripcion) VALUES ("
-                    + deas.idInfraestructura + ","
+                    +"'"+ deas.idInfraestructura+"'" + ","
+                    + valor + ","
                     + "'" + deas.descripcion + "'"
                     + ")";
 
@@ -145,7 +146,7 @@ public class InfraestructuraDB {
 
     public void ActualizarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-
+        int valor = (infra.disponibilidad == true) ? 1 : 0;
         try {
             //Se obtienen los valores del objeto Departamento
             Infraestructura deas = new Infraestructura();
@@ -153,8 +154,9 @@ public class InfraestructuraDB {
 
             strSQL
                     = "update Infraestructura"
-                    + "  set descripcion=" + "'" + deas.descripcion + "'"
-                    + "  where idInfraestructura= " + deas.idInfraestructura;
+                    + "  set descripcion=" + "'" + deas.descripcion + "'" + ","
+                    + "disponibilidad=" + valor
+                    + "  where idInfraestructura= " + "'"+deas.idInfraestructura+"'";
 
             accesoDatos.ejecutaSQL(strSQL);
 
@@ -169,15 +171,16 @@ public class InfraestructuraDB {
 
     public void EliminarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-
+        int valor = (infra.disponibilidad == true) ? 1 : 0;
         try {
             //Se obtienen los valores del objeto Departamento
             Infraestructura deas = new Infraestructura();
             deas = infra;
 
             strSQL
-                    = "delete from Infraestructura"
-                    + "  where idInfraestructura= " + deas.idInfraestructura;
+                    = "update Infraestructura"
+                    + " set disponibilidad=" + 0
+                    + "  where idInfraestructura= " +"'"+ deas.idInfraestructura+"'";
 
             //+ "'"+ usuario.getDireccion()+"'" + ")";
             //Se ejecuta la sentencia SQL

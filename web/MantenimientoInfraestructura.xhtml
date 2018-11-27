@@ -77,6 +77,11 @@
                             <img src="Imagenes/deas.jpg" alt=""/>
                         </f:facet>
 
+                        <p:outputLabel value="Estado" ></p:outputLabel>
+                        <p:selectOneMenu  value="#{beanMantenimientoInfraestructura.estado}" style=" width:78%"  >
+                            <f:selectItems value="#{beanMantenimientoInfraestructura.listaEstado}" />  
+                        </p:selectOneMenu>
+
                         <p:outputLabel value="Codigo de la infraestructura" ></p:outputLabel>
                         <p:inputText value="#{beanMantenimientoInfraestructura.infra.idInfraestructura}" disabled="#{beanMantenimientoInfraestructura.disable}" />
 
@@ -95,7 +100,7 @@
                     <p:commandButton value="Eliminar" update=":form:infraDetalles" action="#{beanMantenimientoInfraestructura.ocultar()}" actionListener="#{beanMantenimientoInfraestructura.eliminar()}" oncomplete="@all"  ajax="true" />
                 </div>
             </p:dialog>
-            
+
             <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
         </h:form>
     </h:body>

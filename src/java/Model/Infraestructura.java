@@ -13,9 +13,9 @@ import java.util.Date;
  */
 public class Infraestructura {
 
-    public int idInfraestructura;
+    public String idInfraestructura;
     public String descripcion;
-    public int disponibilidad;
+    public boolean disponibilidad;
     public Date fechaEdicionRegistro;
     public Date fechaIngresoRegistro;
     //resto consultar
@@ -23,13 +23,14 @@ public class Infraestructura {
     public Infraestructura() {
     }
 
-    public int getIdInfraestructura() {
+    public String getIdInfraestructura() {
         return idInfraestructura;
     }
 
-    public void setIdInfraestructura(int idInfraestructura) {
+    public void setIdInfraestructura(String idInfraestructura) {
         this.idInfraestructura = idInfraestructura;
     }
+
 
     public String getDescripcion() {
         return descripcion;
@@ -39,14 +40,7 @@ public class Infraestructura {
         this.descripcion = descripcion;
     }
 
-    public int getDisponibilidad() {
-        return disponibilidad;
-    }
-
-    public void setDisponibilidad(int disponibilidad) {
-        this.disponibilidad = disponibilidad;
-    }
-
+ 
     public Date getFechaEdicionRegistro() {
         return fechaEdicionRegistro;
     }
@@ -61,6 +55,14 @@ public class Infraestructura {
 
     public void setFechaIngresoRegistro(Date fechaIngresoRegistro) {
         this.fechaIngresoRegistro = fechaIngresoRegistro;
+    }
+
+    public boolean isDisponibilidad() {
+        return disponibilidad;
+    }
+
+    public void setDisponibilidad(boolean disponibilidad) {
+        this.disponibilidad = disponibilidad;
     }
 
     

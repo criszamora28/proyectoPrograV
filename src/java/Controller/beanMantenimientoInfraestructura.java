@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -25,6 +26,7 @@ public class beanMantenimientoInfraestructura implements Serializable {
 
     boolean visible;
     boolean disable;
+    int estado;
     Infraestructura infra;
 
     public beanMantenimientoInfraestructura() {
@@ -43,6 +45,16 @@ public class beanMantenimientoInfraestructura implements Serializable {
         return lista;
     }
 
+    public LinkedList<SelectItem> getListaEstado() throws SNMPExceptions, SQLException {
+
+        LinkedList resultList = new LinkedList();
+        resultList.add(new SelectItem(0, "Activo"));
+        resultList.add(new SelectItem(1, "Inactivo"));
+
+        return resultList;
+
+    }
+
     public void insertarInfraestructura() throws SNMPExceptions, SQLException {
         Infraestructura cu = this.infra;
         LinkedList<Infraestructura> lista = new InfraestructuraDB().seleccionarInfraestructuraId(cu);
@@ -50,6 +62,7 @@ public class beanMantenimientoInfraestructura implements Serializable {
             Infraestructura nInfraestructura = new Infraestructura();
             nInfraestructura.idInfraestructura = cu.idInfraestructura;
             nInfraestructura.descripcion = cu.descripcion;
+            nInfraestructura.disponibilidad= (estado==1)?true:false;
 
             InfraestructuraDB db = new InfraestructuraDB();
             db.InsertarInfraestructura(nInfraestructura);
@@ -69,6 +82,7 @@ public class beanMantenimientoInfraestructura implements Serializable {
             Infraestructura InfraestructuraUp = lista.get(0);
             InfraestructuraUp.idInfraestructura = us.idInfraestructura;
             InfraestructuraUp.descripcion = us.descripcion;
+            InfraestructuraUp.disponibilidad= (estado==0)?true:false;
 
             InfraestructuraDB upUser = new InfraestructuraDB();
             upUser.ActualizarInfraestructura(InfraestructuraUp);
@@ -126,5 +140,15 @@ public class beanMantenimientoInfraestructura implements Serializable {
     public void setInfra(Infraestructura infra) {
         this.infra = infra;
     }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+
 
 }
