@@ -5,19 +5,23 @@
  */
 package Model;
 
+import java.util.Date;
+
 /**
  *
  * @author Ernesto PC
  */
-public class Infraestructura
-{
- public int idInfraestructura;
- public String  descripcion;
- public int disponibilidad;
- //resto consultar
- public Infraestructura()
- {
- }
+public class Infraestructura {
+
+    public int idInfraestructura;
+    public String descripcion;
+    public int disponibilidad;
+    public Date fechaEdicionRegistro;
+    public Date fechaIngresoRegistro;
+    //resto consultar
+
+    public Infraestructura() {
+    }
 
     public int getIdInfraestructura() {
         return idInfraestructura;
@@ -42,6 +46,24 @@ public class Infraestructura
     public void setDisponibilidad(int disponibilidad) {
         this.disponibilidad = disponibilidad;
     }
- 
- 
+
+    public Date getFechaEdicionRegistro() {
+        return fechaEdicionRegistro;
+    }
+
+    public void setFechaEdicionRegistro(Date fechaEdicionRegistro) {
+        this.fechaEdicionRegistro = fechaEdicionRegistro;
+    }
+
+    public Date getFechaIngresoRegistro() {
+        return fechaIngresoRegistro;
+    }
+
+    public void setFechaIngresoRegistro(Date fechaIngresoRegistro) {
+        this.fechaIngresoRegistro = fechaIngresoRegistro;
+    }
+
+    
+    
+    
 }

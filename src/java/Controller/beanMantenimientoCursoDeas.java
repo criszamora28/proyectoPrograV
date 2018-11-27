@@ -91,14 +91,24 @@ public class beanMantenimientoCursoDeas implements Serializable {
 
     }
 
+    public LinkedList<SelectItem> getListaEstado() throws SNMPExceptions, SQLException {
+
+        LinkedList resultList = new LinkedList();
+        resultList.add(new SelectItem(0, "Activo"));
+        resultList.add(new SelectItem(1, "Inactivo"));
+
+        return resultList;
+
+    }
+
     public void insertarCurso() throws SNMPExceptions, SQLException {
         CursoDeas cu = this.cursoDeas;
-        LinkedList<ProgramaDeas>lista1=new ProgramaDeasDB().seleccionarProgramaDeasId(this.getIdProgra());
+        LinkedList<ProgramaDeas> lista1 = new ProgramaDeasDB().seleccionarProgramaDeasId(this.getIdProgra());
         LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(cu.id);
         if (lista.isEmpty()) {
             CursoDeas nCurso = new CursoDeas();
-            nCurso.id=cu.id;
-            nCurso.idPrograma =lista1.get(0);
+            nCurso.id = cu.id;
+            nCurso.idPrograma = lista1.get(0);
             nCurso.descripcion = cu.descripcion;
             nCurso.nombreCurso = cu.nombreCurso;
 

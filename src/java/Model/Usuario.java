@@ -24,6 +24,8 @@ public class Usuario {
     public String direccion;
     public String telefono;
     public String correo;
+    public boolean estado;
+    public boolean cuentaCompleta;
     public TipoIdentificacion tipoIdentificacion;
 
     public Usuario() {
@@ -123,4 +125,22 @@ public class Usuario {
     public void setTipoIdentificacion(TipoIdentificacion tipoIdentificacion) {
         this.tipoIdentificacion = tipoIdentificacion;
     }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public boolean isCuentaCompleta() {
+        return cuentaCompleta;
+    }
+
+    public void setCuentaCompleta(boolean cuentaCompleta) {
+        this.cuentaCompleta = cuentaCompleta;
+    }
+    
+    
 }

@@ -12,13 +12,13 @@ import java.util.Date;
  * @author crisz
  */
 public class Recurso {
-    private String id;
-    private String tipo;
-    private String descripcion;
+    public  String id;
+    public  String tipo;
+    public String descripcion;
     public int idUsuarioIngresoRegistro;
-    public Date fechaIngresoRegistro;
     public int idUsuarioEdicionRegistro;
     public Date fechaEdicionRegistro;
+    public Date fechaIngresoRegistro;
     public boolean estadoRecurso;
     public boolean estadoRegistro;
 
