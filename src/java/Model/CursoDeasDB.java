@@ -33,7 +33,7 @@ public class CursoDeasDB {
     
     
     
-     public LinkedList<CursoDeas> seleccionarCursosDeasId(CursoDeas deas) throws SNMPExceptions, SQLException {
+     public LinkedList<CursoDeas> seleccionarCursosDeasId(String deas) throws SNMPExceptions, SQLException {
         String select = "";
         LinkedList<CursoDeas> listaCursoDeas = new LinkedList<CursoDeas>();
 
@@ -44,21 +44,23 @@ public class CursoDeasDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT idPrograma, nombreCurso, "
-                    + "descripcion FROM cursoDeas where idPrograma="+deas.idPrograma;
+                    = "SELECT id,idPrograma, nombreCurso, "
+                    + "descripcion FROM cursoDeas where idPrograma="+deas;
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
-
+                
+                String id= rsPA.getString("id");
                 String idPrograma = rsPA.getString("idPrograma");
                 String nombreCurso = rsPA.getString("nombreCurso");
                 String descripcion = rsPA.getString("descripcion");
               
-
+               LinkedList<ProgramaDeas>lista= new ProgramaDeasDB().seleccionarProgramaDeasId(idPrograma);
                 CursoDeas perCursoDeas = new CursoDeas();
-                perCursoDeas.idPrograma = idPrograma;
+                perCursoDeas.id=id;
+                perCursoDeas.idPrograma =lista.get(0);
                 perCursoDeas.nombreCurso = nombreCurso;
                 perCursoDeas.descripcion = descripcion;
                
@@ -91,7 +93,7 @@ public class CursoDeasDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT idPrograma, nombreCurso, "
+                    = "SELECT id,idPrograma, nombreCurso, "
                     + "descripcion FROM cursoDeas";
 
             //Se ejecuta la sentencia SQL
@@ -99,16 +101,18 @@ public class CursoDeasDB {
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
 
+                String id=rsPA.getString("id");
                 String idPrograma = rsPA.getString("idPrograma");
                 String nombreCurso = rsPA.getString("nombreCurso");
                 String descripcion = rsPA.getString("descripcion");
               
 
+               LinkedList<ProgramaDeas>lista= new ProgramaDeasDB().seleccionarProgramaDeasId(idPrograma);
                 CursoDeas perCursoDeas = new CursoDeas();
-                perCursoDeas.idPrograma = idPrograma;
+                perCursoDeas.id=id;
+                perCursoDeas.idPrograma =lista.get(0);
                 perCursoDeas.nombreCurso = nombreCurso;
                 perCursoDeas.descripcion = descripcion;
-               
                 listaCursoDeas.add(perCursoDeas);
             }
             rsPA.close();
@@ -135,9 +139,10 @@ public class CursoDeasDB {
             deas = curso;
 
             strSQL
-                    = "INSERT INTO cursoDeas (idPrograma,nombrecurso,"
+                    = "INSERT INTO cursoDeas (id,idPrograma,nombrecurso,"
                     + "descripcion) VALUES ("
-                    +"'"+ deas.idPrograma + "'"+","
+                     +"'"+ deas.id + "'"+","
+                    +"'"+ deas.idPrograma.id + "'"+","
                     + "'" + deas.nombreCurso + "'"+","
                     + "'" + deas.descripcion + "'"
                     + ")";

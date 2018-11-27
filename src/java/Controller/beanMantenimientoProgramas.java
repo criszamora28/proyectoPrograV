@@ -6,15 +6,16 @@
 package Controller;
 
 import DAO.SNMPExceptions;
-import Model.CursoDeasDB;
 import Model.ProgramaDeas;
 import Model.ProgramaDeasDB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -44,9 +45,11 @@ public class beanMantenimientoProgramas implements Serializable {
         return lista;
     }
 
+
+
     public void insertarPrograma() throws SNMPExceptions, SQLException {
         ProgramaDeas cu = this.programaDeas;
-        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu);
+        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu.id);
         if (lista.isEmpty()) {
             ProgramaDeas nProgramaDeas = new ProgramaDeas();
             nProgramaDeas.id = cu.id;
@@ -64,7 +67,7 @@ public class beanMantenimientoProgramas implements Serializable {
     public void actualizar() throws SNMPExceptions, SQLException {
         ProgramaDeas us = this.getProgramaDeas();
 
-        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(us);
+        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(us.id);
         if (lista.isEmpty()) {
 
         } else {
@@ -82,7 +85,7 @@ public class beanMantenimientoProgramas implements Serializable {
     public void eliminar() throws SNMPExceptions, SQLException {
         ProgramaDeas us = this.getProgramaDeas();
 
-        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(us);
+        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(us.id);
         if (lista == null) {
 
         } else {

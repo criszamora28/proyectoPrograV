@@ -75,7 +75,7 @@ public class ProgramaDeasDB {
         return listaProgramaDeas;
     }
 
-    public LinkedList<ProgramaDeas> seleccionarProgramaDeasId(ProgramaDeas deas) throws SNMPExceptions, SQLException {
+    public LinkedList<ProgramaDeas> seleccionarProgramaDeasId(String deas) throws SNMPExceptions, SQLException {
         String select = "";
         LinkedList<ProgramaDeas> listaProgramaDeas = new LinkedList<ProgramaDeas>();
 
@@ -87,7 +87,7 @@ public class ProgramaDeasDB {
             //Se crea la sentencia de búsqueda
             select
                     = "SELECT id,nombrePrograma, "
-                    + "descripcion FROM programaDeas where id=" + deas.id;
+                    + "descripcion FROM programaDeas where id=" + deas;
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);

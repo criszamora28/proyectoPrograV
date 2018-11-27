@@ -9,27 +9,34 @@ package Model;
  *
  * @author Ernesto PC
  */
-public class CursoDeas 
-{
-  public String idPrograma;
-  public String nombreCurso;
-  public String descripcion;
-  //fechas
-  
-  public CursoDeas()
-  {
-  
-  }
+public class CursoDeas {
 
-    public String getIdPrograma() {
+    public String id;
+    public ProgramaDeas idPrograma;
+    public String nombreCurso;
+    public String descripcion;
+    //fechas
+
+    public CursoDeas() {
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ProgramaDeas getIdPrograma() {
         return idPrograma;
     }
 
-    public void setIdPrograma(String idPrograma) {
+    public void setIdPrograma(ProgramaDeas idPrograma) {
         this.idPrograma = idPrograma;
     }
 
- 
     public String getNombreCurso() {
         return nombreCurso;
     }
@@ -45,5 +52,5 @@ public class CursoDeas
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-  
+
 }

@@ -8,6 +8,8 @@ package Controller;
 import DAO.SNMPExceptions;
 import Model.CursoDeas;
 import Model.CursoDeasDB;
+import Model.ProgramaDeas;
+import Model.ProgramaDeasDB;
 import Model.Usuario;
 import Model.UsuarioDB;
 
@@ -15,12 +17,14 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 /**
  *
@@ -37,9 +41,8 @@ public class beanMantenimientoCursoDeas implements Serializable {
     boolean visible;
     boolean disable;
     String idU;
-    
-    
-    
+    String idProgra;
+
 //    @PostConstruct
 //    private void CargaPagina()
 //    {
@@ -66,12 +69,36 @@ public class beanMantenimientoCursoDeas implements Serializable {
         return lista;
     }
 
+    public LinkedList<SelectItem> getListaProgramas() throws SNMPExceptions, SQLException {
+        String id = "";
+        String nombre = "";
+
+        LinkedList<ProgramaDeas> lista = new LinkedList<ProgramaDeas>();
+        ProgramaDeasDB fDB = new ProgramaDeasDB();
+        ProgramaDeas n = new ProgramaDeas();
+        lista = fDB.seleccionarProgramaDeas();
+
+        LinkedList resultList = new LinkedList();
+
+        for (Iterator iter = lista.iterator(); iter.hasNext();) {
+
+            ProgramaDeas tipoFun = (ProgramaDeas) iter.next();
+            id = tipoFun.getId();
+            nombre = tipoFun.getNombrePrograma();
+            resultList.add(new SelectItem(id, nombre));
+        }
+        return resultList;
+
+    }
+
     public void insertarCurso() throws SNMPExceptions, SQLException {
         CursoDeas cu = this.cursoDeas;
-        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(cu);
+        LinkedList<ProgramaDeas>lista1=new ProgramaDeasDB().seleccionarProgramaDeasId(this.getIdProgra());
+        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(cu.id);
         if (lista.isEmpty()) {
             CursoDeas nCurso = new CursoDeas();
-            nCurso.idPrograma = cu.idPrograma;
+            nCurso.id=cu.id;
+            nCurso.idPrograma =lista1.get(0);
             nCurso.descripcion = cu.descripcion;
             nCurso.nombreCurso = cu.nombreCurso;
 
@@ -86,7 +113,7 @@ public class beanMantenimientoCursoDeas implements Serializable {
     public void actualizar() throws SNMPExceptions, SQLException {
         CursoDeas us = this.getCursoDeas();
 
-        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us);
+        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.id);
         if (lista.isEmpty()) {
 
         } else {
@@ -104,7 +131,7 @@ public class beanMantenimientoCursoDeas implements Serializable {
     public void eliminar() throws SNMPExceptions, SQLException {
         CursoDeas us = this.getCursoDeas();
 
-        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us);
+        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.id);
         if (lista == null) {
 
         } else {
@@ -125,6 +152,14 @@ public class beanMantenimientoCursoDeas implements Serializable {
     public void ocultar() {
         visible = false;
         disable = true;
+    }
+
+    public String getIdProgra() {
+        return idProgra;
+    }
+
+    public void setIdProgra(String idProgra) {
+        this.idProgra = idProgra;
     }
 
     public CursoDeas getCursoDeas() {
@@ -159,7 +194,4 @@ public class beanMantenimientoCursoDeas implements Serializable {
         this.idU = idU;
     }
 
-    
-    
-    
 }
