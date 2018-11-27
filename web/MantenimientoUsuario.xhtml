@@ -43,7 +43,7 @@
                 </p:panelMenu>
             </div>
 
-            <div class="ui-g-9">                                             <!--paginator="true"   rowsPerPageTemplate="6,12,16"-->
+            <div class="ui-g-9">                                                                                 <!--paginator="true"   rowsPerPageTemplate="6,12,16"-->
                 <p:dataGrid var="usu" value="#{beanMentenimientoUsuario.listaAdministrativos}" columns="3" layout="grid"  rows="6" >
 
                     <f:facet name="header">
@@ -112,12 +112,12 @@
 
 
                     </h:panelGrid>
-                    <p:commandButton value="Agregar" rendered="#{beanMentenimientoUsuario.visible}" actionListener="#{beanMentenimientoUsuario.insertarUsuario()}"/>
+                    <p:commandButton value="Agregar" rendered="#{beanMentenimientoUsuario.visible}" actionListener="#{beanMentenimientoUsuario.insertarUsuario()}" oncomplete="@all"/>
                 </p:outputPanel>
                 <div style="position: relative; margin: 0 auto; text-align: center;"> 
                     <p:commandButton value="Ayudar"  update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" oncomplete="PF('usuDialog').show()"  ajax="true" style="margin-right: 10px"/>
                     <p:commandButton value="Nuevo"  update=":form:usuDetalles"  action="#{beanMentenimientoUsuario.limpiaCampos()}" oncomplete="PF('usuDialog').show()"  ajax="true"  style="margin-right: 10px"/>  
-                    <p:commandButton value="Modificar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.actualizar()}" oncomplete="PF('usuDialog').show()"  ajax="true"  style="margin-right: 10px"/>
+                    <p:commandButton value="Modificar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.actualizar()}" oncomplete="@all"  ajax="true"  style="margin-right: 10px"/>
                     <p:commandButton value="Eliminar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.eliminar()}" oncomplete="@all"  ajax="true" style="margin-right: 10px" />
                 </div>
             </p:dialog>

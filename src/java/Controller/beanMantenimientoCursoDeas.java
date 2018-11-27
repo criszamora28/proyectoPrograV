@@ -17,6 +17,10 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -32,10 +36,22 @@ public class beanMantenimientoCursoDeas implements Serializable {
     CursoDeas cursoDeas;
     boolean visible;
     boolean disable;
+    String idU;
     
     
+    
+//    @PostConstruct
+//    private void CargaPagina()
+//    {
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+//        
+//        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+//	final Map<String, Object> session = context.getSessionMap();
+//	final Object user = session.get("Usuario");
+//        idU="Hola "+" "+((Usuario)user).nombre;
+//    }
     public beanMantenimientoCursoDeas() {
-        disable=true;
+        disable = true;
     }
 
     public List<CursoDeas> getListaCursos() throws SNMPExceptions, SQLException {
@@ -49,33 +65,28 @@ public class beanMantenimientoCursoDeas implements Serializable {
 
         return lista;
     }
-    
-    
-    public void insertarCurso() throws SNMPExceptions, SQLException
-     {
-     CursoDeas cu= this.cursoDeas;
-     LinkedList<CursoDeas> lista=  new CursoDeasDB().seleccionarCursosDeasId(cu.idPrograma);
-     if(lista.isEmpty())
-     {
-        CursoDeas nCurso= new CursoDeas();
-        nCurso.idPrograma=cu.idPrograma;
-        nCurso.descripcion=cu.descripcion;
-        nCurso.nombreCurso=cu.nombreCurso;
-        
-        CursoDeasDB db= new CursoDeasDB();
-        db.InsertarCursoDeas(nCurso);
-     }
-     else
-     {
-     //mensajito
-     }
-     
-     }
+
+    public void insertarCurso() throws SNMPExceptions, SQLException {
+        CursoDeas cu = this.cursoDeas;
+        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(cu);
+        if (lista.isEmpty()) {
+            CursoDeas nCurso = new CursoDeas();
+            nCurso.idPrograma = cu.idPrograma;
+            nCurso.descripcion = cu.descripcion;
+            nCurso.nombreCurso = cu.nombreCurso;
+
+            CursoDeasDB db = new CursoDeasDB();
+            db.InsertarCursoDeas(nCurso);
+        } else {
+            //mensajito
+        }
+
+    }
 
     public void actualizar() throws SNMPExceptions, SQLException {
         CursoDeas us = this.getCursoDeas();
 
-        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.idPrograma);
+        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us);
         if (lista.isEmpty()) {
 
         } else {
@@ -93,7 +104,7 @@ public class beanMantenimientoCursoDeas implements Serializable {
     public void eliminar() throws SNMPExceptions, SQLException {
         CursoDeas us = this.getCursoDeas();
 
-        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.getIdPrograma());
+        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us);
         if (lista == null) {
 
         } else {
@@ -104,14 +115,11 @@ public class beanMantenimientoCursoDeas implements Serializable {
 
         }
     }
-    
-    
-    
-      public void limpiaCampos() {
+
+    public void limpiaCampos() {
         visible = true;
         disable = false;
-   
-   
+
     }
 
     public void ocultar() {
@@ -143,6 +151,15 @@ public class beanMantenimientoCursoDeas implements Serializable {
         this.disable = disable;
     }
 
+    public String getIdU() {
+        return idU;
+    }
+
+    public void setIdU(String idU) {
+        this.idU = idU;
+    }
+
+    
     
     
 }

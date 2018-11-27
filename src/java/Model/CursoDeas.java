@@ -11,7 +11,7 @@ package Model;
  */
 public class CursoDeas 
 {
-  public int idPrograma;
+  public String idPrograma;
   public String nombreCurso;
   public String descripcion;
   //fechas
@@ -21,14 +21,15 @@ public class CursoDeas
   
   }
 
-    public int getIdPrograma() {
+    public String getIdPrograma() {
         return idPrograma;
     }
 
-    public void setIdPrograma(int idPrograma) {
+    public void setIdPrograma(String idPrograma) {
         this.idPrograma = idPrograma;
     }
 
+ 
     public String getNombreCurso() {
         return nombreCurso;
     }

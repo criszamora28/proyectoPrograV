@@ -75,8 +75,8 @@ public class beanLogin implements Serializable {
            Usuario usuario= lista.get(0);
            
            if (usuario != null){
-               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario",usuario);
-               FacesContext.getCurrentInstance().getExternalContext().redirect("Principal.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario",usuario);
+                 FacesContext.getCurrentInstance().getExternalContext().redirect("MantenimientoCursoDeas.xhtml");
            }
        }catch (Exception e){
        

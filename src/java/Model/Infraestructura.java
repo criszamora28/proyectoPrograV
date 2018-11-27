@@ -5,36 +5,25 @@
  */
 package Model;
 
-import java.util.Date;
-
 /**
  *
  * @author Ernesto PC
  */
-public class Infraestructura {
+public class Infraestructura
+{
+ public int idInfraestructura;
+ public String  descripcion;
+ public int disponibilidad;
+ //resto consultar
+ public Infraestructura()
+ {
+ }
 
-    private String idInfraestructura;
-    private String descripcion;
-    private int idUsuarioIngresoRegistro;
-    private Date fechaIngresoRegistro;
-    private int idUsuarioEdicionRegistro;
-    private Date fechaEdicionRegistro;
-    private boolean eatdoInfraestructura;
-    private boolean estadoRegistro;
-
-    public Infraestructura() {
-    }
-
-    @Override
-    public String toString(){
-        return this.idInfraestructura + " " + this.getDescripcion();
-    }
-    
-    public String getIdInfraestructura() {
+    public int getIdInfraestructura() {
         return idInfraestructura;
     }
 
-    public void setIdInfraestructura(String idInfraestructura) {
+    public void setIdInfraestructura(int idInfraestructura) {
         this.idInfraestructura = idInfraestructura;
     }
 
@@ -46,54 +35,13 @@ public class Infraestructura {
         this.descripcion = descripcion;
     }
 
-    public int getIdUsuarioIngresoRegistro() {
-        return idUsuarioIngresoRegistro;
+    public int getDisponibilidad() {
+        return disponibilidad;
     }
 
-    public void setIdUsuarioIngresoRegistro(int idUsuarioIngresoRegistro) {
-        this.idUsuarioIngresoRegistro = idUsuarioIngresoRegistro;
+    public void setDisponibilidad(int disponibilidad) {
+        this.disponibilidad = disponibilidad;
     }
-
-    public Date getFechaIngresoRegistro() {
-        return fechaIngresoRegistro;
-    }
-
-    public void setFechaIngresoRegistro(Date fechaIngresoRegistro) {
-        this.fechaIngresoRegistro = fechaIngresoRegistro;
-    }
-
-    public int getIdUsuarioEdicionRegistro() {
-        return idUsuarioEdicionRegistro;
-    }
-
-    public void setIdUsuarioEdicionRegistro(int idUsuarioEdicionRegistro) {
-        this.idUsuarioEdicionRegistro = idUsuarioEdicionRegistro;
-    }
-
-    public Date getFechaEdicionRegistro() {
-        return fechaEdicionRegistro;
-    }
-
-    public void setFechaEdicionRegistro(Date fechaEdicionRegistro) {
-        this.fechaEdicionRegistro = fechaEdicionRegistro;
-    }
-
-    public boolean isEatdoInfraestructura() {
-        return eatdoInfraestructura;
-    }
-
-    public void setEatdoInfraestructura(boolean eatdoInfraestructura) {
-        this.eatdoInfraestructura = eatdoInfraestructura;
-    }
-
-    public boolean isEstadoRegistro() {
-        return estadoRegistro;
-    }
-
-    public void setEstadoRegistro(boolean estadoRegistro) {
-        this.estadoRegistro = estadoRegistro;
-    }
-
-    
-
+ 
+ 
 }

@@ -16,22 +16,23 @@ import java.util.LinkedList;
  *
  * @author Ernesto PC
  */
-public class InfraestructuraDB {
+public class ProgramaDeasDB {
 
     private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;
 
-    public InfraestructuraDB(Connection conn) {
+    public ProgramaDeasDB(Connection conn) {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);
     }
-    
-    public InfraestructuraDB()
-    {}
 
-    public LinkedList<Infraestructura> seleccionarInfraestructura() throws SNMPExceptions, SQLException {
+    public ProgramaDeasDB() {
+      
+    }
+
+    public LinkedList<ProgramaDeas> seleccionarProgramaDeas() throws SNMPExceptions, SQLException {
         String select = "";
-        LinkedList<Infraestructura> listaInfraestructura = new LinkedList<Infraestructura>();
+        LinkedList<ProgramaDeas> listaProgramaDeas = new LinkedList<ProgramaDeas>();
 
         try {
 
@@ -40,22 +41,24 @@ public class InfraestructuraDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT idInfraestructura, "
-                    + "descripcion FROM Infraestructura";
+                    = "SELECT id, nombrePrograma, "
+                    + "descripcion FROM programaDeas";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
 
-                int idInfraestructura = rsPA.getInt("idInfraestructura");
+                String id = rsPA.getString("id");
+                String nombrePrograma = rsPA.getString("nombrePrograma");
                 String descripcion = rsPA.getString("descripcion");
 
-                Infraestructura perInfraestructura = new Infraestructura();
-                perInfraestructura.idInfraestructura = idInfraestructura;
-                perInfraestructura.descripcion = descripcion;
+                ProgramaDeas perProgramaDeas = new ProgramaDeas();
+                perProgramaDeas.id = id;
+                perProgramaDeas.nombrePrograma = nombrePrograma;
+                perProgramaDeas.descripcion = descripcion;
 
-                listaInfraestructura.add(perInfraestructura);
+                listaProgramaDeas.add(perProgramaDeas);
             }
             rsPA.close();
 
@@ -69,12 +72,12 @@ public class InfraestructuraDB {
 
         }
 
-        return listaInfraestructura;
+        return listaProgramaDeas;
     }
 
-    public LinkedList<Infraestructura> seleccionarInfraestructuraId(Infraestructura deas) throws SNMPExceptions, SQLException {
+    public LinkedList<ProgramaDeas> seleccionarProgramaDeasId(ProgramaDeas deas) throws SNMPExceptions, SQLException {
         String select = "";
-        LinkedList<Infraestructura> listaInfraestructura = new LinkedList<Infraestructura>();
+        LinkedList<ProgramaDeas> listaProgramaDeas = new LinkedList<ProgramaDeas>();
 
         try {
 
@@ -83,22 +86,24 @@ public class InfraestructuraDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT idInfraestructura, "
-                    + "descripcion FROM Infraestructura where idInfraestructura=" + deas.idInfraestructura;
+                    = "SELECT id,nombrePrograma, "
+                    + "descripcion FROM programaDeas where id=" + deas.id;
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
 
-                int idInfraestructura = rsPA.getInt("idInfraestructura");
+                String id = rsPA.getString("id");
+                String nombrePrograma = rsPA.getString("nombrePrograma");
                 String descripcion = rsPA.getString("descripcion");
 
-                Infraestructura perInfraestructura = new Infraestructura();
-                perInfraestructura.idInfraestructura = idInfraestructura;
-                perInfraestructura.descripcion = descripcion;
+                ProgramaDeas perProgramaDeas = new ProgramaDeas();
+                perProgramaDeas.id = id;
+                perProgramaDeas.nombrePrograma = nombrePrograma;
+                perProgramaDeas.descripcion = descripcion;
 
-                listaInfraestructura.add(perInfraestructura);
+                listaProgramaDeas.add(perProgramaDeas);
             }
             rsPA.close();
 
@@ -112,21 +117,22 @@ public class InfraestructuraDB {
 
         }
 
-        return listaInfraestructura;
+        return listaProgramaDeas;
     }
 
-    public void InsertarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
+    public void InsertarProgramaDeas(ProgramaDeas infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
 
         try {
             //Se obtienen los valores del objeto Departamento
-            Infraestructura deas = new Infraestructura();
+            ProgramaDeas deas = new ProgramaDeas();
             deas = infra;
 
             strSQL
-                    = "INSERT INTO Infraestructura (idInfraestructura,"
+                    = "INSERT INTO programaDeas (id, nombrePrograma,"
                     + "descripcion) VALUES ("
-                    + deas.idInfraestructura + ","
+                    +"'"+ deas.id + "'"+","
+                    + "'" + deas.nombrePrograma + "'"+","
                     + "'" + deas.descripcion + "'"
                     + ")";
 
@@ -143,18 +149,19 @@ public class InfraestructuraDB {
         }
     }
 
-    public void ActualizarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
+    public void ActualizarProgramaDeas(ProgramaDeas infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
 
         try {
             //Se obtienen los valores del objeto Departamento
-            Infraestructura deas = new Infraestructura();
+            ProgramaDeas deas = new ProgramaDeas();
             deas = infra;
 
             strSQL
-                    = "update Infraestructura"
-                    + "  set descripcion=" + "'" + deas.descripcion + "'"
-                    + "  where idInfraestructura= " + deas.idInfraestructura;
+                    = "update programaDeas"
+                    + "  set descripcion=" + "'" + deas.descripcion + "'" + ","
+                    + "nombrePrograma="+"'"+deas.nombrePrograma+"'"
+                    + "  where id= "+"'" + deas.id+"'";
 
             accesoDatos.ejecutaSQL(strSQL);
 
@@ -166,18 +173,18 @@ public class InfraestructuraDB {
 
         }
     }
-
-    public void EliminarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
+    
+        public void EliminarProgramaDeas(ProgramaDeas infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
 
         try {
             //Se obtienen los valores del objeto Departamento
-            Infraestructura deas = new Infraestructura();
+            ProgramaDeas deas = new ProgramaDeas();
             deas = infra;
 
             strSQL
-                    = "delete from Infraestructura"
-                    + "  where idInfraestructura= " + deas.idInfraestructura;
+                    = "delete from programaDeas"
+                    + "  where id= " + deas.id;
 
             //+ "'"+ usuario.getDireccion()+"'" + ")";
             //Se ejecuta la sentencia SQL
