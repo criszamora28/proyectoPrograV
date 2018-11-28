@@ -22,7 +22,9 @@
             <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="150" height="110"/>
         </header>
         <h:form id="form" class="iu-g"> 
-
+            
+            <p:growl id="growl" showDetail="true" sticky="true" />  
+            
             <div class="ui-g-3">
                 <p:panelMenu >
                     <p:submenu label="Inicio" >
@@ -42,7 +44,7 @@
                 </p:panelMenu>
             </div>
             <div class="ui-g-9">                                                                                 <!--paginator="true"   rowsPerPageTemplate="6,12,16"-->
-                <p:dataGrid var="curso" value="#{beanMantenimientoProgramas.listaProgramas}" columns="3" layout="grid"  rows="6" >
+                <p:dataGrid var="curso" value="#{beanMantenimientoProgramas.listaProgramas}" paginator="true" columns="3" layout="grid"  rows="3" >
 
                     <f:facet name="header">
                         Lista de programas
@@ -83,19 +85,25 @@
                         <p:inputText value="#{beanMantenimientoProgramas.programaDeas.descripcion}" />
 
                     </p:panelGrid>
-                    <p:commandButton value="Agregar" rendered="#{beanMantenimientoProgramas.visible}" actionListener="#{beanMantenimientoProgramas.insertarPrograma()}" oncomplete="@all"/>
+                    <p:commandButton value="Agregar" update="growl" rendered="#{beanMantenimientoProgramas.visible}" actionListener="#{beanMantenimientoProgramas.insertarPrograma()}" oncomplete="@all"/>
 
 
                 </p:outputPanel>
                 <div> 
-                    <p:commandButton value="Ayuda"  update=":form:programaDetalles" action="#{beanMantenimientoProgramas.ocultar()}" oncomplete="PF('programaDialog').show()"  ajax="true"/>
+                    <p:commandButton value="Ayuda"  update=":form:programaDetalles"  action="#{beanMantenimientoProgramas.ocultar()}" oncomplete="PF('programaDialog').show()"  ajax="true"/>
                     <p:commandButton value="Nuevo"  update=":form:programaDetalles"  action="#{beanMantenimientoProgramas.limpiaCampos()}" oncomplete="PF('programaDialog').show()"  ajax="true" />  
                     <p:commandButton value="Modificar" update=":form:programaDetalles" action="#{beanMantenimientoProgramas.ocultar()}" actionListener="#{beanMantenimientoProgramas.actualizar()}" oncomplete="@all"  ajax="true" />
                     <p:commandButton value="Eliminar" update=":form:programaDetalles" action="#{beanMantenimientoProgramas.ocultar()}" actionListener="#{beanMantenimientoProgramas.eliminar()}" oncomplete="@all"  ajax="true" />
                 </div>
             </p:dialog>
-              <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
+            <p:growl  autoUpdate="true" id="messages" showDetail="true" /> 
+            
         </h:form>
+        <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
+            <footer style="height: 50px; background-color: #102b70">
+                <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>
+            </footer>
+        </div>
     </h:body>
 </html>
 

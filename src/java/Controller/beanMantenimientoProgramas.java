@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -49,7 +51,8 @@ public class beanMantenimientoProgramas implements Serializable {
 
     public void insertarPrograma() throws SNMPExceptions, SQLException {
         ProgramaDeas cu = this.programaDeas;
-        try {
+        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu.id);
+        if (lista.isEmpty()) {
             ProgramaDeas nProgramaDeas = new ProgramaDeas();
             nProgramaDeas.id = cu.id;
             nProgramaDeas.descripcion = cu.descripcion;
@@ -57,20 +60,14 @@ public class beanMantenimientoProgramas implements Serializable {
 
             ProgramaDeasDB db = new ProgramaDeasDB();
             db.InsertarProgramaDeas(nProgramaDeas);
-        } catch (Exception e) {
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Programa ingresado correctamente!"));
+        } else {
+            //mensajito
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Datos incorrectos!"));
         }
-//        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu.id);
-//        if (lista.isEmpty()) {
-//            ProgramaDeas nProgramaDeas = new ProgramaDeas();
-//            nProgramaDeas.id = cu.id;
-//            nProgramaDeas.descripcion = cu.descripcion;
-//            nProgramaDeas.nombrePrograma = cu.nombrePrograma;
-//
-//            ProgramaDeasDB db = new ProgramaDeasDB();
-//            db.InsertarProgramaDeas(nProgramaDeas);
-//        } else {
-//            //mensajito
-//        }
 
     }
 
@@ -87,7 +84,8 @@ public class beanMantenimientoProgramas implements Serializable {
 
             ProgramaDeasDB upUser = new ProgramaDeasDB();
             upUser.ActualizarProgramaDeas(ProgramaDeasUp);
-
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Programa actualizado!"));
         }
 
     }
@@ -103,7 +101,8 @@ public class beanMantenimientoProgramas implements Serializable {
 
             ProgramaDeasDB upUser = new ProgramaDeasDB();
             upUser.EliminarProgramaDeas(ProgramaDeasDel);
-
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Programa Eliminado!"));
         }
     }
 

@@ -130,10 +130,11 @@ public class ProgramaDeasDB {
 
             strSQL
                     = "INSERT INTO programaDeas (id, nombrePrograma,"
-                    + "descripcion) VALUES ("
+                    + "descripcion,estadoRegistro) VALUES ("
                     + "'" + deas.id + "'" + ","
-                    + "'" + deas.nombrePrograma + "'"+","
-                    + "'" + deas.descripcion + "'"
+                    + "'" + deas.nombrePrograma + "'" + ","
+                    + "'" + deas.descripcion + "'" + ","
+                    + 1
                     + ")";
 
             
@@ -183,7 +184,7 @@ public class ProgramaDeasDB {
 
             strSQL
                     = "delete from programaDeas"
-                    + "  where id= " + deas.id;
+                    + "  where id= '" + deas.id + "'";
 
             //+ "'"+ usuario.getDireccion()+"'" + ")";
             //Se ejecuta la sentencia SQL
