@@ -49,8 +49,7 @@ public class beanMantenimientoProgramas implements Serializable {
 
     public void insertarPrograma() throws SNMPExceptions, SQLException {
         ProgramaDeas cu = this.programaDeas;
-        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu.id);
-        if (lista.isEmpty()) {
+        try {
             ProgramaDeas nProgramaDeas = new ProgramaDeas();
             nProgramaDeas.id = cu.id;
             nProgramaDeas.descripcion = cu.descripcion;
@@ -58,9 +57,20 @@ public class beanMantenimientoProgramas implements Serializable {
 
             ProgramaDeasDB db = new ProgramaDeasDB();
             db.InsertarProgramaDeas(nProgramaDeas);
-        } else {
-            //mensajito
+        } catch (Exception e) {
         }
+//        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu.id);
+//        if (lista.isEmpty()) {
+//            ProgramaDeas nProgramaDeas = new ProgramaDeas();
+//            nProgramaDeas.id = cu.id;
+//            nProgramaDeas.descripcion = cu.descripcion;
+//            nProgramaDeas.nombrePrograma = cu.nombrePrograma;
+//
+//            ProgramaDeasDB db = new ProgramaDeasDB();
+//            db.InsertarProgramaDeas(nProgramaDeas);
+//        } else {
+//            //mensajito
+//        }
 
     }
 

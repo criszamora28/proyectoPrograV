@@ -87,7 +87,7 @@ public class ProgramaDeasDB {
             //Se crea la sentencia de búsqueda
             select
                     = "SELECT id,nombrePrograma, "
-                    + "descripcion FROM programaDeas where id=" + deas;
+                    + "descripcion FROM programaDeas where id='" + deas + "'";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
@@ -131,13 +131,12 @@ public class ProgramaDeasDB {
             strSQL
                     = "INSERT INTO programaDeas (id, nombrePrograma,"
                     + "descripcion) VALUES ("
-                    +"'"+ deas.id + "'"+","
+                    + "'" + deas.id + "'" + ","
                     + "'" + deas.nombrePrograma + "'"+","
                     + "'" + deas.descripcion + "'"
                     + ")";
 
-            //+ "'"+ usuario.getDireccion()+"'" + ")";
-            //Se ejecuta la sentencia SQL
+            
             accesoDatos.ejecutaSQL(strSQL);
 
         } catch (SQLException e) {
