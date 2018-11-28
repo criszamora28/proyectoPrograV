@@ -41,7 +41,7 @@ public class InfraestructuraDB {
             //Se crea la sentencia de búsqueda
             select
                     = "select idInfraestructura, disponibilidad, "
-                    + "descripcion from Infraestructura where disponibilidad =1";
+                    + "descripcion from Infraestructura where estadoRegistro =1";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
@@ -117,22 +117,21 @@ public class InfraestructuraDB {
 
     public void InsertarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-        int valor = (infra.disponibilidad == true) ? 1 : 0;
+        
         try {
             //Se obtienen los valores del objeto Departamento
             Infraestructura deas = new Infraestructura();
             deas = infra;
 
             strSQL
-                    = "INSERT INTO Infraestructura (idInfraestructura,disponibilidad,"
-                    + "descripcion) VALUES ("
+                    = "INSERT INTO infraestructura (idInfraestructura,disponibilidad,"
+                    + "descripcion,estadoRegistro) VALUES ("
                     +"'"+ deas.idInfraestructura+"'" + ","
-                    + valor + ","
-                    + "'" + deas.descripcion + "'"
+                    + 1 + ","
+                    + "'" + deas.descripcion + "'" + ","
+                    + 1
                     + ")";
-
-            //+ "'"+ usuario.getDireccion()+"'" + ")";
-            //Se ejecuta la sentencia SQL
+            
             accesoDatos.ejecutaSQL(strSQL);
 
         } catch (SQLException e) {
@@ -146,7 +145,7 @@ public class InfraestructuraDB {
 
     public void ActualizarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-        int valor = (infra.disponibilidad == true) ? 1 : 0;
+        
         try {
             //Se obtienen los valores del objeto Departamento
             Infraestructura deas = new Infraestructura();
@@ -154,8 +153,7 @@ public class InfraestructuraDB {
 
             strSQL
                     = "update Infraestructura"
-                    + "  set descripcion=" + "'" + deas.descripcion + "'" + ","
-                    + "disponibilidad=" + valor
+                    + "  set descripcion=" + "'" + deas.descripcion + "'" 
                     + "  where idInfraestructura= " + "'"+deas.idInfraestructura+"'";
 
             accesoDatos.ejecutaSQL(strSQL);
@@ -171,7 +169,7 @@ public class InfraestructuraDB {
 
     public void EliminarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-        int valor = (infra.disponibilidad == true) ? 1 : 0;
+        
         try {
             //Se obtienen los valores del objeto Departamento
             Infraestructura deas = new Infraestructura();
@@ -179,11 +177,10 @@ public class InfraestructuraDB {
 
             strSQL
                     = "update Infraestructura"
-                    + " set disponibilidad=" + 0
+                    + " set estadoRegistro=" + 0
                     + "  where idInfraestructura= " +"'"+ deas.idInfraestructura+"'";
 
-            //+ "'"+ usuario.getDireccion()+"'" + ")";
-            //Se ejecuta la sentencia SQL
+            
             accesoDatos.ejecutaSQL(strSQL);
 
         } catch (SQLException e) {

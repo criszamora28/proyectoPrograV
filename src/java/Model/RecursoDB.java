@@ -125,7 +125,7 @@ public class RecursoDB {
 
     public void InsertarRecurso(Recurso infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-        int valor = (infra.estadoRecurso == true) ? 1 : 0;
+        
         try {
             //Se obtienen los valores del objeto Departamento
             Recurso deas = new Recurso();
@@ -136,7 +136,7 @@ public class RecursoDB {
                     + "descripcion) VALUES ("
                     + "'" + deas.id + "'" + ","
                     + "'" + deas.tipo + "'" + ","
-                    + valor + ","
+                    + 1 + ","
                     + "'" + deas.descripcion + "'"
                     + ")";
 
@@ -155,7 +155,7 @@ public class RecursoDB {
 
     public void ActualizarRecurso(Recurso infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-        int valor = (infra.estadoRecurso == true) ? 1 : 0;
+        
         try {
 
             Recurso deas = new Recurso();
@@ -164,8 +164,7 @@ public class RecursoDB {
             strSQL
                     = "update recurso"
                     + "  set tipo=" + "'" + deas.tipo + "'" + ","
-                    + "descripcion=" + "'" + deas.descripcion + "'" + ","
-                    + "estadoRecurso=" + valor 
+                    + "descripcion=" + "'" + deas.descripcion + "'"
                     + "  where id= " + "'"+deas.id+"'";
 
             accesoDatos.ejecutaSQL(strSQL);
@@ -181,7 +180,7 @@ public class RecursoDB {
 
     public void EliminarRecurso(Recurso infra) throws SNMPExceptions, SQLException {
         String strSQL = "";
-        int valor = (infra.estadoRecurso == true) ? 1 : 0;
+        
         try {
             //Se obtienen los valores del objeto Departamento
             Recurso deas = new Recurso();
@@ -189,7 +188,7 @@ public class RecursoDB {
 
             strSQL
                     = "update recurso "
-                    + "set estadoRecurso=" + valor
+                    + "set estadoRecurso=" + 0
                     + " where id= " +"'" +deas.id+"'";
 
             //+ "'"+ usuario.getDireccion()+"'" + ")";

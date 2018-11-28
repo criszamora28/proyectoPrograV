@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -114,6 +115,9 @@ public class beanMantenimientoCursoDeas implements Serializable {
 
             CursoDeasDB db = new CursoDeasDB();
             db.InsertarCursoDeas(nCurso);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Curso ingresado correctamente!"));
         } else {
             //mensajito
         }
@@ -124,15 +128,22 @@ public class beanMantenimientoCursoDeas implements Serializable {
         CursoDeas us = this.getCursoDeas();
 
         LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.id);
+        LinkedList<ProgramaDeas> lista1 = new ProgramaDeasDB().seleccionarProgramaDeasId(this.getIdProgra());
+        
         if (lista.isEmpty()) {
 
         } else {
             CursoDeas cursoDeasUp = lista.get(0);
+            cursoDeasUp.id = us.id;
             cursoDeasUp.nombreCurso = us.nombreCurso;
             cursoDeasUp.descripcion = us.descripcion;
-
+            cursoDeasUp.idPrograma = lista1.get(0);
+            
             CursoDeasDB upUser = new CursoDeasDB();
             upUser.ActualizarCurso(cursoDeasUp);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Curso editado correctamente!"));
 
         }
 
@@ -149,6 +160,8 @@ public class beanMantenimientoCursoDeas implements Serializable {
 
             CursoDeasDB upUser = new CursoDeasDB();
             upUser.EliminarCurso(cursoDel);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Curso eliminado correctamente!"));
 
         }
     }

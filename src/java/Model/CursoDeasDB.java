@@ -45,7 +45,7 @@ public class CursoDeasDB {
             //Se crea la sentencia de búsqueda
             select
                     = "SELECT id,idPrograma, nombreCurso, "
-                    + "descripcion FROM cursoDeas where idPrograma="+deas;
+                    + "descripcion FROM cursoDeas where id='" +deas + "'";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
@@ -57,7 +57,7 @@ public class CursoDeasDB {
                 String nombreCurso = rsPA.getString("nombreCurso");
                 String descripcion = rsPA.getString("descripcion");
               
-               LinkedList<ProgramaDeas>lista= new ProgramaDeasDB().seleccionarProgramaDeasId(idPrograma);
+                LinkedList<ProgramaDeas>lista= new ProgramaDeasDB().seleccionarProgramaDeasId(idPrograma);
                 CursoDeas perCursoDeas = new CursoDeas();
                 perCursoDeas.id=id;
                 perCursoDeas.idPrograma =lista.get(0);
@@ -172,7 +172,8 @@ public class CursoDeasDB {
                     = "update CursoDeas"
                     + "  set nombreCurso=" + "'" + deas.nombreCurso + "'" + ","
                     + "  descripcion=" + "'" + deas.descripcion + "'" + ","
-                    + "  where idPrograma= " + deas.idPrograma;
+                    + "  idPrograma=" + "'" + deas.idPrograma.id + "'"
+                    + "  where id= '" + deas.id + "'";
 
             accesoDatos.ejecutaSQL(strSQL);
 
@@ -195,10 +196,8 @@ public class CursoDeasDB {
 
             strSQL
                     = "delete from cursoDeas"
-                    + "  where idPrograma= " + deas.idPrograma;
-
-            //+ "'"+ usuario.getDireccion()+"'" + ")";
-            //Se ejecuta la sentencia SQL
+                    + "  where id= '" + deas.id + "'";
+            
             accesoDatos.ejecutaSQL(strSQL);
 
         } catch (SQLException e) {

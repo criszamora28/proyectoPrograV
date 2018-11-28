@@ -45,7 +45,7 @@
             </div>
 
             <div class="ui-g-9">                                                                                 <!--paginator="true"   rowsPerPageTemplate="6,12,16"-->
-                <p:dataGrid var="infra" value="#{beanMantenimientRecurso.listaRecurso}" columns="3" layout="grid"  rows="6" >
+                <p:dataGrid var="infra" value="#{beanMantenimientRecurso.listaRecurso}" paginator="true" columns="3" layout="grid"  rows="3" >
 
                     <f:facet name="header">
                         Lista de recursos
@@ -70,18 +70,12 @@
                 </p:dataGrid>
             </div>
 
-            <p:dialog header="Informacion del articulo" widgetVar="recursoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog header="Informacion del Recurso" widgetVar="recursoDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="recursoDetalles" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty beanMantenimientRecurso.recurso}" columnClasses="label,value">
+                    <p:panelGrid style="margin: 0 auto;" columns="2" rendered="#{not empty beanMantenimientRecurso.recurso}" columnClasses="label,value">
                         <f:facet name="header">
                             <img src="Imagenes/deas.jpg" alt=""/>
                         </f:facet>
-
-                        
-                         <p:outputLabel value="Estado" ></p:outputLabel>
-                         <p:selectOneMenu  value="#{beanMantenimientRecurso.estado}" style=" width:78%"  >
-                             <f:selectItems value="#{beanMantenimientoCursoDeas.listaEstado}" />  
-                        </p:selectOneMenu>
                         
                         <p:outputLabel value="Codigo:" ></p:outputLabel>
                         <p:inputText value="#{beanMantenimientRecurso.recurso.id}" disabled="#{beanMantenimientRecurso.disable}" />
@@ -106,6 +100,11 @@
             </p:dialog>
             
             <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
+            <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
+                <footer style="height: 50px; background-color: #102b70">
+                    <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>
+                </footer>
+            </div>
         </h:form>
     </h:body>
 </html>

@@ -16,6 +16,8 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -50,15 +52,15 @@ public class beanMantenimientRecurso implements Serializable {
         return lista;
     }
 
-    public LinkedList<SelectItem> getListaEstado() throws SNMPExceptions, SQLException {
-
-        LinkedList resultList = new LinkedList();
-        resultList.add(new SelectItem(0, "Activo"));
-        resultList.add(new SelectItem(1, "Inactivo"));
-
-        return resultList;
-
-    }
+//    public LinkedList<SelectItem> getListaEstado() throws SNMPExceptions, SQLException {
+//
+//        LinkedList resultList = new LinkedList();
+//        resultList.add(new SelectItem(0, "Activo"));
+//        resultList.add(new SelectItem(1, "Inactivo"));
+//
+//        return resultList;
+//
+//    }
 
     public void insertarRecurso() throws SNMPExceptions, SQLException {
         Recurso cu = this.recurso;
@@ -68,10 +70,13 @@ public class beanMantenimientRecurso implements Serializable {
             nRecurso.id = cu.id;
             nRecurso.tipo = cu.tipo;
             nRecurso.descripcion = cu.descripcion;
-            nRecurso.estadoRecurso = (estado==0)?true:false;
+            
 
             RecursoDB db = new RecursoDB();
             db.InsertarRecurso(nRecurso);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Recurso ingresado correctamente!"));
         } else {
             //mensajito
         }
@@ -89,10 +94,13 @@ public class beanMantenimientRecurso implements Serializable {
             RecursoUp.id = us.id;
             RecursoUp.descripcion = us.descripcion;
             RecursoUp.tipo = us.tipo;
-            RecursoUp.estadoRecurso = (estado==0)?true:false;
+//            RecursoUp.estadoRecurso = (estado==0)?true:false;
 
             RecursoDB upUser = new RecursoDB();
             upUser.ActualizarRecurso(RecursoUp);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Recurso actualizado correctamente!"));
 
         }
 
@@ -109,7 +117,9 @@ public class beanMantenimientRecurso implements Serializable {
 
             RecursoDB upUser = new RecursoDB();
             upUser.EliminarRecurso(RecursoDel);
-
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Recurso eliminado correctamente!"));
         }
     }
 

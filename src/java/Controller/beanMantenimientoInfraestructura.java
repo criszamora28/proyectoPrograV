@@ -14,6 +14,8 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -45,15 +47,15 @@ public class beanMantenimientoInfraestructura implements Serializable {
         return lista;
     }
 
-    public LinkedList<SelectItem> getListaEstado() throws SNMPExceptions, SQLException {
-
-        LinkedList resultList = new LinkedList();
-        resultList.add(new SelectItem(0, "Activo"));
-        resultList.add(new SelectItem(1, "Inactivo"));
-
-        return resultList;
-
-    }
+//    public LinkedList<SelectItem> getListaEstado() throws SNMPExceptions, SQLException {
+//
+//        LinkedList resultList = new LinkedList();
+//        resultList.add(new SelectItem(0, "Activo"));
+//        resultList.add(new SelectItem(1, "Inactivo"));
+//
+//        return resultList;
+//
+//    }
 
     public void insertarInfraestructura() throws SNMPExceptions, SQLException {
         Infraestructura cu = this.infra;
@@ -62,12 +64,17 @@ public class beanMantenimientoInfraestructura implements Serializable {
             Infraestructura nInfraestructura = new Infraestructura();
             nInfraestructura.idInfraestructura = cu.idInfraestructura;
             nInfraestructura.descripcion = cu.descripcion;
-            nInfraestructura.disponibilidad= (estado==1)?true:false;
+//            nInfraestructura.disponibilidad= (estado==1)?true:false;
 
             InfraestructuraDB db = new InfraestructuraDB();
             db.InsertarInfraestructura(nInfraestructura);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Infraestructura ingresada correctamente!"));
         } else {
             //mensajito
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Error!", "Datos incorrectos!"));
         }
 
     }
@@ -86,6 +93,9 @@ public class beanMantenimientoInfraestructura implements Serializable {
 
             InfraestructuraDB upUser = new InfraestructuraDB();
             upUser.ActualizarInfraestructura(InfraestructuraUp);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Infraestructura actualizada correctamente!"));
 
         }
 
@@ -102,6 +112,9 @@ public class beanMantenimientoInfraestructura implements Serializable {
 
             InfraestructuraDB upUser = new InfraestructuraDB();
             upUser.EliminarInfraestructura(InfraestructuraDel);
+            
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Exito!", "Infraestructura eliminada correctamente!"));
 
         }
     }
