@@ -5,6 +5,10 @@
  */
 package Model;
 
+/**
+ *
+ * @author Ernesto PC
+ */
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,8 +35,8 @@ import javax.mail.internet.MimeMultipart;
  */
 public class Correo {
 
-    private String correoUsuario = "SDEAS.UTN.CR@gmail.com";
-    private String contrasenia = "SDEasPrograAmbWeb2018!";
+    private String correoUsuario = "pruebaproyectos77953@gmail.com";
+    private String contrasenia = "prueba1234";
     private String destino;
     private String asunto;
     private String mensaje;
@@ -87,7 +91,4 @@ public class Correo {
     public void setNombreArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo;
     }
-
 }
-
-

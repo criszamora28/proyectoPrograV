@@ -6,6 +6,7 @@
 package Controller;
 
 import DAO.SNMPExceptions;
+import Model.ControladorCorreo;
 import Model.Usuario;
 import Model.UsuarioDB;
 import javax.inject.Named;
@@ -43,10 +44,13 @@ public class beanSolicitudes implements Serializable {
     }
 
     public void aceptarSolicitud() throws SNMPExceptions, SQLException {
-        Usuario us = this.getUsuario();
+       Usuario us = this.getUsuario();
         LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
+        Usuario seleccionado=lista.get(0);
         
         //ACA llama a la clase enviaCorreo, agarra el correo del usuario y le adjunta la clave generada. Tambien se actualiza el usarioDB
+        ControladorCorreo controlador= new ControladorCorreo();
+        controlador.enviarCorreo(seleccionado.correo);//cambiar  metodo para que reciba como parametros el correo que esta el lista.get(0);
     }
 
     public void rechazarSolicitud() throws SNMPExceptions, SQLException {

@@ -17,6 +17,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.net.ssl.SSLHandshakeException;
 
 /**
  *
@@ -34,23 +35,42 @@ public class ControladorCorreo {
         this.c = c;
     }
 
-    public boolean enviarCorreo() {
+    public boolean enviarCorreo(String email) {
         try {
+            
+          
+
+
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");
+          //  props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+           // props.setProperty("mail.smtp.ssl.trust", "smtpserver");
             props.setProperty("mail.smtp.starttls.enable", "true");
-            props.setProperty("mail.smtp.port", "587");
+            props.setProperty("mail.smtp.port", "465");
             props.setProperty("mail.smtp.user", c.getCorreoUsuario());
             props.setProperty("mail.smtp.auth", "true");
             Session s = Session.getDefaultInstance(props, null);
             BodyPart texto = new MimeBodyPart();
-            texto.setText("asdfsfs");
+            texto.setText("http://localhost:8080/PruebaCorreo/faces/pruebaInicio.html");//link que se le va a enviar al usuario
+            
+            
+            MimeMultipart m = new MimeMultipart();
+            m.addBodyPart(texto);
+//            /if (!c.getRutaArchivo().equals("")) {
+//                m.addBodyPart(adjunto);
+//            }/
+      
+            
+            
+            
+            
             BodyPart adjunto = new MimeBodyPart();
              MimeMessage mensaje = new MimeMessage(s);
             mensaje.setFrom(new InternetAddress(c.getCorreoUsuario()));//aca va el correo 
-            mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress("ernestoc77953@gmail.com"));//aca va el destino
+            mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(email));//aca va el destino
             mensaje.setSubject("funciona");
-           //   mensaje.setContent(m);
+            mensaje.setText("http://localhost:8080/PruebaCorreo/faces/pruebaInicio.html");
+            mensaje.setContent(m);
             Transport t = s.getTransport("smtp");
             t.connect(c.getCorreoUsuario(), c.getContrasenia());
             t.sendMessage(mensaje, mensaje.getAllRecipients());
@@ -62,3 +82,4 @@ public class ControladorCorreo {
     }
 
 }
+
