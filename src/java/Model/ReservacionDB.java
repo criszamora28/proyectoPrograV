@@ -72,6 +72,34 @@ public class ReservacionDB {
 
         }
     }
+    
+    public void InsertarDetalleReservacion(DetalleReservacion pDetalle) throws SNMPExceptions, SQLException {
+        String strSQL = "";
+
+        try {
+            
+          
+
+            strSQL
+                    = "INSERT INTO detalleRservacion(idReservacion,idRecurso,"
+                    + "idInfraestructura,estadoRegistro VALUES"
+                    + "(" + "'" + pDetalle.Reservacion + "'" + ","
+                    + "'" + pDetalle.Recurso + "'" + ","
+                    + "'" + pDetalle.Infraestructura + "'" + ","
+                    + 1
+                    + ")";
+            //Se ejecuta la sentencia SQL
+            accesoDatos.ejecutaSQL(strSQL);
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage());
+        } finally {
+
+        }
+    }
+
 
     public LinkedList<Reservacion> selectReservacion() throws SNMPExceptions, SQLException {
         String select = "";

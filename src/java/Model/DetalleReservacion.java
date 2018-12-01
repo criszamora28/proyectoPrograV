@@ -11,59 +11,57 @@ import java.util.Date;
  *
  * @author crisz
  */
-public class Recurso {
-    public  String id;
-    public  String tipo;
-    public String descripcion;
+public class DetalleReservacion {
+    public int id;
+    public String Reservacion;
+    public String Recurso;
+    public String Infraestructura;
+    public int idUsuarioIngresaRegistro;
     public int idUsuarioIngresoRegistro;
+    public Date fechaIngresoRegistro;
     public int idUsuarioEdicionRegistro;
     public Date fechaEdicionRegistro;
-    public Date fechaIngresoRegistro;
-    public boolean estadoRecurso;
     public boolean estadoRegistro;
 
-    public Recurso(String id, String tipo, String descripcion, int idUsuarioIngresoRegistro, Date fechaIngresoRegistro, int idUsuarioEdicionRegistro, Date fechaEdicionRegistro, boolean estadoRecurso, boolean estadoRegistro) {
-        this.id = id;
-        this.tipo = tipo;
-        this.descripcion = descripcion;
-        this.idUsuarioIngresoRegistro = idUsuarioIngresoRegistro;
-        this.fechaIngresoRegistro = fechaIngresoRegistro;
-        this.idUsuarioEdicionRegistro = idUsuarioEdicionRegistro;
-        this.fechaEdicionRegistro = fechaEdicionRegistro;
-        this.estadoRecurso = estadoRecurso;
-        this.estadoRegistro = estadoRegistro;
-    }
-
-    public Recurso() {
-    }
-
-    @Override
-    public String toString(){
-        return this.id + " - " + this.getDescripcion();
-    }
-    
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getReservacion() {
+        return Reservacion;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setReservacion(String Reservacion) {
+        this.Reservacion = Reservacion;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getRecurso() {
+        return Recurso;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setRecurso(String Recurso) {
+        this.Recurso = Recurso;
+    }
+
+    public String getInfraestructura() {
+        return Infraestructura;
+    }
+
+    public void setInfraestructura(String Infraestructura) {
+        this.Infraestructura = Infraestructura;
+    }
+
+    
+    public int getIdUsuarioIngresaRegistro() {
+        return idUsuarioIngresaRegistro;
+    }
+
+    public void setIdUsuarioIngresaRegistro(int idUsuarioIngresaRegistro) {
+        this.idUsuarioIngresaRegistro = idUsuarioIngresaRegistro;
     }
 
     public int getIdUsuarioIngresoRegistro() {
@@ -98,14 +96,6 @@ public class Recurso {
         this.fechaEdicionRegistro = fechaEdicionRegistro;
     }
 
-    public boolean isEstadoRecurso() {
-        return estadoRecurso;
-    }
-
-    public void setEstadoRecurso(boolean estadoRecurso) {
-        this.estadoRecurso = estadoRecurso;
-    }
-
     public boolean isEstadoRegistro() {
         return estadoRegistro;
     }
@@ -113,7 +103,6 @@ public class Recurso {
     public void setEstadoRegistro(boolean estadoRegistro) {
         this.estadoRegistro = estadoRegistro;
     }
-    
     
     
 }

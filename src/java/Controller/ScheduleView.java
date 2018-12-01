@@ -6,8 +6,11 @@
 package Controller;
 
 import DAO.SNMPExceptions;
+import Model.DetalleReservacion;
 import Model.Infraestructura;
 import Model.InfraestructuraDB;
+import Model.Recurso;
+import Model.RecursoDB;
 import Model.Reservacion;
 import Model.ReservacionDB;
 import Model.TipoReservacion;
@@ -20,6 +23,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -46,21 +50,18 @@ public class ScheduleView implements Serializable {
     private ScheduleModel eventModel;
     
     int TipoReservacion;
+    String infraestructura;
     LinkedList listaIn = new LinkedList();
-
-    public LinkedList getListaIn() {
-        return listaIn;
-    }
-
-    public void setListaIn(LinkedList listaIn) {
-        this.listaIn = listaIn;
-    }
- 
+    boolean habilitarCampos;
+    LinkedList listaRecurso = new LinkedList();
+    
     //private ScheduleModel lazyEventModel;
     private ScheduleEvent event = new DefaultScheduleEvent();
 
     @PostConstruct
     public void init() {
+        this.deshabilitarCampos();
+        
         eventModel = new DefaultScheduleModel();
         ReservacionDB oReservacionDB = new ReservacionDB();
 
@@ -69,6 +70,7 @@ public class ScheduleView implements Serializable {
                 if (oReservacion.estadoSolicitud == true && oReservacion.estadoRegistro == true) {
                     eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
                             oReservacion.fechaFinal, oReservacion.todoElDia));
+                    
                 }
                     
                     
@@ -94,15 +96,75 @@ public class ScheduleView implements Serializable {
 //            }   
 //        };
     }
+    
+    public void addEvent() {
+        if (event.getId() == null) {
+            
+            eventModel.addEvent(event);
+            try {
+                ReservacionDB oReservacionDB = new ReservacionDB();
+                UsuarioDB oUsuarioDB = new UsuarioDB();
+                LinkedList<Usuario> listaUsuario = new LinkedList<>();
+                listaUsuario = oUsuarioDB.seleccionarUsuarioId(123456789);
 
-    
-    
-    public int getTipoReservacion() {
-        return TipoReservacion;
+                Reservacion oReservacion = new Reservacion();
+                oReservacion.id = event.getId();
+                oReservacion.TipoReservacion = TipoReservacion;
+                oReservacion.Usuario = listaUsuario.get(0);
+                oReservacion.titulo = event.getTitle();
+                oReservacion.fechaInicio = event.getStartDate();
+                oReservacion.fechaFinal = event.getEndDate();
+                oReservacion.todoElDia = event.isAllDay();
+                oReservacion.editable = false;
+                oReservacion.estadoSolicitud = false;
+                oReservacion.idUsuarioIngresoRegistro = 1;
+                oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
+                oReservacion.estadoRegistro = true;
+
+                oReservacionDB.InsertarReservacion(oReservacion);
+                
+                DetalleReservacion oDetalle = new DetalleReservacion();
+                oDetalle.Reservacion = oReservacion.getId();
+                
+                if (!listaIn.isEmpty()) {
+                    Iterator iter = listaIn.iterator();
+                    while (iter.hasNext()) {                        
+                        String idInfra = (String)iter.next();
+                        oDetalle.Infraestructura = idInfra;
+                    }
+                }
+                
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("Exito", "Su reservacion ha sido enviada para valoracion"));
+
+            } catch (Exception e) {
+                FacesMessage mensajeError;
+                mensajeError = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Datelle :" + e.getMessage());
+                this.addMessage(mensajeError);
+            }
+
+        } else {
+            eventModel.updateEvent(event);
+            
+        }
+        event = new DefaultScheduleEvent();
     }
-
-    public void setTipoReservacion(int TipoReservacion) {
-        this.TipoReservacion = TipoReservacion;
+    
+    public LinkedList<SelectItem> getListaInfraestructura() {
+        LinkedList listaInfra = new LinkedList();
+        
+        try {
+            InfraestructuraDB oInfraestructuraDB = new InfraestructuraDB();
+            
+            for (Infraestructura oInfraestructura : oInfraestructuraDB.seleccionarInfraestructura()) {
+                listaInfra.add(new SelectItem(oInfraestructura.getIdInfraestructura(),oInfraestructura.toString()));
+            }
+            
+        } catch (SNMPExceptions | SQLException e) {
+        }
+        
+        return listaInfra;
+        
     }
     
     public LinkedList<SelectItem> getListaTipoReservacion() {
@@ -123,24 +185,72 @@ public class ScheduleView implements Serializable {
         
     }
     
-//    public LinkedList<SelectItem> getListaInfraestructura() {
-//        LinkedList listaInfra = new LinkedList();
-//        
-//        try {
-//            InfraestructuraDB oInfraestructuraDB = new InfraestructuraDB();
-//            
-//            for (Infraestructura oInfraestructura : oInfraestructuraDB.seleccionarInfraestructurasDisponibles()) {
-//                listaInfra.add(new SelectItem(oInfraestructura.getIdInfraestructura(),oInfraestructura.toString()));
-//            }
-//            
-//        } catch (SNMPExceptions | SQLException e) {
-//        }
-//        
-//        return listaInfra;
-//        
-//    }
+    public LinkedList<SelectItem> getListaRecursos() {
+        LinkedList listaRecursos = new LinkedList();
+        
+        try {
+            RecursoDB oRecursoDB = new RecursoDB();
+            
+            
+            for (Recurso oRecurso : oRecursoDB.seleccionarRecurso()) {
+                listaRecursos.add(new SelectItem(oRecurso.getId(),oRecurso.getTipo() + " - " + oRecurso.getDescripcion()));
+            }
+            
+        } catch (SNMPExceptions | SQLException e) {
+        }
+        
+        return listaRecursos;
+        
+    }
+    
+    private void habilitarCampos(){
+        this.habilitarCampos = true;
+    }
+    
+    private void deshabilitarCampos(){
+        this.habilitarCampos = false;
+    }
+
+    public LinkedList getListaRecurso() {
+        return listaRecurso;
+    }
+
+    public void setListaRecurso(LinkedList listaRecurso) {
+        this.listaRecurso = listaRecurso;
+    }
+
+    public String getInfraestructura() {
+        return infraestructura;
+    }
+
+    public void setInfraestructura(String infraestructura) {
+        this.infraestructura = infraestructura;
+    }
 
     
+    public boolean isHabilitarCampos() {
+        return habilitarCampos;
+    }
+
+    public void setHabilitarCampos(boolean habilitarCampos) {
+        this.habilitarCampos = habilitarCampos;
+    }
+
+    public LinkedList getListaIn() {
+        return listaIn;
+    }
+
+    public void setListaIn(LinkedList listaIn) {
+        this.listaIn = listaIn;
+    }
+    
+    public int getTipoReservacion() {
+        return TipoReservacion;
+    }
+
+    public void setTipoReservacion(int TipoReservacion) {
+        this.TipoReservacion = TipoReservacion;
+    }
     
     public Date getRandomDate(Date base) {
         Calendar date = Calendar.getInstance();
@@ -247,52 +357,6 @@ public class ScheduleView implements Serializable {
     public void setEvent(ScheduleEvent event) {
         this.event = event;
     }
-
-    
-    
-    public void addEvent() {
-        if (event.getId() == null) {
-            
-            eventModel.addEvent(event);
-            try {
-                ReservacionDB oReservacionDB = new ReservacionDB();
-                UsuarioDB oUsuarioDB = new UsuarioDB();
-                LinkedList<Usuario> listaUsuario = new LinkedList<>();
-                listaUsuario = oUsuarioDB.seleccionarUsuarioId(123456789);
-
-                Reservacion oReservacion = new Reservacion();
-                oReservacion.id = event.getId();
-                oReservacion.TipoReservacion = TipoReservacion;
-                oReservacion.Usuario = listaUsuario.get(0);
-                oReservacion.titulo = event.getTitle();
-                oReservacion.fechaInicio = event.getStartDate();
-                oReservacion.fechaFinal = event.getEndDate();
-                oReservacion.todoElDia = event.isAllDay();
-                oReservacion.editable = false;
-                oReservacion.estadoSolicitud = false;
-                oReservacion.idUsuarioIngresoRegistro = 1;
-                oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
-                oReservacion.estadoRegistro = true;
-
-                oReservacionDB.InsertarReservacion(oReservacion);
-
-                FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage(null, new FacesMessage("Exito", "Su reservacion ha sido enviada para valoracion"));
-
-            } catch (Exception e) {
-                FacesMessage mensajeError;
-                mensajeError = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Datelle :" + e.getMessage());
-                this.addMessage(mensajeError);
-            }
-
-        } else {
-            eventModel.updateEvent(event);
-            
-        }
-        event = new DefaultScheduleEvent();
-    }
-
-    
     
     public void onEventSelect(SelectEvent selectEvent) {
         event = (ScheduleEvent) selectEvent.getObject();

@@ -23,6 +23,11 @@ public class TipoReservacion {
         this.descripcion = descripcion;
     }
 
+    @Override
+    public String toString() {
+        return this.getTipo();
+    }
+
     
     public int getId() {
         return Id;

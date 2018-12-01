@@ -23,6 +23,11 @@ public class Infraestructura {
     public Infraestructura() {
     }
 
+    @Override
+    public String toString(){
+        return this.idInfraestructura + " - " + this.descripcion; 
+    }
+    
     public String getIdInfraestructura() {
         return idInfraestructura;
     }

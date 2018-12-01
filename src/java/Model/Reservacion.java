@@ -37,7 +37,7 @@ public class Reservacion {
     public void setTipoReservacion(int TipoReservacion) {
         this.TipoReservacion = TipoReservacion;
     }
-
+    
     public boolean isEstadoSolicitud() {
         return estadoSolicitud;
     }
