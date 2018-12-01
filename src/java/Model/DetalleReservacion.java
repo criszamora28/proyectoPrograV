@@ -16,12 +16,67 @@ public class DetalleReservacion {
     public String Reservacion;
     public String Recurso;
     public String Infraestructura;
+    public String titulo;
+    public Date fechaInicio;
+    public Date fechaFinal;
+    public boolean todoElDia;
+    public boolean editable;
+    public boolean estadoSolicitud;
+    
     public int idUsuarioIngresaRegistro;
-    public int idUsuarioIngresoRegistro;
     public Date fechaIngresoRegistro;
     public int idUsuarioEdicionRegistro;
     public Date fechaEdicionRegistro;
+    
     public boolean estadoRegistro;
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public Date getFechaFinal() {
+        return fechaFinal;
+    }
+
+    public void setFechaFinal(Date fechaFinal) {
+        this.fechaFinal = fechaFinal;
+    }
+
+    public boolean isTodoElDia() {
+        return todoElDia;
+    }
+
+    public void setTodoElDia(boolean todoElDia) {
+        this.todoElDia = todoElDia;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public boolean isEstadoSolicitud() {
+        return estadoSolicitud;
+    }
+
+    public void setEstadoSolicitud(boolean estadoSolicitud) {
+        this.estadoSolicitud = estadoSolicitud;
+    }
 
     public int getId() {
         return id;
@@ -64,13 +119,7 @@ public class DetalleReservacion {
         this.idUsuarioIngresaRegistro = idUsuarioIngresaRegistro;
     }
 
-    public int getIdUsuarioIngresoRegistro() {
-        return idUsuarioIngresoRegistro;
-    }
-
-    public void setIdUsuarioIngresoRegistro(int idUsuarioIngresoRegistro) {
-        this.idUsuarioIngresoRegistro = idUsuarioIngresoRegistro;
-    }
+    
 
     public Date getFechaIngresoRegistro() {
         return fechaIngresoRegistro;

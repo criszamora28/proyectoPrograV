@@ -96,23 +96,28 @@
                 <h:panelGrid id="eventDetails" columns="4" cellspacing="10">
                     
                     <h:outputLabel value="Tipo de Reservacion: "></h:outputLabel>
-                    <p:selectOneMenu value="#{scheduleView.tipoReservacion}" style=" width:78%" >
+                    <p:selectOneMenu value="#{scheduleView.tipoReservacion}" style=" width:78%;" required="true" disabled="#{scheduleView.habilitarCampos}"  >
                         <f:selectItems value="#{scheduleView.listaTipoReservacion}" />  
                     </p:selectOneMenu>
                     
-
                     <p:outputLabel for="title" value="Descripcion del evento:" />
                     <p:inputText id="title" value="#{scheduleView.event.title}" required="true"  />
                     
-
                     <p:outputLabel for="from" value="Día que inicia:" />
                     <p:calendar id="from" value="#{scheduleView.event.startDate}" required="true" timeZone="GMT-6" pattern="dd/MM/yyyy HH:mm" />
                    
-                    
                     <p:outputLabel for="to" value="Día que termina:" />
                     <p:calendar id="to" value="#{scheduleView.event.endDate}" required="true" timeZone="GMT-6" pattern="dd/MM/yyyy HH:mm" />
                     
-                    
+                    <p:outputLabel for="allDay" value="Evento todo el Dia:" />
+                    <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" style=""/>
+                    <p:outputLabel></p:outputLabel>
+                    <p:outputLabel></p:outputLabel>
+                    <p:separator></p:separator>
+                    <p:separator></p:separator>
+                    <p:separator></p:separator>
+                    <p:separator></p:separator>
+                                        
                     <h:outputLabel value="Recurso (os): "></h:outputLabel>
                     <p:selectManyMenu value="#{scheduleView.listaRecurso}" style=" width:78%" disabled="#{scheduleView.habilitarCampos}">
                         <f:selectItems value="#{scheduleView.listaRecursos}" />  
@@ -125,12 +130,11 @@
                     </p:selectManyMenu>
                     
                     
-                    <p:outputLabel for="allDay" value="Evento todo el Dia:" />
-                    <h:selectBooleanCheckbox id="allDay" value="#{scheduleView.event.allDay}" disabled="#{scheduleView.habilitarCampos}"/>
-                    
-                    <p:outputLabel></p:outputLabel>
-                    <p:outputLabel></p:outputLabel>
-                    <p:outputLabel></p:outputLabel>
+                    <p:separator></p:separator>
+                    <p:separator></p:separator>
+                    <p:separator></p:separator>
+                    <p:separator></p:separator>
+                    <p:spacer></p:spacer>
                     <p:commandButton id="addButton" value="Guardar" update="growl" actionListener="#{scheduleView.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
                     <p:commandButton type="reset" value="Limpiar" />
                     <p:commandButton value="Modificar" />

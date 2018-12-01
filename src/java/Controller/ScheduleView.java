@@ -25,7 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -35,7 +34,6 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
@@ -60,18 +58,18 @@ public class ScheduleView implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.deshabilitarCampos();
+        this.habilitarCampos = false;
         
         eventModel = new DefaultScheduleModel();
         ReservacionDB oReservacionDB = new ReservacionDB();
 
         try {
             for (Reservacion oReservacion : oReservacionDB.selectReservacion()) {
-                if (oReservacion.estadoSolicitud == true && oReservacion.estadoRegistro == true) {
-                    eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
-                            oReservacion.fechaFinal, oReservacion.todoElDia));
-                    
-                }
+//                if (oReservacion.estadoSolicitud == true && oReservacion.estadoRegistro == true) {
+//                    eventModel.addEvent(new DefaultScheduleEvent(oReservacion.titulo, oReservacion.fechaInicio, 
+//                            oReservacion.fechaFinal, oReservacion.todoElDia));
+//                    
+//                }
                     
                     
             }
@@ -111,12 +109,7 @@ public class ScheduleView implements Serializable {
                 oReservacion.id = event.getId();
                 oReservacion.TipoReservacion = TipoReservacion;
                 oReservacion.Usuario = listaUsuario.get(0);
-                oReservacion.titulo = event.getTitle();
-                oReservacion.fechaInicio = event.getStartDate();
-                oReservacion.fechaFinal = event.getEndDate();
-                oReservacion.todoElDia = event.isAllDay();
-                oReservacion.editable = false;
-                oReservacion.estadoSolicitud = false;
+                
                 oReservacion.idUsuarioIngresoRegistro = 1;
                 oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
                 oReservacion.estadoRegistro = true;
@@ -131,7 +124,31 @@ public class ScheduleView implements Serializable {
                     while (iter.hasNext()) {                        
                         String idInfra = (String)iter.next();
                         oDetalle.Infraestructura = idInfra;
+                        oDetalle.titulo = event.getTitle();
+                        oDetalle.fechaInicio = event.getStartDate();
+                        oDetalle.fechaFinal = event.getEndDate();
+                        oDetalle.todoElDia = event.isAllDay();
+                        oDetalle.editable = false;
+                        oDetalle.estadoSolicitud = false;
+                        oReservacionDB.InsertarDetalleReservacionInfraestructura(oDetalle);
                     }
+                    
+                }
+                
+                if (!listaRecurso.isEmpty()) {
+                    Iterator iter = listaRecurso.iterator();
+                    while (iter.hasNext()) {                        
+                        String idRecurso = (String)iter.next();
+                        oDetalle.Recurso = idRecurso;
+                        oDetalle.titulo = event.getTitle();
+                        oDetalle.fechaInicio = event.getStartDate();
+                        oDetalle.fechaFinal = event.getEndDate();
+                        oDetalle.todoElDia = event.isAllDay();
+                        oDetalle.editable = false;
+                        oDetalle.estadoSolicitud = false;
+                        oReservacionDB.InsertarDetalleReservacionRecurso(oDetalle);
+                    }
+                    
                 }
                 
                 FacesContext context = FacesContext.getCurrentInstance();
@@ -203,12 +220,12 @@ public class ScheduleView implements Serializable {
         
     }
     
-    private void habilitarCampos(){
-        this.habilitarCampos = true;
+    public boolean habilitarCampos(){
+        return true;
     }
     
-    private void deshabilitarCampos(){
-        this.habilitarCampos = false;
+    public boolean deshabilitarCampos(){
+        return false;
     }
 
     public LinkedList getListaRecurso() {
@@ -227,7 +244,6 @@ public class ScheduleView implements Serializable {
         this.infraestructura = infraestructura;
     }
 
-    
     public boolean isHabilitarCampos() {
         return habilitarCampos;
     }
@@ -235,6 +251,8 @@ public class ScheduleView implements Serializable {
     public void setHabilitarCampos(boolean habilitarCampos) {
         this.habilitarCampos = habilitarCampos;
     }
+
+   
 
     public LinkedList getListaIn() {
         return listaIn;

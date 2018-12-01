@@ -15,16 +15,12 @@ public class Reservacion {
     public String id;
     public Usuario Usuario;
     public int TipoReservacion;
-    public String titulo;
-    public Date fechaInicio;
-    public Date fechaFinal;
-    public boolean todoElDia;
-    public boolean editable;
-    public boolean estadoSolicitud;
+    
     public int idUsuarioIngresoRegistro;
     public Date fechaIngresoRegistro;
     public int idUsuarioEdicionRegistro;
     public Date fechaEdicionRegistro;
+    
     public boolean estadoRegistro;
 
     public Reservacion() {
@@ -36,14 +32,6 @@ public class Reservacion {
 
     public void setTipoReservacion(int TipoReservacion) {
         this.TipoReservacion = TipoReservacion;
-    }
-    
-    public boolean isEstadoSolicitud() {
-        return estadoSolicitud;
-    }
-
-    public void setEstadoSolicitud(boolean estadoSolicitud) {
-        this.estadoSolicitud = estadoSolicitud;
     }
 
     public String getId() {
@@ -60,54 +48,6 @@ public class Reservacion {
 
     public void setUsuario(Usuario Usuario) {
         this.Usuario = Usuario;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public Date getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Date fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Date getFechaFinal() {
-        return fechaFinal;
-    }
-
-    public void setFechaFinal(Date fechaFinal) {
-        this.fechaFinal = fechaFinal;
-    }
-
-    public boolean isTodoElDia() {
-        return todoElDia;
-    }
-
-    public void setTodoElDia(boolean todoElDia) {
-        this.todoElDia = todoElDia;
-    }
-
-    public boolean isEditable() {
-        return editable;
-    }
-
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
-
-    public boolean isEstadoReservacion() {
-        return estadoSolicitud;
-    }
-
-    public void setEstadoReservacion(boolean estadoReservacion) {
-        this.estadoSolicitud = estadoReservacion;
     }
 
     public int getIdUsuarioIngresoRegistro() {

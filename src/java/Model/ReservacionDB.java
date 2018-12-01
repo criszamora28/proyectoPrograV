@@ -39,24 +39,14 @@ public class ReservacionDB {
 
         try {
             //Se obtienen los valores del objeto Reservacion
-            int todoElDia = pReservacion.todoElDia ? 1 : 0;
-            int editable = pReservacion.editable ? 1 : 0;
-            int estadoReservacion = pReservacion.estadoSolicitud ? 1 : 0;
             int estadoResgistro = pReservacion.estadoRegistro ? 1 : 0;
 
             strSQL
                     = "INSERT INTO reservacion(id,idUsuario,idTipoReservacion,"
-                    + "titule,startDate,endDate,allDay,editable,estadoSolicitud,"
                     + "idUsuarioIngresoRegistro,fechaIngresoRegistro,estadoRegistro) VALUES"
                     + "(" + "'" + pReservacion.id + "'" + ","
                     + "'" + pReservacion.Usuario.identificacion + "'" + ","
                     + pReservacion.TipoReservacion + ","
-                    + "'" + pReservacion.titulo + "'" + ","
-                    + "'" + pReservacion.fechaInicio + "'" + ","
-                    + "'" + pReservacion.fechaFinal + "'" + ","
-                    + todoElDia + ","
-                    + editable + ","
-                    + estadoReservacion + ","
                     + "'" + pReservacion.idUsuarioIngresoRegistro + "'" + ","
                     + "'" + pReservacion.fechaIngresoRegistro + "'" + ","
                     + estadoResgistro
@@ -73,19 +63,61 @@ public class ReservacionDB {
         }
     }
     
-    public void InsertarDetalleReservacion(DetalleReservacion pDetalle) throws SNMPExceptions, SQLException {
+    public void InsertarDetalleReservacionRecurso(DetalleReservacion pDetalle) throws SNMPExceptions, SQLException {
+        String strSQL = "";
+
+        try {
+            int todoElDia = pDetalle.todoElDia ? 1 : 0;
+            int editable = pDetalle.editable ? 1 : 0;
+            int estadoReservacion = pDetalle.estadoSolicitud ? 1 : 0;
+          
+
+            strSQL
+                    = "INSERT INTO detalleRservacion(idReservacion,idRecurso"
+                    + ",titule,startDate,endDate,allDay,editable,estadoSolicitud,estadoRegistro) VALUES"
+                    + "(" + "'" + pDetalle.Reservacion + "'" + ","
+                    + "'" + pDetalle.Recurso + "'" + ","
+                    + "'" + pDetalle.titulo + "'" + ","
+                    + "'" + pDetalle.fechaInicio + "'" + ","
+                    + "'" + pDetalle.fechaFinal + "'" + ","
+                    + todoElDia + ","
+                    + editable + ","
+                    + estadoReservacion + ","
+                    + 1
+                    + ")";
+            //Se ejecuta la sentencia SQL
+            accesoDatos.ejecutaSQL(strSQL);
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage());
+        } finally {
+
+        }
+    }
+    
+    public void InsertarDetalleReservacionInfraestructura(DetalleReservacion pDetalle) throws SNMPExceptions, SQLException {
         String strSQL = "";
 
         try {
             
-          
+            int todoElDia = pDetalle.todoElDia ? 1 : 0;
+            int editable = pDetalle.editable ? 1 : 0;
+            int estadoReservacion = pDetalle.estadoSolicitud ? 1 : 0;
 
+            
             strSQL
-                    = "INSERT INTO detalleRservacion(idReservacion,idRecurso,"
-                    + "idInfraestructura,estadoRegistro VALUES"
+                    = "INSERT INTO detalleRservacion(idReservacion,idInfraestructura"
+                    + ",titule,startDate,endDate,allDay,editable,estadoSolicitud,estadoRegistro) VALUES"
                     + "(" + "'" + pDetalle.Reservacion + "'" + ","
-                    + "'" + pDetalle.Recurso + "'" + ","
                     + "'" + pDetalle.Infraestructura + "'" + ","
+                    + "'" + pDetalle.titulo + "'" + ","
+                    + "'" + pDetalle.fechaInicio + "'" + ","
+                    + "'" + pDetalle.fechaFinal + "'" + ","
+                    + todoElDia + ","
+                    + editable + ","
+                    + estadoReservacion + ","
                     + 1
                     + ")";
             //Se ejecuta la sentencia SQL
@@ -136,12 +168,12 @@ public class ReservacionDB {
                 Reservacion oReservacion = new Reservacion();
                 oReservacion.id = rsPA.getString("id");
                 oReservacion.Usuario = listaUsuario.get(0);
-                oReservacion.titulo = rsPA.getString("titule");
-                oReservacion.fechaInicio = fechaInicio;
-                oReservacion.fechaFinal = fechaFinal;
-                oReservacion.todoElDia = todoElDia == 1;
-                oReservacion.editable = editable == 1;
-                oReservacion.estadoSolicitud = estadoReservacion == 1;
+//                oReservacion.titulo = rsPA.getString("titule");
+//                oReservacion.fechaInicio = fechaInicio;
+//                oReservacion.fechaFinal = fechaFinal;
+//                oReservacion.todoElDia = todoElDia == 1;
+//                oReservacion.editable = editable == 1;
+//                oReservacion.estadoSolicitud = estadoReservacion == 1;
                 oReservacion.estadoRegistro = estadoResgistro == 1;
 
                 listaReservaciones.add(oReservacion);
