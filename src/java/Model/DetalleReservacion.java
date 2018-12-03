@@ -13,9 +13,9 @@ import java.util.Date;
  */
 public class DetalleReservacion {
     public int id;
-    public String Reservacion;
-    public String Recurso;
-    public String Infraestructura;
+    public Reservacion Reservacion;
+    public Recurso Recurso;
+    public Infraestructura Infraestructura;
     public String titulo;
     public Date fechaInicio;
     public Date fechaFinal;
@@ -29,6 +29,30 @@ public class DetalleReservacion {
     public Date fechaEdicionRegistro;
     
     public boolean estadoRegistro;
+
+    public Reservacion getReservacion() {
+        return Reservacion;
+    }
+
+    public void setReservacion(Reservacion Reservacion) {
+        this.Reservacion = Reservacion;
+    }
+
+    public Recurso getRecurso() {
+        return Recurso;
+    }
+
+    public void setRecurso(Recurso Recurso) {
+        this.Recurso = Recurso;
+    }
+
+    public Infraestructura getInfraestructura() {
+        return Infraestructura;
+    }
+
+    public void setInfraestructura(Infraestructura Infraestructura) {
+        this.Infraestructura = Infraestructura;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -85,31 +109,6 @@ public class DetalleReservacion {
     public void setId(int id) {
         this.id = id;
     }
-
-    public String getReservacion() {
-        return Reservacion;
-    }
-
-    public void setReservacion(String Reservacion) {
-        this.Reservacion = Reservacion;
-    }
-
-    public String getRecurso() {
-        return Recurso;
-    }
-
-    public void setRecurso(String Recurso) {
-        this.Recurso = Recurso;
-    }
-
-    public String getInfraestructura() {
-        return Infraestructura;
-    }
-
-    public void setInfraestructura(String Infraestructura) {
-        this.Infraestructura = Infraestructura;
-    }
-
     
     public int getIdUsuarioIngresaRegistro() {
         return idUsuarioIngresaRegistro;

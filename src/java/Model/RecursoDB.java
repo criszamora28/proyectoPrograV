@@ -122,6 +122,53 @@ public class RecursoDB {
 
         return listaRecurso;
     }
+    
+    public Recurso seleccionarRecursoId2(String pIdRecurso) throws SNMPExceptions, SQLException {
+        String select = "";
+        Recurso perRecurso = null;
+
+        try {
+
+            //Se instancia la clase de acceso a datos
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            //Se crea la sentencia de búsqueda
+            select
+                    = "SELECT id,tipo, "
+                    + "descripcion, estadoRecurso FROM recurso where id=" + "'" + pIdRecurso + "'";
+
+            //Se ejecuta la sentencia SQL
+            ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+            //Se llena el arryaList con los proyectos   
+            while (rsPA.next()) {
+
+                String id = rsPA.getString("id");
+                String tipo = rsPA.getString("tipo");
+                String descripcion = rsPA.getString("descripcion");
+
+                perRecurso = new Recurso();
+                perRecurso.id = id;
+                perRecurso.tipo = tipo;
+                perRecurso.descripcion = descripcion;
+
+               
+            }
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return perRecurso;
+    }
+    
+    
 
     public void InsertarRecurso(Recurso infra) throws SNMPExceptions, SQLException {
         String strSQL = "";

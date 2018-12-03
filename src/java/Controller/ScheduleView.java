@@ -102,28 +102,30 @@ public class ScheduleView implements Serializable {
             try {
                 ReservacionDB oReservacionDB = new ReservacionDB();
                 UsuarioDB oUsuarioDB = new UsuarioDB();
+                InfraestructuraDB oInfraestructuraDB = new InfraestructuraDB();
+                RecursoDB oRecursoDB = new RecursoDB();
                 LinkedList<Usuario> listaUsuario = new LinkedList<>();
                 listaUsuario = oUsuarioDB.seleccionarUsuarioId(123456789);
 
                 Reservacion oReservacion = new Reservacion();
                 oReservacion.id = event.getId();
-                oReservacion.TipoReservacion = TipoReservacion;
+                oReservacion.TipoReservacion = oReservacionDB.selectTipoReservacionPorId(TipoReservacion);
                 oReservacion.Usuario = listaUsuario.get(0);
                 
-                oReservacion.idUsuarioIngresoRegistro = 1;
+                oReservacion.idUsuarioIngresoRegistro = oReservacion.Usuario.identificacion;
                 oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
                 oReservacion.estadoRegistro = true;
 
                 oReservacionDB.InsertarReservacion(oReservacion);
                 
                 DetalleReservacion oDetalle = new DetalleReservacion();
-                oDetalle.Reservacion = oReservacion.getId();
+                oDetalle.Reservacion = oReservacion;
                 
                 if (!listaIn.isEmpty()) {
                     Iterator iter = listaIn.iterator();
                     while (iter.hasNext()) {                        
                         String idInfra = (String)iter.next();
-                        oDetalle.Infraestructura = idInfra;
+                        oDetalle.Infraestructura = oInfraestructuraDB.seleccionarInfraestructuraId2(idInfra);
                         oDetalle.titulo = event.getTitle();
                         oDetalle.fechaInicio = event.getStartDate();
                         oDetalle.fechaFinal = event.getEndDate();
@@ -139,7 +141,7 @@ public class ScheduleView implements Serializable {
                     Iterator iter = listaRecurso.iterator();
                     while (iter.hasNext()) {                        
                         String idRecurso = (String)iter.next();
-                        oDetalle.Recurso = idRecurso;
+                        oDetalle.Recurso = oRecursoDB.seleccionarRecursoId2(idRecurso);
                         oDetalle.titulo = event.getTitle();
                         oDetalle.fechaInicio = event.getStartDate();
                         oDetalle.fechaFinal = event.getEndDate();

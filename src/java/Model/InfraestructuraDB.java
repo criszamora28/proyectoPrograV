@@ -114,6 +114,48 @@ public class InfraestructuraDB {
 
         return listaInfraestructura;
     }
+    public Infraestructura seleccionarInfraestructuraId2(String pIdInfraestructura) throws SNMPExceptions, SQLException {
+        String select = "";
+        Infraestructura perInfraestructura = null;
+
+        try {
+
+            //Se instancia la clase de acceso a datos
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            //Se crea la sentencia de búsqueda
+            select
+                    = "SELECT idInfraestructura,disponibilidad, "
+                    + "descripcion FROM Infraestructura where idInfraestructura="+"'"+ pIdInfraestructura+"'";
+
+            //Se ejecuta la sentencia SQL
+            ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+            //Se llena el arryaList con los proyectos   
+            while (rsPA.next()) {
+
+                String idInfraestructura = rsPA.getString("idInfraestructura");
+                String descripcion = rsPA.getString("descripcion");
+
+                perInfraestructura = new Infraestructura();
+                perInfraestructura.idInfraestructura = idInfraestructura;
+                perInfraestructura.descripcion = descripcion;
+
+                
+            }
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return perInfraestructura;
+    }
 
     public void InsertarInfraestructura(Infraestructura infra) throws SNMPExceptions, SQLException {
         String strSQL = "";

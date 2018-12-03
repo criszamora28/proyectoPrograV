@@ -46,7 +46,7 @@ public class ReservacionDB {
                     + "idUsuarioIngresoRegistro,fechaIngresoRegistro,estadoRegistro) VALUES"
                     + "(" + "'" + pReservacion.id + "'" + ","
                     + "'" + pReservacion.Usuario.identificacion + "'" + ","
-                    + pReservacion.TipoReservacion + ","
+                    + pReservacion.TipoReservacion.getId() + ","
                     + "'" + pReservacion.idUsuarioIngresoRegistro + "'" + ","
                     + "'" + pReservacion.fechaIngresoRegistro + "'" + ","
                     + estadoResgistro
@@ -75,8 +75,8 @@ public class ReservacionDB {
             strSQL
                     = "INSERT INTO detalleRservacion(idReservacion,idRecurso"
                     + ",titule,startDate,endDate,allDay,editable,estadoSolicitud,estadoRegistro) VALUES"
-                    + "(" + "'" + pDetalle.Reservacion + "'" + ","
-                    + "'" + pDetalle.Recurso + "'" + ","
+                    + "(" + "'" + pDetalle.Reservacion.id + "'" + ","
+                    + "'" + pDetalle.Recurso.id + "'" + ","
                     + "'" + pDetalle.titulo + "'" + ","
                     + "'" + pDetalle.fechaInicio + "'" + ","
                     + "'" + pDetalle.fechaFinal + "'" + ","
@@ -110,8 +110,8 @@ public class ReservacionDB {
             strSQL
                     = "INSERT INTO detalleRservacion(idReservacion,idInfraestructura"
                     + ",titule,startDate,endDate,allDay,editable,estadoSolicitud,estadoRegistro) VALUES"
-                    + "(" + "'" + pDetalle.Reservacion + "'" + ","
-                    + "'" + pDetalle.Infraestructura + "'" + ","
+                    + "(" + "'" + pDetalle.Reservacion.id + "'" + ","
+                    + "'" + pDetalle.Infraestructura.idInfraestructura + "'" + ","
                     + "'" + pDetalle.titulo + "'" + ","
                     + "'" + pDetalle.fechaInicio + "'" + ","
                     + "'" + pDetalle.fechaFinal + "'" + ","
@@ -193,6 +193,64 @@ public class ReservacionDB {
         return listaReservaciones;
     }
     
+    public LinkedList<DetalleReservacion> selectDetallesReservacion(Reservacion pReservacion) throws SNMPExceptions, SQLException {
+        String select = "";
+        LinkedList<DetalleReservacion> listaDetallesReservacion = new LinkedList<DetalleReservacion>();
+
+        try {
+
+            //Se instancia la clase de acceso a datos
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            //Se crea la sentencia de búsqueda
+            select
+                    = "SELECT idRecurso,idInfraestructura,titule,startDate,endDate,allDay,estadoSolicitud"
+                    + " from detalleRservacion where idReservacion='" + pReservacion.id + "'" ;
+
+            //Se ejecuta la sentencia SQL
+            ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+            
+            
+            SimpleDateFormat dateFormat = new SimpleDateFormat(
+                    "EEE MMM dd HH:mm:ss zz yyyy",Locale.getDefault());
+            InfraestructuraDB oInfraestructuraDB = new InfraestructuraDB();
+            //Se llena el arryaList con las reservaciones 
+            while (rsPA.next()) {
+                
+                int todoElDia = Integer.parseInt(rsPA.getString("allDay"));
+                int estadoSolicitud = Integer.parseInt(rsPA.getString("estadoSolicitud"));
+                Date fechaFinal = dateFormat.parse(rsPA.getString("endDate"));
+                Date fechaInicio = dateFormat.parse(rsPA.getString("startDate"));
+                String idInfraestrcutura = rsPA.getString("idRecurso");
+                
+                DetalleReservacion oDetalle = new DetalleReservacion();
+                oDetalle.Reservacion = pReservacion;
+                oDetalle.estadoSolicitud = estadoSolicitud == 1;
+                oDetalle.fechaInicio = fechaInicio;
+                oDetalle.fechaFinal = fechaFinal;
+                oDetalle.todoElDia = todoElDia == 1;
+                
+                if (idInfraestrcutura != null) {
+                    oDetalle.Infraestructura = oInfraestructuraDB.seleccionarInfraestructuraId2(idInfraestrcutura);
+                }
+                
+                listaDetallesReservacion.add(oDetalle);
+            }
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return listaDetallesReservacion;
+    }
+    
     public LinkedList<TipoReservacion> selectTipoReservacion() throws SNMPExceptions, SQLException {
         String select = "";
         LinkedList<TipoReservacion> listaTipoReservacion = new LinkedList<TipoReservacion>();
@@ -238,5 +296,49 @@ public class ReservacionDB {
         }
 
         return listaTipoReservacion;
+    }
+    
+    public TipoReservacion selectTipoReservacionPorId(int pIdTipoReservacion) throws SNMPExceptions, SQLException {
+        String select = "";
+        TipoReservacion oTipoReservacion = null;
+
+        try {
+
+            //Se instancia la clase de acceso a datos
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            //Se crea la sentencia de búsqueda
+            select
+                    = "SELECT * FROM tipoReservacion where id=" + pIdTipoReservacion;
+                    
+
+            //Se ejecuta la sentencia SQL
+            ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+            
+            while (rsPA.next()) {
+                
+                int id = Integer.parseInt(rsPA.getString("id"));
+                String tipo = rsPA.getString("tipo");
+                String descripcion = rsPA.getString("descripcion");
+                
+                oTipoReservacion = new TipoReservacion();
+                oTipoReservacion.Id = id;
+                oTipoReservacion.tipo = tipo;
+                oTipoReservacion.descripcion = descripcion;
+            }
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+        
+        return oTipoReservacion;
+        
     }
 }

@@ -14,7 +14,7 @@ import java.util.Date;
 public class Reservacion {
     public String id;
     public Usuario Usuario;
-    public int TipoReservacion;
+    public TipoReservacion TipoReservacion;
     
     public int idUsuarioIngresoRegistro;
     public Date fechaIngresoRegistro;
@@ -26,14 +26,14 @@ public class Reservacion {
     public Reservacion() {
     }
 
-    public int getTipoReservacion() {
+    public TipoReservacion getTipoReservacion() {
         return TipoReservacion;
     }
 
-    public void setTipoReservacion(int TipoReservacion) {
+    public void setTipoReservacion(TipoReservacion TipoReservacion) {
         this.TipoReservacion = TipoReservacion;
     }
-
+    
     public String getId() {
         return id;
     }
