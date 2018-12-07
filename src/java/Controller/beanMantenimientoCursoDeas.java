@@ -44,18 +44,34 @@ public class beanMantenimientoCursoDeas implements Serializable {
     String idU;
     String idProgra;
 
-//    @PostConstruct
-//    private void CargaPagina()
-//    {
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
-//        
-//        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-//	final Map<String, Object> session = context.getSessionMap();
-//	final Object user = session.get("Usuario");
-//        idU="Hola "+" "+((Usuario)user).nombre;
-//    }
+    @PostConstruct
+    private void CargaPagina()
+    {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+        
+        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+	final Map<String, Object> session = context.getSessionMap();
+	final Object Usuario = session.get("Usuario");
+        try {
+            if (Usuario == null) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            }
+        } catch (Exception e) {
+        }
+        
+    }
+    
     public beanMantenimientoCursoDeas() {
         disable = true;
+//        try {
+//            final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+//            final Map<String, Object> session = context.getSessionMap();
+//            final Object Usuario = session.get("Usuario");
+//            if (Usuario == null) {
+//                FacesContext.getCurrentInstance().getExternalContext().redirect("MantenimientoCursoDeas.xhtml");
+//            }
+//        } catch (Exception e) {
+//        }
     }
 
     public List<CursoDeas> getListaCursos() throws SNMPExceptions, SQLException {

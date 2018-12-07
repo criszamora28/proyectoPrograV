@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <link href="Estilos/estiloPrincipal.css" rel="stylesheet" type="text/css"/>
@@ -17,18 +18,74 @@
     <h:body>
         <header class="ui-g" style="width: 100%; height: 140px; background: #102b70;">
             <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="150" height="110"/>
+            <h:form>
+                <p:commandLink style="position: relative; left: 1050px;top: 10px; cursor: pointer " oncomplete="PF('usuDialog').show()" title="Detalles">
+                    <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="50" width="50"/>
+                    <f:setPropertyActionListener value="#{usuario}" target="#{beanPrincipal.usuario}" />
+                </p:commandLink>
+            </h:form>
+
         </header>
 
 
-        <div class="ui-g-3">
-            <p:panelMenu >
-                <p:submenu label="Inicio" >
-                    <p:menuitem value="Volver a ingresar" url="Login.xhtml" />
+        <h:form id="form" class="iu-g"> 
 
-                </p:submenu>
-            </p:panelMenu>
-        </div>
-        
+            <div class="ui-g-3">
+                <p:panelMenu >
+                    <p:submenu label="Inicio" >
+                        <p:menuitem value="Volver a ingresar" url="Login.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Mantenimientos">
+                        <p:menuitem value="Mantenimiento usuarios" />
+                        <p:menuitem value="Mantenimiento de recursos" />
+                        <p:menuitem value="Mantenimiento de infraestructura" />
+                        <p:menuitem value="Mantenimiento de prestamos" />
+                    </p:submenu>
+                    <p:submenu label="Reportes" >
+                        <p:menuitem value="Reportes de prestamos"  />
+                        <p:menuitem value="Reportes de usuarios" />
+                        <p:menuitem value="Reportes de infraestructuras"  />
+                        <p:menuitem value="Reportes de cursos"  />
+
+                    </p:submenu>
+                </p:panelMenu>
+            </div>
+
+            <div class="ui-g-9">    
+                <!--paginator="true"   rowsPerPageTemplate="6,12,16"-->
+                <div>
+                    <h3>Bienvenido al sistema DEAS VIRTUAL</h3>
+                </div>
+            </div>
+            <p:dialog header="Informacion del Usuario" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="cursoDetalles" style="text-align:center;">
+                    <p:panelGrid style="margin: 0 auto;"  columns="2" rendered="#{not empty beanPrincipal.usuario}" columnClasses="label,value">
+                        <f:facet name="header">
+                            <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="100" width="100"/>
+                        </f:facet>
+
+                        <p:outputLabel value="Nombre:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanPrincipal.usuario.nombre}"/>
+
+                        <p:outputLabel value="Correo:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanPrincipal.usuario.correo}"/>
+
+                        <p:outputLabel value="Tipo de Usuario:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanPrincipal.usuario.tipoFuncionario.tipoUsuario}" />
+                    </p:panelGrid>
+                </p:outputPanel>
+                <div style="margin-top: 10px"> 
+                    <p:commandButton style="margin-right: 10px" value="Modificar Datos" ajax="true"/>
+                    <p:commandButton value="Cerrar Sesion" actionListener="#{beanPrincipal.cerrarSession()}" ajax="true" />  
+                </div>
+            </p:dialog>
+            <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
+            <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
+                <footer style="height: 50px; background-color: #102b70">
+                    <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>
+                </footer>
+            </div>
+        </h:form>
     </h:body>
 </html>
 

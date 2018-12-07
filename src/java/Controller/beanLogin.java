@@ -10,14 +10,17 @@ import Model.TipoFuncionario;
 import Model.TipoFuncionarioDB;
 import Model.Usuario;
 import Model.UsuarioDB;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -74,10 +77,16 @@ public class beanLogin implements Serializable {
            LinkedList<Usuario>lista=new UsuarioDB().validarUsuario(identi,tipo,contrasena);
            Usuario usuario= lista.get(0);
            
-           if (usuario != null){
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario",usuario);
-                 FacesContext.getCurrentInstance().getExternalContext().redirect("MantenimientoCursoDeas.xhtml");
+           if (usuario != null) {
+               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario", usuario);
+               FacesContext.getCurrentInstance().getExternalContext().redirect("Principal.xhtml");
+               FacesContext context = FacesContext.getCurrentInstance();
+               context.addMessage(null, new FacesMessage("Datos incorrectos!", "Datos ingresados correctamente!"));
+           } else {
+               FacesContext context = FacesContext.getCurrentInstance();
+               context.addMessage(null, new FacesMessage("Datos incorrectos!", "Usuario o contraseña incorrecta!"));
            }
+           
        }catch (Exception e){
        
        }

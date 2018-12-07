@@ -52,16 +52,6 @@ public class beanMantenimientRecurso implements Serializable {
         return lista;
     }
 
-//    public LinkedList<SelectItem> getListaEstado() throws SNMPExceptions, SQLException {
-//
-//        LinkedList resultList = new LinkedList();
-//        resultList.add(new SelectItem(0, "Activo"));
-//        resultList.add(new SelectItem(1, "Inactivo"));
-//
-//        return resultList;
-//
-//    }
-
     public void insertarRecurso() throws SNMPExceptions, SQLException {
         Recurso cu = this.recurso;
         LinkedList<Recurso> lista = new RecursoDB().seleccionarRecursoId(cu.id);

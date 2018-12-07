@@ -24,15 +24,17 @@
         <div class="ui-g-4"></div>
 
         <h:form id="formLogin" class="ui-g-4">
-
+            
+            <p:growl id="growl" showDetail="true" sticky="true" />  
+            
             <div id="cuadroInterior">
                 <h:outputText value="Ingreso al Sistema" ></h:outputText>   
             </div> 
-            
+
             <h:panelGrid style="margin: 0 auto;  position: relative; top: 10px;" columns="2"  cellspacing="20"> 
 
                 <p:outputLabel  value="Identificacion:"></p:outputLabel>  
-                <p:inputMask value="#{beanLogin.identicacion}"  mask="9999" />
+                <p:inputMask value="#{beanLogin.identicacion}"  mask="999999999" />
 
                 <p:outputLabel  value="Contranseña:"></p:outputLabel>
                 <p:password value="#{beanLogin.contrasena}" />   
