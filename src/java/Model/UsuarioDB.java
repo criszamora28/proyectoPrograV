@@ -43,7 +43,8 @@ public class UsuarioDB {
 
             strSQL
                     = "INSERT INTO usuario(nombre,apellido1,"
-                    + "apellido2,correo, fechaNacimiento, identificacion,idTipoIdentificacion,idTipoFuncionario) VALUES "
+                    + "apellido2,correo, fechaNacimiento, identificacion,"
+                    + "idTipoIdentificacion,idTipoFuncionario,idTipoTelefonoUsuario,idDireccion) VALUES"
                     + "(" + "'" + usuario.getNombre() + "'" + ","
                     + "'" + usuario.getApellido1() + "'" + ","
                     + "'" + usuario.getApellido2() + "'" + ","
@@ -51,7 +52,9 @@ public class UsuarioDB {
                     + "'" + usuario.getFechaNacimiento() + "'" + ","
                     + usuario.getIdentificacion() + ","
                     + usuario.getTipoIdentificacion().getId() + ","
-                    + usuario.getTipoFuncionario().getId()
+                    + usuario.getTipoFuncionario().getId() + ","
+                    + usuario.getTipotelefono().getId() + ","
+                    + usuario.direccion.getIdDireccion()
                     + ")";
 
             //+ "'"+ usuario.getDireccion()+"'" + ")";

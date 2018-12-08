@@ -11,23 +11,29 @@ package Model;
  */
 public class Provincia 
 {
-  public int idProvincia;
+  public String idProvincia;
   public String nombreprovincia;
   
   public Provincia()
   {
   }
-  public Provincia(int idProvincia, String nombreProvincia)
+  public Provincia(String idProvincia, String nombreProvincia)
   {
      this.idProvincia=idProvincia;
      this.nombreprovincia=nombreProvincia;
   }
 
-    public int getIdProvincia() {
+    @Override
+    public String toString() {
+        return nombreprovincia ;
+    }
+    
+        
+    public String getIdProvincia() {
         return idProvincia;
     }
 
-    public void setIdProvincia(int idProvincia) {
+    public void setIdProvincia(String idProvincia) {
         this.idProvincia = idProvincia;
     }
 

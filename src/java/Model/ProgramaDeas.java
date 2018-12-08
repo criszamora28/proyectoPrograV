@@ -18,6 +18,11 @@ public class ProgramaDeas {
     public ProgramaDeas() {
     }
 
+    @Override
+    public String toString() {
+        return nombrePrograma;
+    }
+
     public String getId() {
         return id;
     }

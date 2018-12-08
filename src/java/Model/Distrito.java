@@ -11,43 +11,48 @@ package Model;
  */
 public class Distrito {
     
-  public int idDistrito;
-  public int idProvincia;
-  public int idCanton;
+  public String idDistrito;
+  public String idProvincia;
+  public String idCanton;
   public String nombreDistrito;
 
     
   public Distrito()
   {
   }
-  public Distrito(int iddistrito, int idprovincia, int idcanton, String nombredistrito){
+  public Distrito(String iddistrito, String idprovincia, String idcanton, String nombredistrito){
    this.idDistrito=iddistrito;
    this.idProvincia=idprovincia;
    this.idCanton=idcanton;
    this.nombreDistrito=nombredistrito;
   }
+
+    @Override
+    public String toString() {
+        return nombreDistrito;
+    }
   
-  public int getIdDistrito() {
+  public String getIdDistrito() {
         return idDistrito;
     }
 
-    public void setIdDistrito(int idDistrito) {
+    public void setIdDistrito(String idDistrito) {
         this.idDistrito = idDistrito;
     }
 
-    public int getIdProvincia() {
+    public String getIdProvincia() {
         return idProvincia;
     }
 
-    public void setIdProvincia(int idProvincia) {
+    public void setIdProvincia(String idProvincia) {
         this.idProvincia = idProvincia;
     }
 
-    public int getIdCanton() {
+    public String getIdCanton() {
         return idCanton;
     }
 
-    public void setIdCanton(int idCanton) {
+    public void setIdCanton(String idCanton) {
         this.idCanton = idCanton;
     }
 

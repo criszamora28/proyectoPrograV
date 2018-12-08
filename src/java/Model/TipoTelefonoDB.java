@@ -14,27 +14,27 @@ import java.util.LinkedList;
 
 /**
  *
- * @author Ernesto PC
+ * @author crisz
  */
-public class DistritoDB {
+public class TipoTelefonoDB {
 
     private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;
 
-    private LinkedList<Distrito> listaP = new LinkedList<Distrito>();
+    private LinkedList<TipoIdentificacion> listaP = new LinkedList<TipoIdentificacion>();
 
-    public DistritoDB(Connection conn) {
+    public TipoTelefonoDB(Connection conn) {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);
     }
 
-    public DistritoDB() {
+    public TipoTelefonoDB() {
         super();
     }
 
-    public Distrito buscarDistrito(String pIdDistrito,String pIdCanton,String pIdProvincia) throws SNMPExceptions {
+    public LinkedList<TipoTelefono> selectTipoTelefono() throws SNMPExceptions, SQLException {
         String select = "";
-        Distrito oDistrito = null;
+        LinkedList<TipoTelefono> listaPro = new LinkedList<TipoTelefono>();
 
         try {
 
@@ -43,21 +43,23 @@ public class DistritoDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT * from distrito where idDistrito='" + pIdDistrito + "' and "
-                    + "idCanton='" + pIdCanton + "' and idProvincia='" + pIdProvincia + "'";
+                    = "SELECT * from tipoTelefonoUsuario";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
 
-                String idPro = rsPA.getString("idProvincia");
-                String idCanton = rsPA.getString("idCanton");
-                String idDistrito = rsPA.getString("idDistrito");
-                String nombreDistrito = rsPA.getString("nombreDistrito");
+                int id = rsPA.getInt("id");
+                String tipo = rsPA.getString("tipo");
+                 String desc = rsPA.getString("descripcion");
 
-                oDistrito = new Distrito(idDistrito, idPro, idCanton, nombreDistrito);
+                TipoTelefono oTipoTelefono = new TipoTelefono();
+                oTipoTelefono.id = id;
+                oTipoTelefono.tipo = tipo;
+                oTipoTelefono.descripcion = desc;
 
+                listaPro.add(oTipoTelefono);
             }
             rsPA.close();
 
@@ -71,12 +73,12 @@ public class DistritoDB {
 
         }
 
-        return oDistrito;
+        return listaPro;
     }
 
-    public LinkedList<Distrito> seleccionarDistritoPorCanton(String idProvincia, String idCanton) throws SNMPExceptions, SQLException {
+    public LinkedList<TipoTelefono> seleccionarTipoTelefonoPorId(int idTipo) throws SNMPExceptions, SQLException {
         String select = "";
-        LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
+        LinkedList<TipoTelefono> listaPro = new LinkedList<TipoTelefono>();
 
         try {
 
@@ -85,23 +87,23 @@ public class DistritoDB {
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT idProvincia,idCanton,idDistrito,"
-                    + "nombreDistrito  FROM distrito where idProvincia='" + idProvincia + "' and "
-                    + " idCanton='" + idCanton + "'";
+                    = "select * from tipoTelefonoUsuario";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
             //Se llena el arryaList con los proyectos   
             while (rsPA.next()) {
 
-                String idPro = rsPA.getString("idProvincia");
-                String idCan = rsPA.getString("idCanton");
-                String idDistrito = rsPA.getString("idDistrito");
-                String nombreDistrito = rsPA.getString("nombreDistrito");
+                int id = rsPA.getInt("id");
+                String tipo = rsPA.getString("tipo");
+                String desc = rsPA.getString("descripcion");
 
-                Distrito oDistrito = new Distrito(idDistrito, idPro, idCan, nombreDistrito);
+                TipoTelefono oTipoTelefono = new TipoTelefono();
+                oTipoTelefono.id = id;
+                oTipoTelefono.tipo = tipo;
+                oTipoTelefono.descripcion = desc;
 
-                listaDis.add(oDistrito);
+                listaPro.add(oTipoTelefono);
             }
             rsPA.close();
 
@@ -115,7 +117,6 @@ public class DistritoDB {
 
         }
 
-        return listaDis;
+        return listaPro;
     }
-
 }

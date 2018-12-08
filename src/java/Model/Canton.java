@@ -13,30 +13,38 @@ package Model;
  */
 public class Canton
 {
-   public int idProvincia;
-   public int idCanton;
+   public String idProvincia;
+   public String idCanton;
    public String nombreCanton;
    
-   public Canton(int idprovincia, int  idcanton, String nombrecanton)
+   public Canton(String idprovincia, String idcanton, String nombrecanton)
    {
     this.idProvincia=idprovincia;
     this.idCanton=idcanton;
     this.nombreCanton=nombrecanton;
    }
 
-    public int getIdProvincia() {
+    public Canton() {
+    }
+
+    @Override
+    public String toString() {
+        return nombreCanton;
+    }
+
+    public String getIdProvincia() {
         return idProvincia;
     }
 
-    public void setIdProvincia(int idProvincia) {
+    public void setIdProvincia(String idProvincia) {
         this.idProvincia = idProvincia;
     }
 
-    public int getIdCanton() {
+    public String getIdCanton() {
         return idCanton;
     }
 
-    public void setIdCanton(int idCanton) {
+    public void setIdCanton(String idCanton) {
         this.idCanton = idCanton;
     }
 

@@ -15,27 +15,60 @@ public class Usuario {
 
     //actualizar datos del usuario
     public int identificacion;
+    public ProgramaDeas ProgramaDeas;
     public TipoFuncionario tipoFuncionario;
     public String contrasena;
     public String fechaNacimiento;
     public String nombre;
     public String apellido1;
     public String apellido2;
-    public String direccion;
+    public Direccion direccion;
     public String telefono;
     public String correo;
     public boolean estado;
     public boolean cuentaCompleta;
     public TipoIdentificacion tipoIdentificacion;
+    public TipoTelefono tipotelefono;
+    
 
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido1, String apellido2, String direccion) {
+    public Usuario(int identificacion, ProgramaDeas ProgramaDeas, TipoFuncionario tipoFuncionario, String contrasena, String fechaNacimiento, String nombre, String apellido1, String apellido2, Direccion direccion, String telefono, String correo, boolean estado, boolean cuentaCompleta, TipoIdentificacion tipoIdentificacion) {
+        this.identificacion = identificacion;
+        this.ProgramaDeas = ProgramaDeas;
+        this.tipoFuncionario = tipoFuncionario;
+        this.contrasena = contrasena;
+        this.fechaNacimiento = fechaNacimiento;
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
         this.direccion = direccion;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.estado = estado;
+        this.cuentaCompleta = cuentaCompleta;
+        this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    
+
+    
+
+    public TipoTelefono getTipotelefono() {
+        return tipotelefono;
+    }
+
+    public ProgramaDeas getProgramaDeas() {
+        return ProgramaDeas;
+    }
+
+    public void setProgramaDeas(ProgramaDeas ProgramaDeas) {
+        this.ProgramaDeas = ProgramaDeas;
+    }
+
+    public void setTipotelefono(TipoTelefono tipotelefono) {
+        this.tipotelefono = tipotelefono;
     }
 
     public String getNombre() {
@@ -62,11 +95,11 @@ public class Usuario {
         this.apellido2 = apellido2;
     }
 
-    public String getDireccion() {
+    public Direccion getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
 
