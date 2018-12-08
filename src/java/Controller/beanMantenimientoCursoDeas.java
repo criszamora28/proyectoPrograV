@@ -44,34 +44,56 @@ public class beanMantenimientoCursoDeas implements Serializable {
     String idU;
     String idProgra;
 
+    Usuario Usuario;
+    boolean mostarMenuMantenimiento;
+    boolean mostarMenuReportes;
+    boolean mostrarMenuPrestamos;
+    
     @PostConstruct
     private void CargaPagina()
     {
+        disable = true;
+        
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
         
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 	final Map<String, Object> session = context.getSessionMap();
-	final Object Usuario = session.get("Usuario");
+	final Object object = session.get("Usuario");
         try {
-            if (Usuario == null) {
+            if (object == null) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            }else{
+                Usuario = (Usuario)object;
+                if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+                    
+                } else {
+                    if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+                        mostarMenuMantenimiento = false;
+                        mostarMenuReportes = false;
+                        mostrarMenuPrestamos = true;
+                    } else {
+                        if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                            mostarMenuMantenimiento = true;
+                            mostarMenuReportes = true;
+                            mostrarMenuPrestamos = true;
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
         }
         
     }
     
-    public beanMantenimientoCursoDeas() {
-        disable = true;
-//        try {
-//            final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-//            final Map<String, Object> session = context.getSessionMap();
-//            final Object Usuario = session.get("Usuario");
-//            if (Usuario == null) {
-//                FacesContext.getCurrentInstance().getExternalContext().redirect("MantenimientoCursoDeas.xhtml");
-//            }
-//        } catch (Exception e) {
-//        }
+    public void cerrarSession(){
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+        } catch (Exception e) {
+        }
+        
     }
 
     public List<CursoDeas> getListaCursos() throws SNMPExceptions, SQLException {
@@ -192,7 +214,39 @@ public class beanMantenimientoCursoDeas implements Serializable {
         visible = false;
         disable = true;
     }
+    
+    public Usuario getUsuario() {
+        return Usuario;
+    }
 
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
+    }
+
+    public boolean isMostarMenuMantenimiento() {
+        return mostarMenuMantenimiento;
+    }
+
+    public void setMostarMenuMantenimiento(boolean mostarMenuMantenimiento) {
+        this.mostarMenuMantenimiento = mostarMenuMantenimiento;
+    }
+
+    public boolean isMostarMenuReportes() {
+        return mostarMenuReportes;
+    }
+
+    public void setMostarMenuReportes(boolean mostarMenuReportes) {
+        this.mostarMenuReportes = mostarMenuReportes;
+    }
+
+    public boolean isMostrarMenuPrestamos() {
+        return mostrarMenuPrestamos;
+    }
+
+    public void setMostrarMenuPrestamos(boolean mostrarMenuPrestamos) {
+        this.mostrarMenuPrestamos = mostrarMenuPrestamos;
+    }
+    
     public String getIdProgra() {
         return idProgra;
     }

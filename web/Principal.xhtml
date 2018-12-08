@@ -33,19 +33,25 @@
             <div class="ui-g-3">
                 <p:panelMenu >
                     <p:submenu label="Inicio" >
-                        <p:menuitem value="Volver a ingresar" url="Login.xhtml" />
+                        <p:menuitem value="Volver al Inicio" url="Principal.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Mantenimientos">
-                        <p:menuitem value="Mantenimiento usuarios" />
-                        <p:menuitem value="Mantenimiento de recursos" />
-                        <p:menuitem value="Mantenimiento de infraestructura" />
-                        <p:menuitem value="Mantenimiento de prestamos" />
+                    <p:submenu label="Mantenimientos" rendered="#{beanPrincipal.mostarMenuMantenimiento}">
+                        <p:menuitem value="Mantenimiento de Usuarios" url="MantenimientoUsuario.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Recursos" url="MantenimientoRecurso.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Infraestructura" url="MantenimientoInfraestructura.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Cursos" url="MantenimientoCursoDeas.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Programas" url="MantenimientoProgramas.xhtml"/>
+                        
                     </p:submenu>
-                    <p:submenu label="Reportes" >
+                    <p:submenu label="Reportes" rendered="#{beanPrincipal.mostarMenuReportesMantenimiento}">
                         <p:menuitem value="Reportes de prestamos"  />
                         <p:menuitem value="Reportes de usuarios" />
                         <p:menuitem value="Reportes de infraestructuras"  />
                         <p:menuitem value="Reportes de cursos"  />
+
+                    </p:submenu>
+                    <p:submenu label="Prestamos" rendered="#{beanPrincipal.mostrarMenuPrestamos}">
+                        <p:menuitem value="Solicitud de Prestamos"  url="Reservacion.xhtml"/>
 
                     </p:submenu>
                 </p:panelMenu>
@@ -57,6 +63,7 @@
                     <h3>Bienvenido al sistema DEAS VIRTUAL</h3>
                 </div>
             </div>
+            
             <p:dialog header="Informacion del Usuario" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="cursoDetalles" style="text-align:center;">
                     <p:panelGrid style="margin: 0 auto;"  columns="2" rendered="#{not empty beanPrincipal.usuario}" columnClasses="label,value">
@@ -74,7 +81,7 @@
                         <p:outputLabel value="#{beanPrincipal.usuario.tipoFuncionario.tipoUsuario}" />
                     </p:panelGrid>
                 </p:outputPanel>
-                <div style="margin-top: 10px"> 
+                <div style="margin: 0 auto;margin-top: 10px"> 
                     <p:commandButton style="margin-right: 10px" value="Modificar Datos" ajax="true"/>
                     <p:commandButton value="Cerrar Sesion" actionListener="#{beanPrincipal.cerrarSession()}" ajax="true" />  
                 </div>

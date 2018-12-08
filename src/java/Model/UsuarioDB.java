@@ -176,7 +176,7 @@ public class UsuarioDB {
             //Se crea la sentencia de búsqueda
             select
                     = "SELECT identificacion,nombre, apellido1,"
-                    + "apellido2,idTipoFuncionario FROM usuario WHERE identificacion=" + id + "and idTipoFuncionario=" + tipo + " and contra=" + "'" + contra + "'";
+                    + "apellido2,idTipoFuncionario,correo FROM usuario WHERE identificacion=" + id + "and idTipoFuncionario=" + tipo + " and contra=" + "'" + contra + "'";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
@@ -189,6 +189,7 @@ public class UsuarioDB {
                 String nombre = rsPA.getString("nombre");
                 String apellido1 = rsPA.getString("apellido1");
                 String apellido2 = rsPA.getString("apellido2");
+                String correo = rsPA.getString("correo");
 
                 Usuario usuObetenido = new Usuario();
                 usuObetenido.identificacion = identificacion;
@@ -197,6 +198,7 @@ public class UsuarioDB {
                 usuObetenido.nombre = nombre;
                 usuObetenido.apellido1 = apellido1;
                 usuObetenido.apellido2 = apellido2;
+                usuObetenido.correo = correo;
                 listaUsu.add(usuObetenido);
 
             }

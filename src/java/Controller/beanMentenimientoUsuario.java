@@ -19,7 +19,10 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -40,13 +43,58 @@ public class beanMentenimientoUsuario implements Serializable {
     int tipoFun;
     int tipoIdentificacion;
     String fechaNacimiento;
-
     boolean visible;
     boolean disable;
+    
+    Usuario Usuario2;
+    boolean mostarMenuMantenimiento;
+    boolean mostarMenuReportes;
+    boolean mostrarMenuPrestamos;
 
     public beanMentenimientoUsuario() {
         disable = true;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+
+        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        final Map<String, Object> session = context.getSessionMap();
+        final Object object = session.get("Usuario");
+        try {
+            if (object == null) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            } else {
+                Usuario2 = (Usuario) object;
+                if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+
+                } else {
+                    if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+                        mostarMenuMantenimiento = false;
+                        mostarMenuReportes = false;
+                        mostrarMenuPrestamos = true;
+                    } else {
+
+                        mostarMenuMantenimiento = true;
+                        mostarMenuReportes = true;
+                        mostrarMenuPrestamos = true;
+
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
     }
+
+    public void cerrarSession() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+        } catch (Exception e) {
+        }
+
+    }
+
+    
 
     public List<Usuario> getListaAdministrativos() throws SNMPExceptions, SQLException {
         int id = 0;
@@ -198,6 +246,78 @@ public class beanMentenimientoUsuario implements Serializable {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido1() {
+        return apellido1;
+    }
+
+    public void setApellido1(String apellido1) {
+        this.apellido1 = apellido1;
+    }
+
+    public String getApellido2() {
+        return apellido2;
+    }
+
+    public void setApellido2(String apellido2) {
+        this.apellido2 = apellido2;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public Usuario getUsuario2() {
+        return Usuario2;
+    }
+
+    public void setUsuario2(Usuario Usuario2) {
+        this.Usuario2 = Usuario2;
+    }
+
+    public boolean isMostarMenuMantenimiento() {
+        return mostarMenuMantenimiento;
+    }
+
+    public void setMostarMenuMantenimiento(boolean mostarMenuMantenimiento) {
+        this.mostarMenuMantenimiento = mostarMenuMantenimiento;
+    }
+
+    public boolean isMostarMenuReportes() {
+        return mostarMenuReportes;
+    }
+
+    public void setMostarMenuReportes(boolean mostarMenuReportes) {
+        this.mostarMenuReportes = mostarMenuReportes;
+    }
+
+    public boolean isMostrarMenuPrestamos() {
+        return mostrarMenuPrestamos;
+    }
+
+    public void setMostrarMenuPrestamos(boolean mostrarMenuPrestamos) {
+        this.mostrarMenuPrestamos = mostrarMenuPrestamos;
     }
 
     public void setVisible(boolean visible) {

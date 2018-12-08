@@ -27,9 +27,47 @@ public class beanPrincipal implements Serializable {
      * Creates a new instance of beanPrincipal
      */
     Usuario Usuario;
+    boolean mostarMenuMantenimiento;
+    boolean mostarMenuReportes;
+    boolean mostrarMenuPrestamos;
+
+    public beanPrincipal() {
+         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+        
+        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+	final Map<String, Object> session = context.getSessionMap();
+	final Object object = session.get("Usuario");
+        try {
+            if (object == null) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            }else{
+                Usuario = (Usuario)object;
+                this.mostrarMensaje("Ingreso hecho correctamente", "Bienvenido " + Usuario.nombre);
+                if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+                    
+                } else {
+                    if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+                        mostarMenuMantenimiento = false;
+                        mostarMenuReportes = false;
+                        mostrarMenuPrestamos = true;
+                    } else {
+                        
+                            mostarMenuMantenimiento = true;
+                            mostarMenuReportes = true;
+                            mostrarMenuPrestamos = true;
+                        
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+    
     
     @PostConstruct
-    private void CargaPagina()
+    private void load()
     {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
         
@@ -41,12 +79,31 @@ public class beanPrincipal implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
             }else{
                 Usuario = (Usuario)object;
-                this.mostrarMensaje("Ingreso hecho correctamente", "Bienvenido " + Usuario.nombre);
+                
+                if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+                    
+                } else {
+                    if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+                        mostarMenuMantenimiento = false;
+                        mostarMenuReportes = false;
+                        mostrarMenuPrestamos = true;
+                    } else {
+                        
+                            mostarMenuMantenimiento = true;
+                            mostarMenuReportes = true;
+                            mostrarMenuPrestamos = true;
+                        
+                    }
+                }
             }
         } catch (Exception e) {
         }
         
     }
+    
+    
     
     private void mostrarMensaje(String encMensaje,String detMensaje){
         FacesContext context = FacesContext.getCurrentInstance();
@@ -60,6 +117,38 @@ public class beanPrincipal implements Serializable {
         } catch (Exception e) {
         }
         
+    }
+
+    public boolean isMostarMenuReportes() {
+        return mostarMenuReportes;
+    }
+
+    public void setMostarMenuReportes(boolean mostarMenuReportes) {
+        this.mostarMenuReportes = mostarMenuReportes;
+    }
+
+    public boolean isMostrarMenuPrestamos() {
+        return mostrarMenuPrestamos;
+    }
+
+    public void setMostrarMenuPrestamos(boolean mostrarMenuPrestamos) {
+        this.mostrarMenuPrestamos = mostrarMenuPrestamos;
+    }
+
+    public boolean isMostarMenuMantenimiento() {
+        return mostarMenuMantenimiento;
+    }
+
+    public void setMostarMenuMantenimiento(boolean mostarMenuMantenimiento) {
+        this.mostarMenuMantenimiento = mostarMenuMantenimiento;
+    }
+
+    public boolean isMostarMenuReportesMantenimiento() {
+        return mostarMenuReportes;
+    }
+
+    public void setMostarMenuReportesMantenimiento(boolean mostarMenuReportesMantenimiento) {
+        this.mostarMenuReportes = mostarMenuReportesMantenimiento;
     }
     
     public Usuario getUsuario() {

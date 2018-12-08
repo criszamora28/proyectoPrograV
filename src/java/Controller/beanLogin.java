@@ -70,9 +70,6 @@ public class beanLogin implements Serializable {
      identi=Integer.parseInt(this.getIdenticacion());
      contrasena=this.getContrasena();
      
-     
-     
-     
        try{
            LinkedList<Usuario>lista=new UsuarioDB().validarUsuario(identi,tipo,contrasena);
            Usuario usuario= lista.get(0);

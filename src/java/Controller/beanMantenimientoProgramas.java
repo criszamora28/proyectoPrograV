@@ -8,6 +8,7 @@ package Controller;
 import DAO.SNMPExceptions;
 import Model.ProgramaDeas;
 import Model.ProgramaDeasDB;
+import Model.Usuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -15,7 +16,9 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -31,8 +34,52 @@ public class beanMantenimientoProgramas implements Serializable {
     boolean visible;
     boolean disable;
 
+    Usuario Usuario;
+    boolean mostarMenuMantenimiento;
+    boolean mostarMenuReportes;
+    boolean mostrarMenuPrestamos;
+
     public beanMantenimientoProgramas() {
         disable = true;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+
+        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        final Map<String, Object> session = context.getSessionMap();
+        final Object object = session.get("Usuario");
+        try {
+            if (object == null) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            } else {
+                Usuario = (Usuario) object;
+                if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+
+                } else {
+                    if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+                        mostarMenuMantenimiento = false;
+                        mostarMenuReportes = false;
+                        mostrarMenuPrestamos = true;
+                    } else {
+
+                        mostarMenuMantenimiento = true;
+                        mostarMenuReportes = true;
+                        mostrarMenuPrestamos = true;
+
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void cerrarSession() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+        } catch (Exception e) {
+        }
+
     }
 
     public List<ProgramaDeas> getListaProgramas() throws SNMPExceptions, SQLException {
@@ -47,8 +94,6 @@ public class beanMantenimientoProgramas implements Serializable {
         return lista;
     }
 
-
-
     public void insertarPrograma() throws SNMPExceptions, SQLException {
         ProgramaDeas cu = this.programaDeas;
         LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu.id);
@@ -60,7 +105,7 @@ public class beanMantenimientoProgramas implements Serializable {
 
             ProgramaDeasDB db = new ProgramaDeasDB();
             db.InsertarProgramaDeas(nProgramaDeas);
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Exito!", "Programa ingresado correctamente!"));
         } else {
@@ -139,6 +184,38 @@ public class beanMantenimientoProgramas implements Serializable {
 
     public void setDisable(boolean disable) {
         this.disable = disable;
+    }
+
+    public Usuario getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
+    }
+
+    public boolean isMostarMenuMantenimiento() {
+        return mostarMenuMantenimiento;
+    }
+
+    public void setMostarMenuMantenimiento(boolean mostarMenuMantenimiento) {
+        this.mostarMenuMantenimiento = mostarMenuMantenimiento;
+    }
+
+    public boolean isMostarMenuReportes() {
+        return mostarMenuReportes;
+    }
+
+    public void setMostarMenuReportes(boolean mostarMenuReportes) {
+        this.mostarMenuReportes = mostarMenuReportes;
+    }
+
+    public boolean isMostrarMenuPrestamos() {
+        return mostrarMenuPrestamos;
+    }
+
+    public void setMostrarMenuPrestamos(boolean mostrarMenuPrestamos) {
+        this.mostrarMenuPrestamos = mostrarMenuPrestamos;
     }
 
 }

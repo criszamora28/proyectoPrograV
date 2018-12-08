@@ -20,27 +20,42 @@
     <h:body>
         <header class="ui-g" style="width: 100%; height: 140px; background: #102b70;">
             <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="150" height="110"/>
-            <p:outputLabel value="#{beanMantenimientoCursoDeas.idU}" style="margin-top:5%; margin-left:3%; color: white"></p:outputLabel>
+
+            <h:form>
+                <p:commandLink style="position: relative; left: 1050px;top: 10px; cursor: pointer " oncomplete="PF('usuDialog').show()" title="Detalles">
+                    <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="50" width="50"/>
+                    <f:setPropertyActionListener value="#{usuario}" target="#{beanMantenimientoCursoDeas.usuario}" />
+                </p:commandLink>
+            </h:form>
         </header>
 
         <h:form id="form" class="iu-g"> 
-            
+
             <p:growl id="growl" showDetail="true" sticky="true" />  
-            
+
             <div class="ui-g-3">
                 <p:panelMenu >
-                    <p:menuitem  value="Volver a ingresar" url="Login.xhtml" />
-                    
-                    <p:submenu label="Mantenimientos">
-                        <p:menuitem value="Mantenimiento usuarios" />
-                        <p:menuitem value="Mantenimiento de recursos" />
-                        <p:menuitem value="Mantenimiento de infraestructura" />
-                        <p:menuitem value="Mantenimiento de prestamos" />
+                    <p:submenu label="Inicio" >
+                        <p:menuitem value="Volver al Inicio" url="Principal.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Reportes" >
+                    <p:submenu label="Mantenimientos" rendered="#{beanMantenimientoCursoDeas.mostarMenuMantenimiento}">
+                       <p:menuitem value="Mantenimiento de Usuarios" url="MantenimientoUsuario.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Recursos" url="MantenimientoRecurso.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Infraestructura" url="MantenimientoInfraestructura.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Cursos" url="MantenimientoCursoDeas.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Programas" url="MantenimientoProgramas.xhtml"/>
+
+                    </p:submenu>
+                    <p:submenu label="Reportes" rendered="#{beanMantenimientoCursoDeas.mostarMenuReportes}">
                         <p:menuitem value="Reportes de prestamos"  />
                         <p:menuitem value="Reportes de usuarios" />
                         <p:menuitem value="Reportes de infraestructuras"  />
+                        <p:menuitem value="Reportes de cursos"  />
+
+                    </p:submenu>
+                    <p:submenu label="Prestamos" rendered="#{beanMantenimientoCursoDeas.mostrarMenuPrestamos}">
+                        <p:menuitem value="Solicitud de Prestamos"  url="Reservacion.xhtml"/>
+
                     </p:submenu>
                 </p:panelMenu>
             </div>
@@ -102,6 +117,29 @@
                     <p:commandButton value="Nuevo"  update=":form:cursoDetalles"  action="#{beanMantenimientoCursoDeas.limpiaCampos()}" oncomplete="PF('cursoDialog').show()"  ajax="true" />  
                     <p:commandButton value="Modificar" update=":form:cursoDetalles" action="#{beanMantenimientoCursoDeas.ocultar()}" actionListener="#{beanMantenimientoCursoDeas.actualizar()}" oncomplete="@all"  ajax="true" />
                     <p:commandButton value="Eliminar" update=":form:cursoDetalles" action="#{beanMantenimientoCursoDeas.ocultar()}" actionListener="#{beanMantenimientoCursoDeas.eliminar()}" oncomplete="@all"  ajax="true" />
+                </div>
+            </p:dialog>
+            
+            <p:dialog header="Informacion del Usuario" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel style="text-align:center;">
+                    <p:panelGrid style="margin: 0 auto;"  columns="2" rendered="#{not empty beanMantenimientoCursoDeas.usuario}" columnClasses="label,value">
+                        <f:facet name="header">
+                            <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="100" width="100"/>
+                        </f:facet>
+
+                        <p:outputLabel value="Nombre:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanMantenimientoCursoDeas.usuario.nombre}"/>
+
+                        <p:outputLabel value="Correo:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanMantenimientoCursoDeas.usuario.correo}"/>
+
+                        <p:outputLabel value="Tipo de Usuario:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanMantenimientoCursoDeas.usuario.tipoFuncionario.tipoUsuario}" />
+                    </p:panelGrid>
+                </p:outputPanel>
+                <div style="margin-top: 10px"> 
+                    <p:commandButton style="margin-right: 10px" value="Modificar Datos" ajax="true"/>
+                    <p:commandButton value="Cerrar Sesion" actionListener="#{beanMantenimientoCursoDeas.cerrarSession()}" ajax="true" />  
                 </div>
             </p:dialog>
             <p:growl  autoUpdate="true" id="messages" showDetail="true" />   

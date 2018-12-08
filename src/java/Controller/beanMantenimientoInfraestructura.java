@@ -8,13 +8,16 @@ package Controller;
 import DAO.SNMPExceptions;
 import Model.Infraestructura;
 import Model.InfraestructuraDB;
+import Model.Usuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -30,9 +33,58 @@ public class beanMantenimientoInfraestructura implements Serializable {
     boolean disable;
     int estado;
     Infraestructura infra;
+    Usuario Usuario;
+    boolean mostarMenuMantenimiento;
+    boolean mostarMenuReportes;
+    boolean mostrarMenuPrestamos;
 
     public beanMantenimientoInfraestructura() {
-        disable = true;
+         disable = true;
+         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+        
+        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+	final Map<String, Object> session = context.getSessionMap();
+	final Object object = session.get("Usuario");
+        try {
+            if (object == null) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            }else{
+                Usuario = (Usuario)object;
+                this.mostrarMensaje("Ingreso hecho correctamente", "Bienvenido " + Usuario.nombre);
+                if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+                    
+                } else {
+                    if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+                        mostarMenuMantenimiento = false;
+                        mostarMenuReportes = false;
+                        mostrarMenuPrestamos = true;
+                    } else {
+                        
+                            mostarMenuMantenimiento = true;
+                            mostarMenuReportes = true;
+                            mostrarMenuPrestamos = true;
+                        
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+    
+    private void mostrarMensaje(String encMensaje,String detMensaje){
+        FacesContext context = FacesContext.getCurrentInstance();
+               context.addMessage(null, new FacesMessage(encMensaje, detMensaje));
+    }
+    
+    public void cerrarSession(){
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+        } catch (Exception e) {
+        }
+        
     }
 
     public List<Infraestructura> getListaInfraestructura() throws SNMPExceptions, SQLException {
@@ -47,16 +99,6 @@ public class beanMantenimientoInfraestructura implements Serializable {
         return lista;
     }
 
-//    public LinkedList<SelectItem> getListaEstado() throws SNMPExceptions, SQLException {
-//
-//        LinkedList resultList = new LinkedList();
-//        resultList.add(new SelectItem(0, "Activo"));
-//        resultList.add(new SelectItem(1, "Inactivo"));
-//
-//        return resultList;
-//
-//    }
-
     public void insertarInfraestructura() throws SNMPExceptions, SQLException {
         Infraestructura cu = this.infra;
         LinkedList<Infraestructura> lista = new InfraestructuraDB().seleccionarInfraestructuraId(cu);
@@ -64,7 +106,6 @@ public class beanMantenimientoInfraestructura implements Serializable {
             Infraestructura nInfraestructura = new Infraestructura();
             nInfraestructura.idInfraestructura = cu.idInfraestructura;
             nInfraestructura.descripcion = cu.descripcion;
-//            nInfraestructura.disponibilidad= (estado==1)?true:false;
 
             InfraestructuraDB db = new InfraestructuraDB();
             db.InsertarInfraestructura(nInfraestructura);
@@ -128,6 +169,38 @@ public class beanMantenimientoInfraestructura implements Serializable {
     public void ocultar() {
         visible = false;
         disable = true;
+    }
+
+    public Usuario getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
+    }
+
+    public boolean isMostarMenuMantenimiento() {
+        return mostarMenuMantenimiento;
+    }
+
+    public void setMostarMenuMantenimiento(boolean mostarMenuMantenimiento) {
+        this.mostarMenuMantenimiento = mostarMenuMantenimiento;
+    }
+
+    public boolean isMostarMenuReportes() {
+        return mostarMenuReportes;
+    }
+
+    public void setMostarMenuReportes(boolean mostarMenuReportes) {
+        this.mostarMenuReportes = mostarMenuReportes;
+    }
+
+    public boolean isMostrarMenuPrestamos() {
+        return mostrarMenuPrestamos;
+    }
+
+    public void setMostrarMenuPrestamos(boolean mostrarMenuPrestamos) {
+        this.mostrarMenuPrestamos = mostrarMenuPrestamos;
     }
 
     public boolean isVisible() {

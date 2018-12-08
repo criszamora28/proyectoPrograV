@@ -10,13 +10,16 @@ import Model.Infraestructura;
 import Model.InfraestructuraDB;
 import Model.Recurso;
 import Model.RecursoDB;
+import Model.Usuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -36,8 +39,52 @@ public class beanMantenimientRecurso implements Serializable {
     int estado;
     Recurso recurso;
 
+    Usuario Usuario;
+    boolean mostarMenuMantenimiento;
+    boolean mostarMenuReportes;
+    boolean mostrarMenuPrestamos;
+
     public beanMantenimientRecurso() {
         disable = true;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+
+        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        final Map<String, Object> session = context.getSessionMap();
+        final Object object = session.get("Usuario");
+        try {
+            if (object == null) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            } else {
+                Usuario = (Usuario) object;
+                if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+
+                } else {
+                    if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+                        mostarMenuMantenimiento = false;
+                        mostarMenuReportes = false;
+                        mostrarMenuPrestamos = true;
+                    } else {
+
+                        mostarMenuMantenimiento = true;
+                        mostarMenuReportes = true;
+                        mostrarMenuPrestamos = true;
+
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void cerrarSession() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+        } catch (Exception e) {
+        }
+
     }
 
     public List<Recurso> getListaRecurso() throws SNMPExceptions, SQLException {
@@ -60,11 +107,10 @@ public class beanMantenimientRecurso implements Serializable {
             nRecurso.id = cu.id;
             nRecurso.tipo = cu.tipo;
             nRecurso.descripcion = cu.descripcion;
-            
 
             RecursoDB db = new RecursoDB();
             db.InsertarRecurso(nRecurso);
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Exito!", "Recurso ingresado correctamente!"));
         } else {
@@ -88,7 +134,7 @@ public class beanMantenimientRecurso implements Serializable {
 
             RecursoDB upUser = new RecursoDB();
             upUser.ActualizarRecurso(RecursoUp);
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Exito!", "Recurso actualizado correctamente!"));
 
@@ -107,7 +153,7 @@ public class beanMantenimientRecurso implements Serializable {
 
             RecursoDB upUser = new RecursoDB();
             upUser.EliminarRecurso(RecursoDel);
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Exito!", "Recurso eliminado correctamente!"));
         }
@@ -156,6 +202,4 @@ public class beanMantenimientRecurso implements Serializable {
         this.estado = estado;
     }
 
-    
-    
 }
