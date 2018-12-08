@@ -60,4 +60,45 @@ public class DireccionDB {
         }
 
     }
+    
+    public int obtenerUltimoIdDireccion() throws SNMPExceptions, SQLException {
+        String select = "";
+        int idDireccion = 0;
+
+        try {
+
+            //Se instancia la clase de acceso a datos
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            //Se crea la sentencia de búsqueda
+            select
+                    = "SELECT max(idDireccion) as id from direccion";
+            //Se ejecuta la sentencia SQL
+            ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+            //Se llena el arryaList con los proyectos   
+            while (rsPA.next()) {
+
+                idDireccion = rsPA.getInt("id");
+                
+
+               
+            }
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        if (idDireccion != 0) {
+            return idDireccion;
+        }
+        
+        return idDireccion;
+    }
 }

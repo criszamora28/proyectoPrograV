@@ -24,6 +24,7 @@ import Model.TipoTelefono;
 import Model.TipoTelefonoDB;
 import Model.Usuario;
 import Model.UsuarioDB;
+import Model.Validadores;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -31,6 +32,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 /**
@@ -73,83 +76,191 @@ public class beanRegistro implements Serializable {
 
         TipoIdentificacion oTipoIden = new TipoIdentificacion();
         TipoIdentificacionDB oTipoDB = new TipoIdentificacionDB();
-        
+
         TipoFuncionario oTipoFuncionario = new TipoFuncionario();
         TipoFuncionarioDB oTipoFuncionarioDB = new TipoFuncionarioDB();
-        
+
         TipoTelefono oTipoTel = new TipoTelefono();
         TipoTelefonoDB oTipoTelDB = new TipoTelefonoDB();
-        
+
         ProgramaDeas oPrograma = new ProgramaDeas();
         ProgramaDeasDB oProgramaDeasDB = new ProgramaDeasDB();
-        
-        ProvinciaDB oProvinciaDB = new  ProvinciaDB();
+
+        ProvinciaDB oProvinciaDB = new ProvinciaDB();
         CantonDB oCantonDB = new CantonDB();
         DistritoDB oDistritoDB = new DistritoDB();
+        DireccionDB oDireccionDB = new DireccionDB();
+        UsuarioDB usDB = new UsuarioDB();
         
-        if (this.tipoFuncionario != 0) {
+       
+        if (!usDB.seleccionarUsuarioId(Integer.parseInt(this.indentificacion)).isEmpty()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Ya existe un usuario con esa identificacion"));
+            this.indentificacion = "";
+            return;
+        }
+        
+        if (Validadores.validarVacio(apellido1)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Los apellidos no pueden estar vacios"));
+            return;
+        }
+
+        if (Validadores.validarVacio(apellido2)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Los apellidos no pueden estar vacios"));
+            return;
+        }
+        
+        if (Validadores.validarVacio(nombre)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El nombre no puede estar vacio"));
+            return;
+        }
+
+        if (Validadores.validarVacio(correo)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo no puede estar vacio"));
+            return;
+        }
+
+        if (Validadores.validarVacio(fechaNacimiento)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La Fecha de nacimiento no puede estar vacia"));
+            return;
+        }
+
+        if (Validadores.validarVacio(indentificacion)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La identificacion no puede estar vacia"));
+            return;
+        }
+
+        if (!Validadores.validarFecha(fechaNacimiento)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe digitar una fecha correcta dd/MM/yyyy"));
+            return;
+        }
+
+        if (Validadores.validarVacio(otrasSeñas)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe especificar las señas"));
+            return;
+        }
+
+        if (Validadores.validarVacio(telefono)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El telefono no puede estar vacio"));
+            return;
+        }
+
+        if (this.idProvincia == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe selecionar una provincia"));
+            return;
+        }
+
+        if (this.idCanton == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "debe selecionar un canton"));
+            return;
+        }
+
+        if (this.idDistrito == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe selecionar un distrito"));
+            return;
+        }
+
+        if (this.tipoFuncionario == 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe selecionar un tipo de funcionario"));
+            return;
+        }
+
+        if (this.tipoIdentificacion == 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe selecionar un tipo de identificacion"));
+            return;
+        }
+
+        if (this.tipoTelefono == 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe selecionar un tipo de telefono"));
+            return;
+        }
+        
+        if (Validadores.validarVacio(idprogramaDeas)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe selecionar un programa DEAS"));
+            return;
+        }
+
+        try {
+
             LinkedList<TipoFuncionario> listaTipoFuncionario = new LinkedList<TipoFuncionario>();
             listaTipoFuncionario = oTipoFuncionarioDB.seleccionarTiposFuncionariosid(this.tipoFuncionario);
             oTipoFuncionario = listaTipoFuncionario.get(0);
-        } else {
-            return;
-        }
+            
+            LinkedList<ProgramaDeas> listaPrograma = new LinkedList<ProgramaDeas>();
+            listaPrograma = oProgramaDeasDB.seleccionarProgramaDeasId(this.idprogramaDeas);
+            oPrograma = listaPrograma.get(0);
         
-//        if (this.idprogramaDeas == null) {
-//            LinkedList<ProgramaDeas> listaPrograma = new LinkedList<ProgramaDeas>();
-//            listaPrograma = oProgramaDeasDB.seleccionarProgramaDeasId(this.idprogramaDeas);
-//            oPrograma = listaPrograma.get(0);
-//        } else {
-//            return;
-//        }
-        
-        if (this.tipoTelefono != 0) {
             LinkedList<TipoTelefono> listTipo = new LinkedList<TipoTelefono>();
             listTipo = oTipoTelDB.seleccionarTipoTelefonoPorId(this.tipoTelefono);
             oTipoTel = listTipo.get(0);
-        } else {
-            return;
-        }
-        
-        if (this.tipoIdentificacion != 0) {
-            LinkedList<TipoIdentificacion> listTipo = new LinkedList<TipoIdentificacion>();
-            listTipo = oTipoDB.seleccionarId(this.tipoIdentificacion);
-            oTipoIden = listTipo.get(0);
-        } else {
-            return;
-        }
-        Provincia oProvincia = oProvinciaDB.buscarProvincia(idProvincia);
-        Canton oCanton = oCantonDB.buscarcanton(this.idCanton,idProvincia);
-        Distrito oDistrito = oDistritoDB.buscarDistrito(idDistrito,idCanton,idProvincia);
-        
-        
-        Direccion oDireccion = new Direccion();
-        oDireccion.setCanton(oCanton);
-        oDireccion.setDistrito(oDistrito);
-        oDireccion.setProvincia(oProvincia);
-        oDireccion.setOtrasSeñas(this.otrasSeñas);
-        
-        DireccionDB oDireccionDB = new DireccionDB();
-        oDireccionDB.insertarDireccion(oDireccion);
-        
-        
-        UsuarioDB usDB = new UsuarioDB();
 
-        Usuario oUsuarioNuevo = new Usuario();
-        oUsuarioNuevo.nombre = this.getNombre();
-        oUsuarioNuevo.apellido1 = this.getApellido1();
-        oUsuarioNuevo.apellido2 = this.getApellido2();
-        oUsuarioNuevo.telefono = this.getTelefono();
-        oUsuarioNuevo.fechaNacimiento = this.getFechaNacimiento();
-        oUsuarioNuevo.identificacion = Integer.parseInt(this.getIndentificacion());
-        oUsuarioNuevo.correo = this.getCorreo();
-        oUsuarioNuevo.tipotelefono = oTipoTel;
-        oUsuarioNuevo.tipoIdentificacion = oTipoIden;
-        oUsuarioNuevo.tipoFuncionario = oTipoFuncionario;
-        oUsuarioNuevo.cuentaCompleta = false;
-        oUsuarioNuevo.estado = true;
-        
-        usDB.InsertarUsuario(oUsuarioNuevo);
+            LinkedList<TipoIdentificacion> listTipo2 = new LinkedList<TipoIdentificacion>();
+            listTipo2 = oTipoDB.seleccionarId(this.tipoIdentificacion);
+            oTipoIden = listTipo2.get(0);
+
+            Provincia oProvincia = oProvinciaDB.buscarProvincia(idProvincia);
+            Canton oCanton = oCantonDB.buscarcanton(this.idCanton, idProvincia);
+            Distrito oDistrito = oDistritoDB.buscarDistrito(idDistrito, idCanton, idProvincia);
+
+            Direccion oDireccion = new Direccion();
+            oDireccion.setIdDireccion(oDireccionDB.obtenerUltimoIdDireccion());
+            oDireccion.setCanton(oCanton);
+            oDireccion.setDistrito(oDistrito);
+            oDireccion.setProvincia(oProvincia);
+            oDireccion.setOtrasSeñas(this.otrasSeñas);
+            oDireccion.setEstadoRegistro(true);
+
+            oDireccionDB.insertarDireccion(oDireccion);
+
+            
+
+            Usuario oUsuarioNuevo = new Usuario();
+            oUsuarioNuevo.nombre = this.getNombre();
+            oUsuarioNuevo.ProgramaDeas = oPrograma;
+            oUsuarioNuevo.apellido1 = this.getApellido1();
+            oUsuarioNuevo.apellido2 = this.getApellido2();
+            oUsuarioNuevo.telefono = this.getTelefono();
+            oUsuarioNuevo.fechaNacimiento = this.getFechaNacimiento();
+            oUsuarioNuevo.identificacion = Integer.parseInt(this.getIndentificacion());
+            oUsuarioNuevo.correo = this.getCorreo();
+            oUsuarioNuevo.tipotelefono = oTipoTel;
+            oUsuarioNuevo.tipoIdentificacion = oTipoIden;
+            oUsuarioNuevo.tipoFuncionario = oTipoFuncionario;
+            oUsuarioNuevo.direccion = oDireccion;
+            oUsuarioNuevo.cuentaCompleta = false;
+            oUsuarioNuevo.estado = true;
+            oUsuarioNuevo.estadoSolicitud = false;
+
+            usDB.InsertarUsuario(oUsuarioNuevo);
+            
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Mensaje", "Solicitud de cuenta creada correctamente"
+                    + "/nEn los proximos dias se le informara acerca del estado de la solicitud");
+            
+            
+            
+        } catch (Exception e) {
+            FacesMessage mensajeError;
+            mensajeError = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Detalle del error :" + e.toString());
+            this.addMessage(mensajeError);
+        }
+
     }
 
     public LinkedList<SelectItem> getListaCantonPorProvincia() throws SNMPExceptions, SQLException {
@@ -253,11 +364,11 @@ public class beanRegistro implements Serializable {
         LinkedList<TipoTelefono> lista = new LinkedList<TipoTelefono>();
         TipoTelefonoDB oTipoTelDB = new TipoTelefonoDB();
         LinkedList resultList = new LinkedList();
-        
+
         try {
-            
+
             lista = oTipoTelDB.selectTipoTelefono();
-            
+
             for (TipoTelefono tipoTel : lista) {
                 id = tipoTel.getId();
                 tipo = tipoTel.getTipo();
@@ -269,7 +380,7 @@ public class beanRegistro implements Serializable {
         return resultList;
 
     }
-    
+
     public LinkedList<SelectItem> getListaTipoFuncionario() throws SNMPExceptions, SQLException {
         int id = 0;
         String tipo = "";
@@ -277,11 +388,11 @@ public class beanRegistro implements Serializable {
         LinkedList<TipoFuncionario> lista = new LinkedList<TipoFuncionario>();
         TipoFuncionarioDB oTipoFuncionarioDB = new TipoFuncionarioDB();
         LinkedList resultList = new LinkedList();
-        
+
         try {
-            
+
             lista = oTipoFuncionarioDB.seleccionarTiposFuncionarios();
-            
+
             for (TipoFuncionario oTipoFun : lista) {
                 id = oTipoFun.getId();
                 tipo = oTipoFun.getTipoUsuario();
@@ -293,7 +404,7 @@ public class beanRegistro implements Serializable {
         return resultList;
 
     }
-    
+
     public LinkedList<SelectItem> getListaProgramas() throws SNMPExceptions, SQLException {
         String id = "";
         String tipo = "";
@@ -301,11 +412,11 @@ public class beanRegistro implements Serializable {
         LinkedList<ProgramaDeas> lista = new LinkedList<ProgramaDeas>();
         ProgramaDeasDB oProgramaDeas = new ProgramaDeasDB();
         LinkedList resultList = new LinkedList();
-        
+
         try {
-            
+
             lista = oProgramaDeas.seleccionarProgramaDeas();
-            
+
             for (ProgramaDeas oProgrma : lista) {
                 id = oProgrma.getId();
                 tipo = oProgrma.getNombrePrograma();
@@ -353,6 +464,10 @@ public class beanRegistro implements Serializable {
 
     public void setTipoTelefono(int tipoTelefono) {
         this.tipoTelefono = tipoTelefono;
+    }
+
+    private void addMessage(FacesMessage message) {
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void setIndentificacion(String indentificacion) {

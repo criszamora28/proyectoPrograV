@@ -39,7 +39,7 @@
                 </p:selectOneMenu>
 
                 <h:outputLabel style="font-weight:normal; font-size: larger"  value="Identificacion:"></h:outputLabel>  
-                <p:inputMask  value="#{beanRegistro.indentificacion}"  mask="9999" />
+                <p:inputMask  value="#{beanRegistro.indentificacion}"  mask="999999999" />
 
                 <h:outputLabel value="Nombre:" style="font-weight:normal; font-size: larger"  />
                 <p:inputText value="#{beanRegistro.nombre}"/>
@@ -57,6 +57,11 @@
                 <p:selectOneMenu  value="#{beanRegistro.tipoFuncionario}">
                     <f:selectItems value="#{beanRegistro.listaTipoFuncionario}"/>
                 </p:selectOneMenu>
+                
+                <h:outputLabel value="Programa DEAS al que pertenece" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                <p:selectOneMenu  value="#{beanRegistro.idprogramaDeas}" style="width: 200px">
+                    <f:selectItems value="#{beanRegistro.listaProgramas}" />
+                </p:selectOneMenu>
                                 
                 <h:outputLabel value="Tipo telefono" style="font-weight:normal; font-size: larger"></h:outputLabel>
                 <p:selectOneMenu  value="#{beanRegistro.tipoTelefono}">
@@ -67,9 +72,9 @@
                 <p:inputMask  value="#{beanRegistro.telefono}"   mask="9999-9999"/>
 
                 <h:outputLabel  value="Fecha de Nacimiento:" style="font-weight:normal; font-size: larger"  />
-<!--                <p:calendar value="#{beanRegistro.fechaNacimiento}" locale="es" navigator="true" pattern="yyyy-MMM-dd" />-->
                 <p:inputText  value="#{beanRegistro.fechaNacimiento}" />
-               
+                <p:spacer></p:spacer>
+                <p:spacer></p:spacer>
                 <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
 
                 <h:outputLabel  value="Provincia" style="font-weight:normal; font-size: larger"  />
@@ -89,15 +94,15 @@
                 </p:selectOneMenu>
 
                 <h:outputLabel  value="Otras señas:" style="font-weight:normal; font-size: larger"  />
-                <p:inputTextarea style="width: 400px; height: 100px"></p:inputTextarea>
+                <p:inputTextarea  value="#{beanRegistro.otrasSeñas}" style="width: 300px; height: 100px"></p:inputTextarea>
             </h:panelGrid>
 
             <div style="position: relative; margin: 0 auto; text-align: center;">
-                <h:commandButton  value="Aceptar"  action="#{beanRegistro.insertarUsuario()}" style="margin-right:20px;"  />
+                <p:commandButton  value="Aceptar"  action="#{beanRegistro.insertarUsuario()}" style="margin-right:20px;" update="messages" />
                 <p:commandButton value="Cancelar"  action="Login.xhtml" style="margin-right:20px;"  />
             </div>
             
-
+            <p:growl  autoUpdate="true" id="messages" showDetail="true" />
         </h:form>
         <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0;" >
             <footer style="height: 50px; background-color: #102b70">

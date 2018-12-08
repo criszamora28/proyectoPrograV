@@ -24,9 +24,7 @@
         <div class="ui-g-4"></div>
 
         <h:form id="formLogin" class="ui-g-4">
-            
-            <p:growl id="growl" showDetail="true" sticky="true" />  
-            
+
             <div id="cuadroInterior">
                 <h:outputText value="Ingreso al Sistema" ></h:outputText>   
             </div> 
@@ -43,25 +41,25 @@
                 <p:selectOneMenu value="#{beanLogin.tipoFun}">
                     <f:selectItems value="#{beanLogin.listaTipoFuncionario}"></f:selectItems> 
                 </p:selectOneMenu>
-                
+
                 <p:spacer></p:spacer>
                 <p:spacer></p:spacer>
-                
+
                 <a href="NuevaCuenta.xhtml">Crear cuenta</a>
-                
+
             </h:panelGrid>
-            
+
             <div style="position: relative; margin: 0 auto; text-align: center; top: 10px">
                 <p:commandButton value="Ingresar"  actionListener="#{beanLogin.autenticar()}"/>
                 <p:commandButton value="Cancelar"  action="Login.xhtml" style="margin-left: 20px" />
             </div>
-            <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
-                <footer style="height: 50px; background-color: #102b70">
-                    <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>
-                </footer>
-            </div>
+            <p:growl  autoUpdate="true" id="messages" showDetail="true" sticky="true" />  
         </h:form>
-        
+        <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
+            <footer style="height: 50px; background-color: #102b70">
+                <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>
+            </footer>
+        </div>
     </h:body>
 </html>
 

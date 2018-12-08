@@ -40,11 +40,12 @@ public class UsuarioDB {
             //Se obtienen los valores del objeto Departamento
             Usuario usuario = new Usuario();
             usuario = usu;
+            int estadoSolicitud= usu.estadoSolicitud ? 1 : 0;
 
             strSQL
-                    = "INSERT INTO usuario(nombre,apellido1,"
-                    + "apellido2,correo, fechaNacimiento, identificacion,"
-                    + "idTipoIdentificacion,idTipoFuncionario,idTipoTelefonoUsuario,idDireccion) VALUES"
+                    = "INSERT INTO usuario(nombre,apellido1,apellido2,correo,fechaNacimiento,identificacion,"
+                    + "idTipoIdentificacion,idTipoFuncionario,idTipoTelefonoUsuario,idDireccion,telefono,idProgramaDeas"
+                    + ",estadoSolicitud) VALUES"
                     + "(" + "'" + usuario.getNombre() + "'" + ","
                     + "'" + usuario.getApellido1() + "'" + ","
                     + "'" + usuario.getApellido2() + "'" + ","
@@ -54,7 +55,10 @@ public class UsuarioDB {
                     + usuario.getTipoIdentificacion().getId() + ","
                     + usuario.getTipoFuncionario().getId() + ","
                     + usuario.getTipotelefono().getId() + ","
-                    + usuario.direccion.getIdDireccion()
+                    + usuario.direccion.getIdDireccion() + ","
+                    + "'" + usuario.telefono + "'" + ","
+                    + "'" + usuario.ProgramaDeas.getId() + "'" + ","
+                    + estadoSolicitud
                     + ")";
 
             //+ "'"+ usuario.getDireccion()+"'" + ")";
@@ -62,9 +66,9 @@ public class UsuarioDB {
             accesoDatos.ejecutaSQL(strSQL);
 
         } catch (SQLException e) {
-            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage(), e.getErrorCode());
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage() + "Erro al insertar usuario", e.getErrorCode());
         } catch (Exception e) {
-            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage());
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage() + "Erro al insertar usuario");
         } finally {
 
         }

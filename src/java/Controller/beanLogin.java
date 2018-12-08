@@ -17,7 +17,9 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
@@ -36,6 +38,18 @@ public class beanLogin implements Serializable {
     String identicacion;
     String contrasena;
     int tipoFun;
+
+    public beanLogin() {
+        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        final Map<String, Object> session = context.getSessionMap();
+        final Object object2 = session.get("Mensaje");
+
+        if (object2 != null) {
+            String mensaje = (String) object2;
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Exito!", mensaje));
+        }
+    }
 
     
     
@@ -84,6 +98,9 @@ public class beanLogin implements Serializable {
                context.addMessage(null, new FacesMessage("Datos incorrectos!", "Usuario o contraseña incorrecta!"));
            }
            
+           
+           
+           
        }catch (Exception e){
        
        }
@@ -113,7 +130,6 @@ public class beanLogin implements Serializable {
     public void setTipoFun(int tipoFun) {
         this.tipoFun = tipoFun;
     }
-    public beanLogin() {
-    }
+    
     
 }

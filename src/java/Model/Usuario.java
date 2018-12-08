@@ -29,6 +29,7 @@ public class Usuario {
     public boolean cuentaCompleta;
     public TipoIdentificacion tipoIdentificacion;
     public TipoTelefono tipotelefono;
+    public boolean estadoSolicitud;
     
 
     public Usuario() {
@@ -51,10 +52,14 @@ public class Usuario {
         this.tipoIdentificacion = tipoIdentificacion;
     }
 
-    
+    public boolean isEstadoSolicitud() {
+        return estadoSolicitud;
+    }
 
+    public void setEstadoSolicitud(boolean estadoSolicitud) {
+        this.estadoSolicitud = estadoSolicitud;
+    }
     
-
     public TipoTelefono getTipotelefono() {
         return tipotelefono;
     }
