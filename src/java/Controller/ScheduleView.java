@@ -58,7 +58,6 @@ public class ScheduleView implements Serializable {
     boolean mostarMenuMantenimiento;
     boolean mostarMenuReportes;
     boolean mostrarMenuPrestamos;
-
     //private ScheduleModel lazyEventModel;
     private ScheduleEvent event = new DefaultScheduleEvent();
 
@@ -137,17 +136,26 @@ public class ScheduleView implements Serializable {
 
             eventModel.addEvent(event);
             try {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+
+                final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+                final Map<String, Object> session = context.getSessionMap();
+                final Object object = session.get("Usuario");
+
                 ReservacionDB oReservacionDB = new ReservacionDB();
-                UsuarioDB oUsuarioDB = new UsuarioDB();
                 InfraestructuraDB oInfraestructuraDB = new InfraestructuraDB();
                 RecursoDB oRecursoDB = new RecursoDB();
-                LinkedList<Usuario> listaUsuario = new LinkedList<>();
-                listaUsuario = oUsuarioDB.seleccionarUsuarioId(123456789);
 
                 Reservacion oReservacion = new Reservacion();
                 oReservacion.id = event.getId();
                 oReservacion.TipoReservacion = oReservacionDB.selectTipoReservacionPorId(TipoReservacion);
-                oReservacion.Usuario = listaUsuario.get(0);
+                oReservacion.Usuario = (Usuario) object;
+                
+                if (oReservacion.Usuario == null) {
+                    FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", "Error al encontrar usuario"));
+                    return;
+                }
 
                 oReservacion.idUsuarioIngresoRegistro = oReservacion.Usuario.identificacion;
                 oReservacion.fechaIngresoRegistro = Date.from(Instant.now());
@@ -190,8 +198,8 @@ public class ScheduleView implements Serializable {
 
                 }
 
-                FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage(null, new FacesMessage("Exito", "Su reservacion ha sido enviada para valoracion"));
+                FacesContext context2 = FacesContext.getCurrentInstance();
+                context2.addMessage(null, new FacesMessage("Exito", "Su reservacion ha sido enviada para valoracion"));
 
             } catch (Exception e) {
                 FacesMessage mensajeError;
@@ -201,7 +209,77 @@ public class ScheduleView implements Serializable {
 
         } else {
             eventModel.updateEvent(event);
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
 
+                final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+                final Map<String, Object> session = context.getSessionMap();
+                final Object object = session.get("Usuario");
+
+                ReservacionDB oReservacionDB = new ReservacionDB();
+                InfraestructuraDB oInfraestructuraDB = new InfraestructuraDB();
+                RecursoDB oRecursoDB = new RecursoDB();
+
+                Reservacion oReservacion = new Reservacion();
+                oReservacion.id = event.getId();
+                oReservacion.TipoReservacion = oReservacionDB.selectTipoReservacionPorId(TipoReservacion);
+                oReservacion.Usuario = (Usuario) object;
+                
+                if (oReservacion.Usuario == null) {
+                    FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", "Error al encontrar usuario"));
+                    return;
+                }
+
+                oReservacion.idUsuarioEdicionRegistro = oReservacion.Usuario.identificacion;
+                oReservacion.fechaEdicionRegistro = Date.from(Instant.now());
+                oReservacion.estadoRegistro = true;
+
+                oReservacionDB.ModificarReservacion(oReservacion);
+                
+                oReservacionDB.EliminarDetallesReservacion(oReservacion);
+
+                DetalleReservacion oDetalle = new DetalleReservacion();
+                oDetalle.Reservacion = oReservacion;
+
+                if (!listaIn.isEmpty()) {
+                    Iterator iter = listaIn.iterator();
+                    while (iter.hasNext()) {
+                        String idInfra = (String) iter.next();
+                        oDetalle.Infraestructura = oInfraestructuraDB.seleccionarInfraestructuraId2(idInfra);
+                        oDetalle.titulo = event.getTitle();
+                        oDetalle.fechaInicio = event.getStartDate();
+                        oDetalle.fechaFinal = event.getEndDate();
+                        oDetalle.todoElDia = event.isAllDay();
+                        oDetalle.editable = false;
+                        oDetalle.estadoSolicitud = false;
+                        oReservacionDB.InsertarDetalleReservacionInfraestructura(oDetalle);
+                    }
+
+                }
+
+                if (!listaRecurso.isEmpty()) {
+                    Iterator iter = listaRecurso.iterator();
+                    while (iter.hasNext()) {
+                        String idRecurso = (String) iter.next();
+                        oDetalle.Recurso = oRecursoDB.seleccionarRecursoId2(idRecurso);
+                        oDetalle.titulo = event.getTitle();
+                        oDetalle.fechaInicio = event.getStartDate();
+                        oDetalle.fechaFinal = event.getEndDate();
+                        oDetalle.todoElDia = event.isAllDay();
+                        oDetalle.editable = false;
+                        oDetalle.estadoSolicitud = false;
+                        oReservacionDB.InsertarDetalleReservacionRecurso(oDetalle);
+                    }
+
+                }
+
+                FacesContext context2 = FacesContext.getCurrentInstance();
+                context2.addMessage(null, new FacesMessage("Exito", "Su reservacion ha sido modificada"));
+
+            } catch (Exception e) {
+            }
+            
         }
         event = new DefaultScheduleEvent();
     }
@@ -368,7 +446,6 @@ public class ScheduleView implements Serializable {
 //    public ScheduleModel getLazyEventModel() {
 //        return lazyEventModel;
 //    }
-    
     private Calendar today() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);

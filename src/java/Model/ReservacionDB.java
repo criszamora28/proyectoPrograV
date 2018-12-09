@@ -63,6 +63,56 @@ public class ReservacionDB {
         }
     }
     
+    public void ModificarReservacion(Reservacion pReservacion) throws SNMPExceptions, SQLException {
+        String strSQL = "";
+
+        try {
+           
+
+            strSQL
+                    = "update reservacion "
+                    + " set idTipoReservacion=" + pReservacion.TipoReservacion.Id + "," 
+                    + " idUsuarioEdicionRegistro=" + pReservacion.Usuario.identificacion + "," 
+                    + " fechaEdicionRegistro='" + pReservacion.fechaEdicionRegistro + "'" 
+                    + " where id='" + pReservacion.id + "'" + " and idUsuario=" + pReservacion.Usuario.identificacion;
+                    
+                    
+                    
+            //Se ejecuta la sentencia SQL
+            accesoDatos.ejecutaSQL(strSQL);
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage());
+        } finally {
+
+        }
+    }
+    
+    public void EliminarDetallesReservacion(Reservacion pReservacion) throws SNMPExceptions, SQLException {
+        String strSQL = "";
+
+        try {
+           
+
+            strSQL
+                    = "delete from detalleRservacion where idReservacion='" + pReservacion + "'";
+                    
+                    
+                    
+            //Se ejecuta la sentencia SQL
+            accesoDatos.ejecutaSQL(strSQL);
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage());
+        } finally {
+
+        }
+    }
+    
     public void InsertarDetalleReservacionRecurso(DetalleReservacion pDetalle) throws SNMPExceptions, SQLException {
         String strSQL = "";
 
@@ -131,6 +181,8 @@ public class ReservacionDB {
 
         }
     }
+    
+    
 
 
     public LinkedList<Reservacion> selectReservacion() throws SNMPExceptions, SQLException {

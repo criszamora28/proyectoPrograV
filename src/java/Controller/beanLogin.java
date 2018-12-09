@@ -10,19 +10,16 @@ import Model.TipoFuncionario;
 import Model.TipoFuncionarioDB;
 import Model.Usuario;
 import Model.UsuarioDB;
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -51,62 +48,66 @@ public class beanLogin implements Serializable {
         }
     }
 
-    
-    
-   public LinkedList<SelectItem> getListaTipoFuncionario()throws SNMPExceptions, SQLException{
-        int id=0;
-        String tipo="";
-        
+    public LinkedList<SelectItem> getListaTipoFuncionario() throws SNMPExceptions, SQLException {
+        int id = 0;
+        String tipo = "";
+
         LinkedList<TipoFuncionario> lista = new LinkedList<TipoFuncionario>();
         TipoFuncionarioDB fDB = new TipoFuncionarioDB();
-        TipoFuncionario n= new TipoFuncionario();
-       lista = fDB.seleccionarTiposFuncionarios();
-    
-        
+        TipoFuncionario n = new TipoFuncionario();
+        lista = fDB.seleccionarTiposFuncionarios();
+
         LinkedList resultList = new LinkedList();
-   
-        for (Iterator iter= lista.iterator(); iter.hasNext();) {
-        
-            TipoFuncionario tipoFun = (TipoFuncionario) iter.next();
-            id=tipoFun.getId();
-            tipo=tipoFun.getTipoUsuario();
+
+        for (TipoFuncionario tipoFun : lista) {
+            id = tipoFun.getId();
+            tipo = tipoFun.getTipoUsuario();
             resultList.add(new SelectItem(id, tipo));
-         }  
-         return resultList; 
-        
+        }
+        return resultList;
+
     }
-   
-    public void autenticar(){
-     int tipo=0;
-     int identi=0;
-     String contrasena="";
-     tipo=this.getTipoFun();
-     identi=Integer.parseInt(this.getIdenticacion());
-     contrasena=this.getContrasena();
-     
-       try{
-           LinkedList<Usuario>lista=new UsuarioDB().validarUsuario(identi,tipo,contrasena);
-           Usuario usuario= lista.get(0);
-           
-           if (usuario != null) {
-               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario", usuario);
-               FacesContext.getCurrentInstance().getExternalContext().redirect("Principal.xhtml");
-               FacesContext context = FacesContext.getCurrentInstance();
-               context.addMessage(null, new FacesMessage("Datos incorrectos!", "Datos ingresados correctamente!"));
-           } else {
-               FacesContext context = FacesContext.getCurrentInstance();
-               context.addMessage(null, new FacesMessage("Datos incorrectos!", "Usuario o contraseña incorrecta!"));
-           }
-           
-           
-           
-           
-       }catch (Exception e){
-       
-       }
-       
-   }
-    
+
+    public void autenticar() {
+        int tipo = 0;
+        int identi = 0;
+        String contrasena = "";
+        tipo = this.getTipoFun();
+        identi = Integer.parseInt(this.getIdenticacion());
+        contrasena = this.getContrasena();
+
+        try {
+            LinkedList<Usuario> lista = new UsuarioDB().validarUsuario(identi, tipo, contrasena);
+            if (lista.isEmpty()) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Datos incorrectos!", "Usuario o contraseña incorrecta!"));
+
+            } else {
+                Usuario usuario = lista.get(0);
+                if (usuario.cuentaCompleta == false) {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario", usuario);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("ActualizacionContrasena.xhtml");
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Atencion!", "Debe actualizar los datos que se le piden!"));
+
+                } else {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario", usuario);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("Principal.xhtml");
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Datos correctos!", "Datos ingresados correctamente!"));
+
+                }
+            }
+            
+
+            
+
+        } catch (Exception e) {
+
+        }
+
+    }
+
     public String getIdenticacion() {
         return identicacion;
     }
@@ -130,6 +131,5 @@ public class beanLogin implements Serializable {
     public void setTipoFun(int tipoFun) {
         this.tipoFun = tipoFun;
     }
-    
-    
+
 }

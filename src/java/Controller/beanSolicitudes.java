@@ -100,16 +100,22 @@ public class beanSolicitudes implements Serializable {
 
             UsuarioDB oUsuarioDB = new UsuarioDB();
             Usuario us = this.getUsuario();
+            
+            if (us.estadoSolicitud == true) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Atencion!", "Esta solicitud ya ha sido aceptada!"));
+                return;
 
+            }
             us.estadoSolicitud = true;
             us.codigoVerificacion = this.generarCodigoVerificacion();
             us.contrasena = generarContraseña();
 
-//            oUsuarioDB.ActualizarUsuarioSilicitudAceptada(us);
-
+            oUsuarioDB.ActualizarUsuarioSilicitudAceptada(us);
             //ACA llama a la clase enviaCorreo, agarra el correo del usuario y le adjunta la clave generada. Tambien se actualiza el usarioDB
             ControladorCorreo controlador = new ControladorCorreo();
-            controlador.enviarCorreo(us);
+            controlador.enviarCorreoAceptado(us);
 
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null,
@@ -136,7 +142,26 @@ public class beanSolicitudes implements Serializable {
 
     public void rechazarSolicitud() throws SNMPExceptions, SQLException {
         Usuario us = this.getUsuario();
-        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
+        if (us.estadoSolicitud == true) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Atencion!", "Esta solicitud ya ha sido aceptada!"));
+                return;
+
+            }
+        try {
+            ControladorCorreo controlador = new ControladorCorreo();
+            controlador.enviarCorreoRechazado(us);
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito!", "Correo enviado!"));
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", e.toString()));
+        }
+        
 
     }
 
