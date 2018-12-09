@@ -135,9 +135,10 @@
                     <p:commandButton value="Eliminar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.eliminar()}" oncomplete="@all"  ajax="true" style="margin-right: 10px" />
                 </div>
             </p:dialog>
+            
             <p:dialog header="Informacion del Usuario" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="cursoDetalles" style="text-align:center;">
-                    <p:panelGrid style="margin: 0 auto;"  columns="2" rendered="#{not empty beanMentenimientoUsuario.usuario}" columnClasses="label,value">
+                    <p:panelGrid style="margin: 0 auto;"  columns="2" rendered="#{not empty beanMentenimientoUsuario.usuario2}" columnClasses="label,value">
                         <f:facet name="header">
                             <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="100" width="100"/>
                         </f:facet>

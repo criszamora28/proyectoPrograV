@@ -130,7 +130,7 @@ public class beanMantenimientRecurso implements Serializable {
             RecursoUp.id = us.id;
             RecursoUp.descripcion = us.descripcion;
             RecursoUp.tipo = us.tipo;
-//            RecursoUp.estadoRecurso = (estado==0)?true:false;
+//            RecursoUp.estadoRecurso = (estadoRegistro==0)?true:false;
 
             RecursoDB upUser = new RecursoDB();
             upUser.ActualizarRecurso(RecursoUp);

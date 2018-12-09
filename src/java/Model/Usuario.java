@@ -25,11 +25,13 @@ public class Usuario {
     public Direccion direccion;
     public String telefono;
     public String correo;
-    public boolean estado;
+    public boolean estadoRegistro;
     public boolean cuentaCompleta;
     public TipoIdentificacion tipoIdentificacion;
     public TipoTelefono tipotelefono;
     public boolean estadoSolicitud;
+    public String codigoVerificacion;
+    
     
 
     public Usuario() {
@@ -47,7 +49,7 @@ public class Usuario {
         this.direccion = direccion;
         this.telefono = telefono;
         this.correo = correo;
-        this.estado = estado;
+        this.estadoRegistro = estado;
         this.cuentaCompleta = cuentaCompleta;
         this.tipoIdentificacion = tipoIdentificacion;
     }
@@ -90,6 +92,22 @@ public class Usuario {
 
     public void setApellido1(String apellido1) {
         this.apellido1 = apellido1;
+    }
+
+    public boolean isEstadoRegistro() {
+        return estadoRegistro;
+    }
+
+    public void setEstadoRegistro(boolean estadoRegistro) {
+        this.estadoRegistro = estadoRegistro;
+    }
+
+    public String getCodigoVerificacion() {
+        return codigoVerificacion;
+    }
+
+    public void setCodigoVerificacion(String codigoVerificacion) {
+        this.codigoVerificacion = codigoVerificacion;
     }
 
     public String getApellido2() {
@@ -165,11 +183,11 @@ public class Usuario {
     }
 
     public boolean isEstado() {
-        return estado;
+        return estadoRegistro;
     }
 
     public void setEstado(boolean estado) {
-        this.estado = estado;
+        this.estadoRegistro = estado;
     }
 
     public boolean isCuentaCompleta() {

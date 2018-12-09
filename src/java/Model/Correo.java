@@ -9,25 +9,6 @@ package Model;
  *
  * @author Ernesto PC
  */
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 
 /**
  *
@@ -35,8 +16,8 @@ import javax.mail.internet.MimeMultipart;
  */
 public class Correo {
 
-    private String correoUsuario = "pruebaproyectos77953@gmail.com";
-    private String contrasenia = "prueba1234";
+    private final String correoUsuario = "pruebaproyectos77953@gmail.com";
+    private final String contrasenia = "prueba1234";
     private String destino;
     private String asunto;
     private String mensaje;

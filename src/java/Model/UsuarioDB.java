@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 import javax.smartcardio.ResponseAPDU;
 
 /**
@@ -40,12 +41,13 @@ public class UsuarioDB {
             //Se obtienen los valores del objeto Departamento
             Usuario usuario = new Usuario();
             usuario = usu;
-            int estadoSolicitud= usu.estadoSolicitud ? 1 : 0;
+            int estadoSolicitud = usu.estadoSolicitud ? 1 : 0;
+            int estadoRegistro = usu.estadoRegistro ? 1 : 0;
 
             strSQL
                     = "INSERT INTO usuario(nombre,apellido1,apellido2,correo,fechaNacimiento,identificacion,"
                     + "idTipoIdentificacion,idTipoFuncionario,idTipoTelefonoUsuario,idDireccion,telefono,idProgramaDeas"
-                    + ",estadoSolicitud) VALUES"
+                    + ",estadoSolicitud,estadoRegistro) VALUES"
                     + "(" + "'" + usuario.getNombre() + "'" + ","
                     + "'" + usuario.getApellido1() + "'" + ","
                     + "'" + usuario.getApellido2() + "'" + ","
@@ -56,9 +58,10 @@ public class UsuarioDB {
                     + usuario.getTipoFuncionario().getId() + ","
                     + usuario.getTipotelefono().getId() + ","
                     + usuario.direccion.getIdDireccion() + ","
-                    + "'" + usuario.telefono + "'" + ","
+                    + "'" + usuario.getTelefono() + "'" + ","
                     + "'" + usuario.ProgramaDeas.getId() + "'" + ","
-                    + estadoSolicitud
+                    + estadoSolicitud + ","
+                    + estadoRegistro
                     + ")";
 
             //+ "'"+ usuario.getDireccion()+"'" + ")";
@@ -74,7 +77,7 @@ public class UsuarioDB {
         }
     }
 
-    public LinkedList<Usuario> seleccionarUsuariosAdministrativos() throws SNMPExceptions, SQLException {
+    public LinkedList<Usuario> seleccionarListaUsuarios() throws SNMPExceptions, SQLException {
         String select = "";
         LinkedList<Usuario> listaUsuarios = new LinkedList<Usuario>();
 
@@ -82,11 +85,18 @@ public class UsuarioDB {
 
             //Se instancia la clase de acceso a datos
             AccesoDatos accesoDatos = new AccesoDatos();
+            TipoFuncionarioDB oTipoFuncionarioDB = new TipoFuncionarioDB();
+            TipoTelefonoDB oTipoTelefonoDB = new TipoTelefonoDB();
+            TipoIdentificacionDB oTipoIdentificacionDB = new TipoIdentificacionDB();
+            DireccionDB oDireccionDB = new DireccionDB();
+            ProgramaDeasDB oProgramaDeasDB = new ProgramaDeasDB();
 
             //Se crea la sentencia de búsqueda
             select
-                    = "SELECT identificacion, nombre, apellido1, apellido2, "
-                    + "correo FROM usuario";
+                    = "SELECT identificacion,idTipoIdentificacion,idTipoFuncionario,idProgramaDeas,"
+                    + "correo,nombre,apellido1,apellido2,fechaNacimiento,idTipoTelefonoUsuario,"
+                    + "telefono,idDireccion,cuentaCompleta,estadoSolicitud"
+                    + " FROM usuario where estadoRegistro = 1";
 
             //Se ejecuta la sentencia SQL
             ResultSet rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
@@ -94,17 +104,44 @@ public class UsuarioDB {
             while (rsPA.next()) {
 
                 int identificacion = rsPA.getInt("identificacion");
+                int tipoFuncionario = rsPA.getInt("idTipoFuncionario");
+                String idProgramaDEAS = rsPA.getString("idProgramaDeas");
                 String nombre = rsPA.getString("nombre");
                 String apellido1 = rsPA.getString("apellido1");
                 String apellido2 = rsPA.getString("apellido2");
                 String correo = rsPA.getString("correo");
-
+                int idTipoIdentificacion = rsPA.getInt("idTipoIdentificacion");
+                String fechaNacimiento =  rsPA.getString("fechaNacimiento");
+                int idTipoTelefonoUsuario = rsPA.getInt("idTipoTelefonoUsuario");
+                String telefono = rsPA.getString("telefono");
+                int idDireccion = rsPA.getInt("idDireccion");
+                int cuentaCompleta = rsPA.getInt("cuentaCompleta");
+                int estadoSolicitud = rsPA.getInt("estadoSolicitud");
+                
+                List<TipoIdentificacion> listaTipo = oTipoIdentificacionDB.seleccionarId(idTipoIdentificacion);
+                List<TipoFuncionario> listaTipoFun = oTipoFuncionarioDB.seleccionarTiposFuncionariosid(tipoFuncionario);
+                List<TipoTelefono> listaTipoTel = oTipoTelefonoDB.seleccionarTipoTelefonoPorId(idTipoTelefonoUsuario);
+                List<ProgramaDeas> listaPrograma = oProgramaDeasDB.seleccionarProgramaDeasId(idProgramaDEAS);
+                List<Direccion> listaDireccion = oDireccionDB.seleccionarDireccionPorId(idDireccion,identificacion);
+                
+                
+                
                 Usuario perUsuarios = new Usuario();
                 perUsuarios.identificacion = identificacion;
                 perUsuarios.nombre = nombre;
                 perUsuarios.apellido1 = apellido1;
                 perUsuarios.apellido2 = apellido2;
                 perUsuarios.correo = correo;
+                perUsuarios.tipoIdentificacion = listaTipo.get(0);
+                perUsuarios.tipoFuncionario = listaTipoFun.get(0);
+                perUsuarios.tipotelefono = listaTipoTel.get(0);
+                perUsuarios.fechaNacimiento = fechaNacimiento;
+                perUsuarios.telefono = telefono;
+                perUsuarios.estadoSolicitud = estadoSolicitud == 1;
+                perUsuarios.cuentaCompleta = cuentaCompleta == 1;
+                perUsuarios.ProgramaDeas = listaPrograma.get(0);
+                perUsuarios.direccion = listaDireccion.get(0);
+                
                 listaUsuarios.add(perUsuarios);
             }
             rsPA.close();
@@ -288,6 +325,33 @@ public class UsuarioDB {
                     + "  apellido1=" + "'" + usu.apellido1 + "'" + ","
                     + "  apellido2=" + "'" + usu.apellido2 + "'" + ","
                     + "  correo=" + "'" + usu.correo + "'"
+                    + "  where identificacion= " + usu.identificacion;
+
+            //+ "'"+ usuario.getDireccion()+"'" + ")";
+            //Se ejecuta la sentencia SQL
+            accesoDatos.ejecutaSQL(strSQL);
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, e.getMessage());
+        } finally {
+
+        }
+    }
+    
+    public void ActualizarUsuarioSilicitudAceptada(Usuario usu) throws SNMPExceptions, SQLException {
+        String strSQL = "";
+
+        try {
+            //Se obtienen los valores del objeto Departamento
+            int estadoSolicitud = usu.estadoSolicitud ? 1:0;
+
+            strSQL
+                    = "update usuario"
+                    + "  set estadoSolicitud=" + estadoSolicitud + ","
+                    + "  codigoverificacion=" + "'" + usu.codigoVerificacion + "'" + ","
+                    + "  contra=" + "'" + usu.contrasena + "'" 
                     + "  where identificacion= " + usu.identificacion;
 
             //+ "'"+ usuario.getDireccion()+"'" + ")";

@@ -20,26 +20,39 @@
     <h:body>
         <header class="ui-g" style="width: 100%; height: 140px; background: #102b70;">
             <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="150" height="110"/>
+            <h:form>
+                <p:commandLink style="position: relative; left: 1050px;top: 10px; cursor: pointer " oncomplete="PF('usuDialog2').show()" title="Detalles">
+                    <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="50" width="50"/>
+                    <f:setPropertyActionListener value="#{usuario}" target="#{beanSolicitudes.usuario2}" />
+                </p:commandLink>
+            </h:form>
         </header>
         <h:form id="form" class="iu-g"> 
 
             <div class="ui-g-3">
                 <p:panelMenu >
                     <p:submenu label="Inicio" >
-                        <p:menuitem value="Volver a ingresar" url="Login.xhtml" />
+                        <p:menuitem value="Volver al Inicio" url="Principal.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Mantenimientos">
-                        <p:menuitem value="Mantenimiento usuarios" />
-                        <p:menuitem value="Mantenimiento de recursos" />
-                        <p:menuitem value="Mantenimiento de infraestructura" />
-                        <p:menuitem value="Mantenimiento de prestamos" />
+                    <p:submenu label="Mantenimientos" rendered="#{beanSolicitudes.mostarMenuMantenimiento}">
+                        <p:menuitem value="Mantenimiento de Usuarios" url="MantenimientoUsuario.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Recursos" url="MantenimientoRecurso.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Infraestructura" url="MantenimientoInfraestructura.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Cursos" url="MantenimientoCursoDeas.xhtml"/>
+                        <p:menuitem value="Mantenimiento de Programas" url="MantenimientoProgramas.xhtml"/>
+
                     </p:submenu>
-                    <p:submenu label="Reportes" >
+                    <p:submenu label="Reportes" rendered="#{beanSolicitudes.mostarMenuReportes}">
                         <p:menuitem value="Reportes de prestamos"  />
                         <p:menuitem value="Reportes de usuarios" />
                         <p:menuitem value="Reportes de infraestructuras"  />
                         <p:menuitem value="Reportes de cursos"  />
-                        <p:menuitem value="Reportes de "  />
+
+                    </p:submenu>
+                    <p:submenu label="Prestamos" rendered="#{beanSolicitudes.mostrarMenuPrestamos}">
+                        <p:menuitem value="Solicitud de Prestamos"  url="Reservacion.xhtml"/>
+                        <p:menuitem value="Solicitudes de Cuenta de Usuario"  url="AceptacionSolictudes.xhtml"/>
+
                     </p:submenu>
                 </p:panelMenu>
             </div>
@@ -48,18 +61,22 @@
                 <p:dataGrid var="usuario" value="#{beanSolicitudes.listaPendientes}" columns="3" layout="grid"  rows="6" >
 
                     <f:facet name="header">
-                        Lista de Infraestructuras
+                        Solicitudes de Cuenta de Usuario
                     </f:facet>
 
                     <p:panel header="#{usuario.identificacion}" style="text-align:center">
-                        <h:panelGrid columns="1" style="width:100%">
+                        <h:panelGrid columns="2" style="width:100%">
 
                             <f:facet name="header">
-                                <img src="Imagenes/deas.jpg" alt="" width="100" height="100"/>
+                                <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" width="100" height="100"/>
                             </f:facet>
-
+                            
+                            <h:outputText value="Nombre de la cuenta: " />
                             <h:outputText value="#{usuario.nombre}" />
-
+                            
+                            <h:outputText value="Estado de solicitud:" />
+                            <h:outputText value="#{beanSolicitudes.convertirEstadoCuenta(usuario)}" />
+                            
                             <p:commandLink update=":form:usuDetalles" oncomplete="PF('usuDialog').show()" title="Detalles" >
                                 <h:outputText value="Detalles" style="margin:0 auto;"/>
                                 <f:setPropertyActionListener value="#{usuario}" target="#{beanSolicitudes.usuario}" />
@@ -70,44 +87,100 @@
                 </p:dataGrid>
             </div>
 
-            <p:dialog header="Solicitudes recibidas" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="usuDetalles" style="text-align:center;">
-                    <p:panelGrid  columns="2" rendered="#{not empty beanSolicitudes.usuario}" columnClasses="label,value">
+            <p:dialog header="Solicitud de Cuenta" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel  id="usuDetalles" style="text-align:center;">
+                    <p:panelGrid columns="4" rendered="#{not empty beanSolicitudes.usuario}" columnClasses="label,value">
                         <f:facet name="header">
-                            <img src="Imagenes/deas.jpg" alt=""/>
+                            <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="100" width="100"/>
                         </f:facet>
 
-                        <p:outputLabel value="Identificacion:" ></p:outputLabel>
-                        <p:inputText value="#{beanSolicitudes.usuario.identificacion}" disabled="#{beanSolicitudes.disable}" />
+                        <h:outputLabel value="Tipo identificacion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                        <h:outputLabel value="#{beanSolicitudes.usuario.tipoIdentificacion.tipo}"/>
 
-                        <p:outputLabel value="Nombre:" ></p:outputLabel>
-                        <p:inputText value="#{beanSolicitudes.usuario.nombre }" disabled="#{beanSolicitudes.disable}" />
+                        <h:outputLabel style="font-weight:normal; font-size: larger"  value="Identificacion:"></h:outputLabel>  
+                        <h:outputLabel  value="#{beanSolicitudes.usuario.identificacion}"/>
 
-                        <p:outputLabel value="Apellido:" ></p:outputLabel>
-                        <p:inputText value="#{beanSolicitudes.usuario.apellido1}" disabled="#{beanSolicitudes.disable}"/>
+                        <h:outputLabel value="Nombre:" style="font-weight:normal; font-size: larger"  />
+                        <h:outputLabel value="#{beanSolicitudes.usuario.nombre}"/>
 
-                        <p:outputLabel value="Correo:" ></p:outputLabel>
-                        <p:inputText value="#{beanSolicitudes.usuario.correo}" disabled="#{beanSolicitudes.disable}"/>
+                        <h:outputLabel  value="Primer apellido:" style="font-weight:normal; font-size: larger"  />
+                        <h:outputLabel value="#{beanSolicitudes.usuario.apellido1}"/>
 
-                        <p:outputLabel value="Tipo identificacion:" ></p:outputLabel>
-                        <p:inputText value="#{beanMantenimientoInfraestructura.infra.descripcion}" disabled="#{beanSolicitudes.disable}"  />
+                        <h:outputLabel  value="Segundo apellido:" style="font-weight:normal; font-size: larger"  />
+                        <h:outputLabel value="#{beanSolicitudes.usuario.apellido2}" />
 
-                        <p:outputLabel value="Numero Telefonico:" ></p:outputLabel>
-                        <p:inputText value="#{beanSolicitudes.usuario.contrasena}" disabled="#{beanSolicitudes.disable}" />
+                        <h:outputLabel  value="Correo:" style="font-weight:normal; font-size: larger"  />
+                        <h:outputLabel  value="#{beanSolicitudes.usuario.correo}" />
+
+                        <h:outputLabel value="Tipo Funcionario" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                        <h:outputLabel value="#{beanSolicitudes.usuario.tipoFuncionario.tipoUsuario}" />
+
+                        <h:outputLabel value="Programa DEAS al que pertenece:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                        <h:outputLabel value="#{beanSolicitudes.usuario.programaDeas.nombrePrograma}" />
+
+                        <h:outputLabel value="Tipo telefono:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+                        <h:outputLabel value="#{beanSolicitudes.usuario.tipotelefono.tipo}" />
+
+                        <h:outputLabel  value="Numero de telefono:" style="font-weight:normal; font-size: larger"  />
+                        <h:outputLabel  value="#{beanSolicitudes.usuario.telefono}"   />
+
+                        <h:outputLabel  value="Fecha de Nacimiento:" style="font-weight:normal; font-size: larger"  />
+                        <h:outputLabel  value="#{beanSolicitudes.usuario.fechaNacimiento}" />
+                        <p:spacer></p:spacer>
+                        <p:spacer></p:spacer>
+                        <h:outputLabel value="Direccion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
+
+                        <h:outputLabel  value="Provincia" style="font-weight:normal; font-size: larger"  />
+                        <h:outputLabel  value="Canton" style="font-weight:normal; font-size: larger"  />
+                        <h:outputLabel  value="Distrito" style="font-weight:normal; font-size: larger"  />
+                        <p:spacer></p:spacer>
+                        <h:outputLabel value="#{beanSolicitudes.usuario.direccion.provincia.nombreprovincia}" />
+
+                        <h:outputLabel value="#{beanSolicitudes.usuario.direccion.canton.nombreCanton}" />
+
+                        <h:outputLabel value="#{beanSolicitudes.usuario.direccion.distrito.nombreDistrito}" />
+
+                        <h:outputLabel  value="Otras señas:" style="font-weight:normal; font-size: larger"  />
+                        <p:inputTextarea readonly="true"  value="#{beanSolicitudes.usuario.direccion.otrasSeñas}" style="width: 300px; height: 100px"></p:inputTextarea>
 
                     </p:panelGrid>
-
-
-
+                    
                 </p:outputPanel>
                 <div style="position: relative; margin: 0 auto; text-align: center; margin:3%" > 
-                    <p:commandButton value="Aceptar" update=":form:usuDetalles" actionListener="#{beanSolicitudes.aceptarSolicitud()}" oncomplete="@all"  ajax="true" />
-                    <p:commandButton value="Rechazar" update=":form:usuDetalles"  actionListener="#{beanSolicitudes.rechazarSolicitud()}" oncomplete="@all"  ajax="true" />
+                    <p:commandButton  value="Aceptar Solicitud" update=":form:usuDetalles" actionListener="#{beanSolicitudes.aceptarSolicitud()}" oncomplete="@all"  ajax="true" />
+                    <p:commandButton  style="margin-left: 10px" value="Rechazar Solicitud" update=":form:usuDetalles"  actionListener="#{beanSolicitudes.rechazarSolicitud()}" oncomplete="@all"  ajax="true" />
                 </div>
             </p:dialog>
 
-            <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
+            <p:dialog header="Informacion del Usuario" widgetVar="usuDialog2" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel style="text-align:center;">
+                    <p:panelGrid style="margin: 0 auto;"  columns="2" rendered="#{not empty beanSolicitudes.usuario2}" columnClasses="label,value">
+                        <f:facet name="header">
+                            <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="100" width="100"/>
+                        </f:facet>
+
+                        <p:outputLabel value="Nombre:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanSolicitudes.usuario.nombre}"/>
+
+                        <p:outputLabel value="Correo:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanSolicitudes.usuario.correo}"/>
+
+                        <p:outputLabel value="Tipo de Usuario:" ></p:outputLabel>
+                        <p:outputLabel value="#{beanSolicitudes.usuario.tipoFuncionario.tipoUsuario}" />
+                    </p:panelGrid>
+                </p:outputPanel>
+                <div style="margin: 0 auto;margin-top: 10px"> 
+                    <p:commandButton style="margin-right: 10px" value="Modificar Datos" ajax="true"/>
+                    <p:commandButton value="Cerrar Sesion" actionListener="#{beanSolicitudes.cerrarSession()}" ajax="true" />  
+                </div>
+            </p:dialog>
+            <p:growl  autoUpdate="true" id="messages" showDetail="true" />
         </h:form>
+        <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
+            <footer style="height: 50px; background-color: #102b70">
+                <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>
+            </footer>
+        </div>
     </h:body>
 </html>
 

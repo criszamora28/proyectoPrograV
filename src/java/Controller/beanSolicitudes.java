@@ -15,6 +15,10 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -24,11 +28,59 @@ import java.util.List;
 @SessionScoped
 public class beanSolicitudes implements Serializable {
 
-     boolean disable;
+    boolean disable;
     Usuario usuario;
 
+    Usuario Usuario2;
+    boolean mostarMenuMantenimiento;
+    boolean mostarMenuReportes;
+    boolean mostrarMenuPrestamos;
+    boolean ocularBotones;
+
     public beanSolicitudes() {
-        disable = true;
+//         disable = true;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+
+        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        final Map<String, Object> session = context.getSessionMap();
+        final Object object = session.get("Usuario");
+//        try {
+//            if (object == null) {
+//                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+//            }else{
+//                Usuario2 = (Usuario)object;
+//                this.mostrarMensaje("Ingreso hecho correctamente", "Bienvenido " + Usuario2.nombre);
+//                if (Usuario2.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+//                    mostarMenuMantenimiento = true;
+//                    mostarMenuReportes = true;
+//                    mostarMenuMantenimiento = true;
+//                    mostarMenuReportes = true;
+//                    mostrarMenuPrestamos = true;
+//
+//                } else {
+//                    if (Usuario2.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+//                        mostarMenuMantenimiento = false;
+//                        mostarMenuReportes = false;
+//                        mostrarMenuPrestamos = true;
+//                    } 
+//                }
+//            }
+//        } catch (Exception e) {
+//        }
+    }
+
+    private void mostrarMensaje(String encMensaje, String detMensaje) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(encMensaje, detMensaje));
+    }
+
+    public void cerrarSession() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+        } catch (Exception e) {
+        }
+
     }
 
     public List<Usuario> getListaPendientes() throws SNMPExceptions, SQLException {
@@ -38,25 +90,73 @@ public class beanSolicitudes implements Serializable {
         LinkedList<Usuario> lista = new LinkedList<Usuario>();
         UsuarioDB fDB = new UsuarioDB();
         Usuario n = new Usuario();
-        lista = fDB.seleccionarSolicitudes();
+        lista = fDB.seleccionarListaUsuarios();
 
         return lista;
     }
 
     public void aceptarSolicitud() throws SNMPExceptions, SQLException {
-       Usuario us = this.getUsuario();
-        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
-        Usuario seleccionado=lista.get(0);
-        
-        //ACA llama a la clase enviaCorreo, agarra el correo del usuario y le adjunta la clave generada. Tambien se actualiza el usarioDB
-        ControladorCorreo controlador= new ControladorCorreo();
-        controlador.enviarCorreo(seleccionado.correo);//cambiar  metodo para que reciba como parametros el correo que esta el lista.get(0);
+        try {
+
+            UsuarioDB oUsuarioDB = new UsuarioDB();
+            Usuario us = this.getUsuario();
+
+            us.estadoSolicitud = true;
+            us.codigoVerificacion = this.generarCodigoVerificacion();
+            us.contrasena = generarContraseña();
+
+//            oUsuarioDB.ActualizarUsuarioSilicitudAceptada(us);
+
+            //ACA llama a la clase enviaCorreo, agarra el correo del usuario y le adjunta la clave generada. Tambien se actualiza el usarioDB
+            ControladorCorreo controlador = new ControladorCorreo();
+            controlador.enviarCorreo(us);
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito!", "Solicitud aprovada correctamente \n\n Correo enviado!"));
+
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Error!", e.toString()));
+
+        }
+
+    }
+
+    public String generarCodigoVerificacion() {
+        String codigo = "";
+        codigo += "abc123";
+        return codigo;
+    }
+
+    public String generarContraseña() {
+        return "Xdwe37cdsn";
     }
 
     public void rechazarSolicitud() throws SNMPExceptions, SQLException {
         Usuario us = this.getUsuario();
         LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
-        
+
+    }
+
+    public String convertirEstadoCuenta(Usuario pUsuario) {
+        String estado = "";
+        if (pUsuario.estadoSolicitud == true) {
+            estado = "Aceptado";
+            this.ocularBotones = false;
+        } else {
+            estado = "Rechazado";
+        }
+        return estado;
+    }
+
+    public boolean isOcularBotones() {
+        return ocularBotones;
+    }
+
+    public void setOcularBotones(boolean ocularBotones) {
+        this.ocularBotones = ocularBotones;
     }
 
     public boolean isDisable() {
@@ -71,9 +171,40 @@ public class beanSolicitudes implements Serializable {
         return usuario;
     }
 
+    public Usuario getUsuario2() {
+        return Usuario2;
+    }
+
+    public void setUsuario2(Usuario Usuario2) {
+        this.Usuario2 = Usuario2;
+    }
+
+    public boolean isMostarMenuMantenimiento() {
+        return mostarMenuMantenimiento;
+    }
+
+    public void setMostarMenuMantenimiento(boolean mostarMenuMantenimiento) {
+        this.mostarMenuMantenimiento = mostarMenuMantenimiento;
+    }
+
+    public boolean isMostarMenuReportes() {
+        return mostarMenuReportes;
+    }
+
+    public void setMostarMenuReportes(boolean mostarMenuReportes) {
+        this.mostarMenuReportes = mostarMenuReportes;
+    }
+
+    public boolean isMostrarMenuPrestamos() {
+        return mostrarMenuPrestamos;
+    }
+
+    public void setMostrarMenuPrestamos(boolean mostrarMenuPrestamos) {
+        this.mostrarMenuPrestamos = mostrarMenuPrestamos;
+    }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    
 }

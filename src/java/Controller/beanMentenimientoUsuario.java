@@ -103,7 +103,7 @@ public class beanMentenimientoUsuario implements Serializable {
         LinkedList<Usuario> lista = new LinkedList<Usuario>();
         UsuarioDB fDB = new UsuarioDB();
         Usuario n = new Usuario();
-        lista = fDB.seleccionarUsuariosAdministrativos();
+        lista = fDB.seleccionarListaUsuarios();
 
         return lista;
     }

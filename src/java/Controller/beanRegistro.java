@@ -244,14 +244,14 @@ public class beanRegistro implements Serializable {
             oUsuarioNuevo.tipoFuncionario = oTipoFuncionario;
             oUsuarioNuevo.direccion = oDireccion;
             oUsuarioNuevo.cuentaCompleta = false;
-            oUsuarioNuevo.estado = true;
+            oUsuarioNuevo.estadoRegistro = true;
             oUsuarioNuevo.estadoSolicitud = false;
 
             usDB.InsertarUsuario(oUsuarioNuevo);
             
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Mensaje", "Solicitud de cuenta creada correctamente"
-                    + "/nEn los proximos dias se le informara acerca del estado de la solicitud");
+                    + "\nEn los proximos dias se le informara acerca del estado de la solicitud");
             
             
             
