@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -37,7 +38,8 @@ public class beanLogin implements Serializable {
     int tipoFun;
 
     public beanLogin() {
-        final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         final Map<String, Object> session = context.getSessionMap();
         final Object object2 = session.get("Mensaje");
 
@@ -46,24 +48,55 @@ public class beanLogin implements Serializable {
             FacesContext context2 = FacesContext.getCurrentInstance();
             context2.addMessage(null, new FacesMessage("Exito!", mensaje));
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
+    }
+    
+    @PostConstruct
+    public void init() {
+        try {
+            final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        final Map<String, Object> session = context.getSessionMap();
+        final Object object2 = session.get("Mensaje");
+
+        if (object2 != null) {
+            String mensaje = (String) object2;
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Exito!", mensaje));
+        }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
     }
 
     public LinkedList<SelectItem> getListaTipoFuncionario() throws SNMPExceptions, SQLException {
         int id = 0;
         String tipo = "";
-
         LinkedList<TipoFuncionario> lista = new LinkedList<TipoFuncionario>();
-        TipoFuncionarioDB fDB = new TipoFuncionarioDB();
-        TipoFuncionario n = new TipoFuncionario();
-        lista = fDB.seleccionarTiposFuncionarios();
-
-        LinkedList resultList = new LinkedList();
-
-        for (TipoFuncionario tipoFun : lista) {
-            id = tipoFun.getId();
-            tipo = tipoFun.getTipoUsuario();
-            resultList.add(new SelectItem(id, tipo));
+            TipoFuncionarioDB fDB = new TipoFuncionarioDB();
+            TipoFuncionario n = new TipoFuncionario();
+            LinkedList resultList = new LinkedList();
+            
+        try {
+            
+            lista = fDB.seleccionarTiposFuncionarios();
+            
+            for (TipoFuncionario tipoFun : lista) {
+                id = tipoFun.getId();
+                tipo = tipoFun.getTipoUsuario();
+                resultList.add(new SelectItem(id, tipo));
+            }
+            
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
+        
         return resultList;
 
     }
@@ -103,6 +136,8 @@ public class beanLogin implements Serializable {
             
 
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
 
         }
 

@@ -54,6 +54,7 @@ public class beanMantenimientoProgramas implements Serializable {
                 if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
                     mostarMenuMantenimiento = true;
                     mostarMenuReportes = true;
+                    mostrarMenuPrestamos = true;
 
                 } else {
                     if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
@@ -70,6 +71,8 @@ public class beanMantenimientoProgramas implements Serializable {
                 }
             }
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
     }
 
@@ -78,6 +81,8 @@ public class beanMantenimientoProgramas implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
     }
@@ -89,14 +94,21 @@ public class beanMantenimientoProgramas implements Serializable {
         LinkedList<ProgramaDeas> lista = new LinkedList<ProgramaDeas>();
         ProgramaDeasDB fDB = new ProgramaDeasDB();
         ProgramaDeas n = new ProgramaDeas();
-        lista = fDB.seleccionarProgramaDeas();
+        try {
+            lista = fDB.seleccionarProgramaDeas();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         return lista;
     }
 
     public void insertarPrograma() throws SNMPExceptions, SQLException {
         ProgramaDeas cu = this.programaDeas;
-        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu.id);
+        try {
+            LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(cu.id);
         if (lista.isEmpty()) {
             ProgramaDeas nProgramaDeas = new ProgramaDeas();
             nProgramaDeas.id = cu.id;
@@ -113,13 +125,19 @@ public class beanMantenimientoProgramas implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Exito!", "Datos incorrectos!"));
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
     public void actualizar() throws SNMPExceptions, SQLException {
         ProgramaDeas us = this.getProgramaDeas();
 
-        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(us.id);
+        try {
+            LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(us.id);
         if (lista.isEmpty()) {
 
         } else {
@@ -132,13 +150,19 @@ public class beanMantenimientoProgramas implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Exito!", "Programa actualizado!"));
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
     public void eliminar() throws SNMPExceptions, SQLException {
         ProgramaDeas us = this.getProgramaDeas();
 
-        LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(us.id);
+        try {
+            LinkedList<ProgramaDeas> lista = new ProgramaDeasDB().seleccionarProgramaDeasId(us.id);
         if (lista == null) {
 
         } else {
@@ -149,6 +173,11 @@ public class beanMantenimientoProgramas implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Exito!", "Programa Eliminado!"));
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
     }
 
     public void limpiaCampos() {

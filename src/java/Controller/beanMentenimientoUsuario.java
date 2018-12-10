@@ -12,6 +12,7 @@ import Model.TipoIdentificacion;
 import Model.TipoIdentificacionDB;
 import Model.Usuario;
 import Model.UsuarioDB;
+import Model.Validadores;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -21,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -53,6 +55,7 @@ public class beanMentenimientoUsuario implements Serializable {
 
     public beanMentenimientoUsuario() {
         disable = true;
+       
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
 
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
@@ -66,6 +69,7 @@ public class beanMentenimientoUsuario implements Serializable {
                 if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
                     mostarMenuMantenimiento = true;
                     mostarMenuReportes = true;
+                    mostrarMenuPrestamos = true;
 
                 } else {
                     if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
@@ -82,6 +86,8 @@ public class beanMentenimientoUsuario implements Serializable {
                 }
             }
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
     }
 
@@ -90,6 +96,8 @@ public class beanMentenimientoUsuario implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
     }
@@ -103,7 +111,13 @@ public class beanMentenimientoUsuario implements Serializable {
         LinkedList<Usuario> lista = new LinkedList<Usuario>();
         UsuarioDB fDB = new UsuarioDB();
         Usuario n = new Usuario();
-        lista = fDB.seleccionarListaUsuarios();
+        try {
+            lista = fDB.seleccionarListaUsuarios();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         return lista;
     }
@@ -111,7 +125,8 @@ public class beanMentenimientoUsuario implements Serializable {
     public void insertarUsuario() throws SNMPExceptions, SQLException {
        Usuario us = this.getUsuario();
        
-       LinkedList<TipoFuncionario> listat= new TipoFuncionarioDB().seleccionarTiposFuncionariosid(this.getTipoFun());
+        try {
+            LinkedList<TipoFuncionario> listat= new TipoFuncionarioDB().seleccionarTiposFuncionariosid(this.getTipoFun());
        TipoFuncionario t=listat.get(0);
        
        LinkedList<TipoIdentificacion>listai=new TipoIdentificacionDB().seleccionarId(this.getTipoIdentificacion());
@@ -136,12 +151,61 @@ public class beanMentenimientoUsuario implements Serializable {
         } else {
            //mensajes
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+       
     }
 
     public void actualizar() throws SNMPExceptions, SQLException {
         Usuario us = this.getUsuario();
+        
+        
+        if (Validadores.validarVacio(apellido1)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Los apellidos no pueden estar vacios"));
+            return;
+        }
 
-        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
+        if (Validadores.validarVacio(apellido2)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Los apellidos no pueden estar vacios"));
+            return;
+        }
+        
+        if (Validadores.validarVacio(nombre)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El nombre no puede estar vacio"));
+            return;
+        }
+
+        if (Validadores.validarVacio(correo)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo no puede estar vacio"));
+            return;
+        }
+
+        if (Validadores.validarVacio(fechaNacimiento)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La Fecha de nacimiento no puede estar vacia"));
+            return;
+        }
+
+        if (id == 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La identificacion no puede estar vacia"));
+            return;
+        }
+
+        if (!Validadores.validarFecha(fechaNacimiento)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Debe digitar una fecha correcta dd/MM/yyyy"));
+            return;
+        }
+        
+        try {
+            LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
         if (lista == null) {
 
         } else {
@@ -155,6 +219,11 @@ public class beanMentenimientoUsuario implements Serializable {
             upUser.ActualizarUsuario(usuarioUp);
             getListaAdministrativos();
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
@@ -162,7 +231,9 @@ public class beanMentenimientoUsuario implements Serializable {
 
         Usuario us = this.getUsuario();
 
-        LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
+        try {
+            
+            LinkedList<Usuario> lista = new UsuarioDB().seleccionarUsuarioId(us.identificacion);
         if (lista == null) {
 
         } else {
@@ -173,6 +244,11 @@ public class beanMentenimientoUsuario implements Serializable {
             getListaAdministrativos();
 
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
     }
 
     public LinkedList<SelectItem> getListaTipoIdentificacion() throws SNMPExceptions, SQLException {
@@ -182,13 +258,17 @@ public class beanMentenimientoUsuario implements Serializable {
         LinkedList<TipoIdentificacion> lista = new LinkedList<TipoIdentificacion>();
         TipoIdentificacionDB fDB = new TipoIdentificacionDB();
         TipoIdentificacion n = new TipoIdentificacion();
-        lista = fDB.moTodo();
+        try {
+            lista = fDB.moTodo();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         LinkedList resultList = new LinkedList();
 
-        for (Iterator iter = lista.iterator(); iter.hasNext();) {
-
-            TipoIdentificacion tipoFun = (TipoIdentificacion) iter.next();
+        for (TipoIdentificacion tipoFun : lista) {
             id = tipoFun.getId();
             tipo = tipoFun.getTipo();
             resultList.add(new SelectItem(id, tipo));
@@ -204,13 +284,17 @@ public class beanMentenimientoUsuario implements Serializable {
         LinkedList<TipoFuncionario> lista = new LinkedList<TipoFuncionario>();
         TipoFuncionarioDB fDB = new TipoFuncionarioDB();
         TipoFuncionario n = new TipoFuncionario();
-        lista = fDB.seleccionarTiposFuncionarios();
+        try {
+            lista = fDB.seleccionarTiposFuncionarios();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         LinkedList resultList = new LinkedList();
 
-        for (Iterator iter = lista.iterator(); iter.hasNext();) {
-
-            TipoFuncionario tipoFun = (TipoFuncionario) iter.next();
+        for (TipoFuncionario tipoFun : lista) {
             id = tipoFun.getId();
             tipo = tipoFun.getTipoUsuario();
             resultList.add(new SelectItem(id, tipo));

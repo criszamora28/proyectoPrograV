@@ -44,29 +44,31 @@ public class beanSolicitudes implements Serializable {
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         final Map<String, Object> session = context.getSessionMap();
         final Object object = session.get("Usuario");
-//        try {
-//            if (object == null) {
-//                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
-//            }else{
-//                Usuario2 = (Usuario)object;
-//                this.mostrarMensaje("Ingreso hecho correctamente", "Bienvenido " + Usuario2.nombre);
-//                if (Usuario2.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
-//                    mostarMenuMantenimiento = true;
-//                    mostarMenuReportes = true;
-//                    mostarMenuMantenimiento = true;
-//                    mostarMenuReportes = true;
-//                    mostrarMenuPrestamos = true;
-//
-//                } else {
-//                    if (Usuario2.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
-//                        mostarMenuMantenimiento = false;
-//                        mostarMenuReportes = false;
-//                        mostrarMenuPrestamos = true;
-//                    } 
-//                }
-//            }
-//        } catch (Exception e) {
-//        }
+        try {
+            if (object == null) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            }else{
+                Usuario2 = (Usuario)object;
+                this.mostrarMensaje("Ingreso hecho correctamente", "Bienvenido " + Usuario2.nombre);
+                if (Usuario2.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+                    mostarMenuMantenimiento = true;
+                    mostarMenuReportes = true;
+                    mostrarMenuPrestamos = true;
+
+                } else {
+                    if (Usuario2.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
+                        mostarMenuMantenimiento = false;
+                        mostarMenuReportes = false;
+                        mostrarMenuPrestamos = true;
+                    } 
+                }
+            }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
     }
 
     private void mostrarMensaje(String encMensaje, String detMensaje) {
@@ -79,6 +81,8 @@ public class beanSolicitudes implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
     }
@@ -90,7 +94,13 @@ public class beanSolicitudes implements Serializable {
         LinkedList<Usuario> lista = new LinkedList<Usuario>();
         UsuarioDB fDB = new UsuarioDB();
         Usuario n = new Usuario();
-        lista = fDB.seleccionarListaUsuarios();
+        try {
+            lista = fDB.seleccionarListaUsuarios();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         return lista;
     }

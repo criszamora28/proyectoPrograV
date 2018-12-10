@@ -272,8 +272,13 @@ public class beanRegistro implements Serializable {
         if (this.idProvincia == null) {
             return null;
         }
-
-        lista = cDB.seleccionarCantonesPorProvincia(idProvincia);
+        try {
+            lista = cDB.seleccionarCantonesPorProvincia(idProvincia);
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         LinkedList resultList = new LinkedList();
         resultList.add(new SelectItem(0, "Seleccione un Canton"));
@@ -294,7 +299,13 @@ public class beanRegistro implements Serializable {
         LinkedList<Provincia> lista = new LinkedList<Provincia>();
         ProvinciaDB pDB = new ProvinciaDB();
 
-        lista = pDB.moTodo();
+        try {
+             lista = pDB.moTodo();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+       
 
         LinkedList resultList = new LinkedList();
         resultList.add(new SelectItem(0, "Seleccione una Provincia"));
@@ -322,7 +333,14 @@ public class beanRegistro implements Serializable {
         if (this.idCanton == null) {
             return null;
         }
-        lista = dDB.seleccionarDistritoPorCanton(this.idProvincia, this.idCanton);
+        
+        try {
+            lista = dDB.seleccionarDistritoPorCanton(this.idProvincia, this.idCanton);
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         LinkedList resultList = new LinkedList();
 
@@ -341,13 +359,18 @@ public class beanRegistro implements Serializable {
         LinkedList<TipoIdentificacion> lista = new LinkedList<TipoIdentificacion>();
         TipoIdentificacionDB fDB = new TipoIdentificacionDB();
         TipoIdentificacion n = new TipoIdentificacion();
-        lista = fDB.moTodo();
+        
+        try {
+            lista = fDB.moTodo();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         LinkedList resultList = new LinkedList();
 
-        for (Iterator iter = lista.iterator(); iter.hasNext();) {
-
-            TipoIdentificacion tipoFun = (TipoIdentificacion) iter.next();
+        for (TipoIdentificacion tipoFun : lista) {
             id = tipoFun.getId();
             tipo = tipoFun.getTipo();
             resultList.add(new SelectItem(id, tipo));
@@ -374,6 +397,8 @@ public class beanRegistro implements Serializable {
                 resultList.add(new SelectItem(id, tipo));
             }
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
         return resultList;
@@ -398,6 +423,8 @@ public class beanRegistro implements Serializable {
                 resultList.add(new SelectItem(id, tipo));
             }
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
         return resultList;
@@ -422,6 +449,8 @@ public class beanRegistro implements Serializable {
                 resultList.add(new SelectItem(id, tipo));
             }
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
         return resultList;

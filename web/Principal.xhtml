@@ -46,12 +46,10 @@
                     <p:submenu label="Reportes" rendered="#{beanPrincipal.mostarMenuReportesMantenimiento}">
                         <p:menuitem value="Reportes de prestamos"  />
                         <p:menuitem value="Reportes de usuarios" />
-                        <p:menuitem value="Reportes de infraestructuras"  />
-                        <p:menuitem value="Reportes de cursos"  />
-
                     </p:submenu>
                     <p:submenu label="Prestamos" rendered="#{beanPrincipal.mostrarMenuPrestamos}">
                         <p:menuitem value="Solicitud de Prestamos"  url="Reservacion.xhtml"/>
+                        <p:menuitem value="Solicitudes de Cuenta de Usuario"  url="AceptacionSolictudes.xhtml"/>
 
                     </p:submenu>
                 </p:panelMenu>
@@ -60,8 +58,15 @@
             <div class="ui-g-9">    
                 <!--paginator="true"   rowsPerPageTemplate="6,12,16"-->
                 <div>
-                    <h3>Bienvenido al sistema DEAS VIRTUAL</h3>
+                    <h3 style="margin-top: 10px;margin-left: 50px;font-family: monospace;font-size: 30px">Bienvenido al sistema DEAS VIRTUAL</h3>
                 </div>
+
+                <img style="margin: 0 auto;
+                     position: relative;
+                     box-shadow: 2px 2px 5px black;margin-top: 70px;margin-left: 170px; width: 600px"  
+                     src="Imagenes/logo utn.jpg" alt="" height="250" />
+
+
             </div>
             
             <p:dialog header="Informacion del Usuario" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
@@ -86,7 +91,7 @@
                     <p:commandButton value="Cerrar Sesion" actionListener="#{beanPrincipal.cerrarSession()}" ajax="true" />  
                 </div>
             </p:dialog>
-            <p:growl sticky="true"  autoUpdate="true" id="messages" showDetail="true" />   
+            <p:growl sticky="true" autoUpdate="true" id="messages" showDetail="true" />   
             <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
                 <footer style="height: 50px; background-color: #102b70">
                     <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>

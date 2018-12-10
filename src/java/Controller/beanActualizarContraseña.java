@@ -50,6 +50,8 @@ public class beanActualizarContraseña implements Serializable {
                 this.mostrarCajaCodigo = true;
             }
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
     }
@@ -59,6 +61,8 @@ public class beanActualizarContraseña implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
     }
@@ -72,6 +76,8 @@ public class beanActualizarContraseña implements Serializable {
             final Object object = session.get("Usuario");
             Usuario = (Usuario) object;
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
         if (this.Usuario == null) {
@@ -120,7 +126,7 @@ public class beanActualizarContraseña implements Serializable {
             return;
         }
 
-        if (this.codigoVerificacion.equals(codigoverificacion) == false) {
+        if (this.codigoVerificacion.equalsIgnoreCase(codigoverificacion)) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!",
                     "Codigo de verificacion incorrecto!"));
@@ -138,6 +144,8 @@ public class beanActualizarContraseña implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Atencion!", "Debe actualizar los datos que se le piden!"));
 
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
     }

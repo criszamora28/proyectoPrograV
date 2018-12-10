@@ -59,7 +59,7 @@
 
         <h:form class="iu-g"> 
 
-            <p:growl id="growl" showDetail="true" sticky="true" />  
+              
 
             <div class="ui-g-3">
                 <p:panelMenu >
@@ -76,13 +76,10 @@
                     </p:submenu>
                     <p:submenu label="Reportes" rendered="#{scheduleView.mostarMenuReportes}">
                         <p:menuitem value="Reportes de prestamos"  />
-                        <p:menuitem value="Reportes de usuarios" />
-                        <p:menuitem value="Reportes de infraestructuras"  />
-                        <p:menuitem value="Reportes de cursos"  />
-
                     </p:submenu>
                     <p:submenu label="Prestamos" rendered="#{scheduleView.mostrarMenuPrestamos}">
                         <p:menuitem value="Solicitud de Prestamos"  url="Reservacion.xhtml"/>
+                        <p:menuitem value="Solicitudes de Cuenta de Usuario"  url="AceptacionSolictudes.xhtml"/>
 
                     </p:submenu>
                 </p:panelMenu>
@@ -178,7 +175,7 @@
                     <p:commandButton value="Cerrar Sesion" actionListener="#{scheduleView.cerrarSession()}" ajax="true" />  
                 </div>
             </p:dialog>
-            
+            <p:growl sticky="true" autoUpdate="true" id="messages" showDetail="true" />
             <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0;">
                 <footer style="height: 50px; background-color: #102b70">
                     <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>

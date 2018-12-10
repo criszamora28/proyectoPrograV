@@ -21,7 +21,7 @@
         <header class="ui-g" style="width: 100%; height: 140px; background: #102b70;">
             <img id="imgLogo" src="Imagenes/deas.jpg" alt="" width="150" height="110"/>
             <h:form>
-                <p:commandLink style="position: relative; left: 1050px;top: 10px; cursor: pointer " oncomplete="PF('usuDialog').show()" title="Detalles">
+                <p:commandLink style="position: relative; left: 1050px;top: 10px; cursor: pointer " oncomplete="PF('usuDialog2').show()" title="Detalles">
                     <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="50" width="50"/>
                     <f:setPropertyActionListener value="#{usuario2}" target="#{beanMentenimientoUsuario.usuario2}" />
                 </p:commandLink>
@@ -45,13 +45,10 @@
                     </p:submenu>
                     <p:submenu label="Reportes" rendered="#{beanMentenimientoUsuario.mostarMenuReportes}">
                         <p:menuitem value="Reportes de prestamos"  />
-                        <p:menuitem value="Reportes de usuarios" />
-                        <p:menuitem value="Reportes de infraestructuras"  />
-                        <p:menuitem value="Reportes de cursos"  />
-
                     </p:submenu>
                     <p:submenu label="Prestamos" rendered="#{beanMentenimientoUsuario.mostrarMenuPrestamos}">
                         <p:menuitem value="Solicitud de Prestamos"  url="Reservacion.xhtml"/>
+                        <p:menuitem value="Solicitudes de Cuenta de Usuario"  url="AceptacionSolictudes.xhtml"/>
 
                     </p:submenu>
                 </p:panelMenu>
@@ -68,7 +65,7 @@
                         <h:panelGrid columns="1" style="width:100%">
 
                             <f:facet name="header">
-                                <img src="Imagenes/deas.jpg" alt="" width="100" height="100"/>
+                                <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="100" width="100"/>
                             </f:facet>
 
                             <h:outputText value="#{usu.nombre}" />
@@ -87,7 +84,7 @@
                 <p:outputPanel id="usuDetalles" style="text-align:center;">
                     <h:panelGrid  columns="4" rendered="#{not empty beanMentenimientoUsuario.usuario}" columnClasses="label,value" cellspacing="20" cellpadding="0" style="margin:0 auto;"   >
                         <f:facet name="header">
-                            <img src="Imagenes/deas.jpg" alt=""/>
+                            <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="100" width="200"/>
                         </f:facet>
 
                         <h:outputLabel value="Tipo identificacion:" style="font-weight:normal; font-size: larger"></h:outputLabel>
@@ -96,7 +93,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Identificacion:" style="font-weight:normal; font-size: larger" ></p:outputLabel>
-                        <p:inputMask value="#{beanMentenimientoUsuario.usuario.identificacion}"   disabled="#{beanMentenimientoUsuario.disable}" mask="9999"></p:inputMask>
+                        <p:inputText value="#{beanMentenimientoUsuario.usuario.identificacion}"   disabled="#{beanMentenimientoUsuario.disable}" readonly="true"></p:inputText>
                        
 
                         <p:outputLabel value="Tipo funcionario:" style="font-weight:normal; font-size: larger"></p:outputLabel>
@@ -120,24 +117,20 @@
                         <p:inputMask  value="#{beanMentenimientoUsuario.usuario.telefono}"   mask="9999-9999"/>
 
                         <p:outputLabel  value="Fecha de Nacimiento:" style="font-weight:normal; font-size: larger"   />
-                        <p:calendar value="#{beanMentenimientoUsuario.usuario.fechaNacimiento}" locale="de" navigator="true" pattern="yyyy-MMM-dd" />
-
-
-
+                        <p:inputText value="#{beanMentenimientoUsuario.usuario.fechaNacimiento}"/>
 
                     </h:panelGrid>
-                    <p:commandButton value="Agregar" rendered="#{beanMentenimientoUsuario.visible}" actionListener="#{beanMentenimientoUsuario.insertarUsuario()}" oncomplete="@all"/>
+                    <p:commandButton disabled="true" value="Agregar" rendered="#{beanMentenimientoUsuario.visible}" actionListener="#{beanMentenimientoUsuario.insertarUsuario()}" oncomplete="@all"/>
                 </p:outputPanel>
                 <div style="position: relative; margin: 0 auto; text-align: center;"> 
-                    <p:commandButton value="Ayudar"  update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" oncomplete="PF('usuDialog').show()"  ajax="true" style="margin-right: 10px"/>
-                    <p:commandButton value="Nuevo"  update=":form:usuDetalles"  action="#{beanMentenimientoUsuario.limpiaCampos()}" oncomplete="PF('usuDialog').show()"  ajax="true"  style="margin-right: 10px"/>  
+                    <p:commandButton disabled="true" value="Nuevo"  update=":form:usuDetalles"  action="#{beanMentenimientoUsuario.limpiaCampos()}" oncomplete="PF('usuDialog').show()"  ajax="true"  style="margin-right: 10px"/>  
                     <p:commandButton value="Modificar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.actualizar()}" oncomplete="@all"  ajax="true"  style="margin-right: 10px"/>
                     <p:commandButton value="Eliminar" update=":form:usuDetalles" action="#{beanMentenimientoUsuario.ocultar()}" actionListener="#{beanMentenimientoUsuario.eliminar()}" oncomplete="@all"  ajax="true" style="margin-right: 10px" />
                 </div>
             </p:dialog>
             
-            <p:dialog header="Informacion del Usuario" widgetVar="usuDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="cursoDetalles" style="text-align:center;">
+            <p:dialog header="Informacion del Usuario" widgetVar="usuDialog2" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel style="text-align:center;">
                     <p:panelGrid style="margin: 0 auto;"  columns="2" rendered="#{not empty beanMentenimientoUsuario.usuario2}" columnClasses="label,value">
                         <f:facet name="header">
                             <img src="Imagenes/585e4beacb11b227491c3399.png" alt="" height="100" width="100"/>
@@ -159,7 +152,7 @@
                 </div>
             </p:dialog>
             
-            <p:growl  autoUpdate="true" id="messages" showDetail="true" />   
+            <p:growl sticky="true" autoUpdate="true" id="messages" showDetail="true" />   
             
             <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
                 <footer style="height: 50px; background-color: #102b70">

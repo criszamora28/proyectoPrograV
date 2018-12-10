@@ -59,6 +59,7 @@ public class beanMantenimientRecurso implements Serializable {
                 if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
                     mostarMenuMantenimiento = true;
                     mostarMenuReportes = true;
+                    mostrarMenuPrestamos = true;
 
                 } else {
                     if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
@@ -75,6 +76,8 @@ public class beanMantenimientRecurso implements Serializable {
                 }
             }
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
     }
 
@@ -83,6 +86,8 @@ public class beanMantenimientRecurso implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
     }
@@ -94,14 +99,21 @@ public class beanMantenimientRecurso implements Serializable {
         LinkedList<Recurso> lista = new LinkedList<Recurso>();
         RecursoDB fDB = new RecursoDB();
         Recurso n = new Recurso();
-        lista = fDB.seleccionarRecurso();
+        try {
+            lista = fDB.seleccionarRecurso();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         return lista;
     }
 
     public void insertarRecurso() throws SNMPExceptions, SQLException {
         Recurso cu = this.recurso;
-        LinkedList<Recurso> lista = new RecursoDB().seleccionarRecursoId(cu.id);
+        try {
+            LinkedList<Recurso> lista = new RecursoDB().seleccionarRecursoId(cu.id);
         if (lista.isEmpty()) {
             Recurso nRecurso = new Recurso();
             nRecurso.id = cu.id;
@@ -116,13 +128,18 @@ public class beanMantenimientRecurso implements Serializable {
         } else {
             //mensajito
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
     public void actualizar() throws SNMPExceptions, SQLException {
         Recurso us = this.getRecurso();
-
-        LinkedList<Recurso> lista = new RecursoDB().seleccionarRecursoId(us.id);
+        try {
+            LinkedList<Recurso> lista = new RecursoDB().seleccionarRecursoId(us.id);
         if (lista.isEmpty()) {
 
         } else {
@@ -139,13 +156,19 @@ public class beanMantenimientRecurso implements Serializable {
             context.addMessage(null, new FacesMessage("Exito!", "Recurso actualizado correctamente!"));
 
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
     public void eliminar() throws SNMPExceptions, SQLException {
         Recurso us = this.getRecurso();
-
-        LinkedList<Recurso> lista = new RecursoDB().seleccionarRecursoId(us.id);
+        
+        try {
+            LinkedList<Recurso> lista = new RecursoDB().seleccionarRecursoId(us.id);
         if (lista == null) {
 
         } else {
@@ -157,6 +180,11 @@ public class beanMantenimientRecurso implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Exito!", "Recurso eliminado correctamente!"));
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
     }
 
     public void limpiaCampos() {
@@ -188,6 +216,38 @@ public class beanMantenimientRecurso implements Serializable {
 
     public Recurso getRecurso() {
         return recurso;
+    }
+
+    public Usuario getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
+    }
+
+    public boolean isMostarMenuMantenimiento() {
+        return mostarMenuMantenimiento;
+    }
+
+    public void setMostarMenuMantenimiento(boolean mostarMenuMantenimiento) {
+        this.mostarMenuMantenimiento = mostarMenuMantenimiento;
+    }
+
+    public boolean isMostarMenuReportes() {
+        return mostarMenuReportes;
+    }
+
+    public void setMostarMenuReportes(boolean mostarMenuReportes) {
+        this.mostarMenuReportes = mostarMenuReportes;
+    }
+
+    public boolean isMostrarMenuPrestamos() {
+        return mostrarMenuPrestamos;
+    }
+
+    public void setMostrarMenuPrestamos(boolean mostrarMenuPrestamos) {
+        this.mostrarMenuPrestamos = mostrarMenuPrestamos;
     }
 
     public void setRecurso(Recurso recurso) {

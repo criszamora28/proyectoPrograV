@@ -44,13 +44,12 @@
                     </p:submenu>
                     <p:submenu label="Reportes" rendered="#{beanMantenimientoInfraestructura.mostarMenuReportes}">
                         <p:menuitem value="Reportes de prestamos"  />
-                        <p:menuitem value="Reportes de usuarios" />
-                        <p:menuitem value="Reportes de infraestructuras"  />
-                        <p:menuitem value="Reportes de cursos"  />
+                        
 
                     </p:submenu>
                     <p:submenu label="Prestamos" rendered="#{beanMantenimientoInfraestructura.mostrarMenuPrestamos}">
                         <p:menuitem value="Solicitud de Prestamos"  url="Reservacion.xhtml"/>
+                        <p:menuitem value="Solicitudes de Cuenta de Usuario"  url="AceptacionSolictudes.xhtml"/>
 
                     </p:submenu>
                 </p:panelMenu>
@@ -101,7 +100,7 @@
 
                 </p:outputPanel>
                 <div> 
-                    <p:commandButton value="Ayuda"  update=":form:infraDetalles" action="#{beanMantenimientoInfraestructura.ocultar()}" oncomplete="PF('infraDialog').show()"  ajax="true"/>
+                    <p:commandButton disabled="true" value="Ayuda"  update=":form:infraDetalles" action="#{beanMantenimientoInfraestructura.ocultar()}" oncomplete="PF('infraDialog').show()"  ajax="true"/>
                     <p:commandButton value="Nuevo"  update=":form:infraDetalles"  action="#{beanMantenimientoInfraestructura.limpiaCampos()}" oncomplete="PF('infraDialog').show()"  ajax="true" />  
                     <p:commandButton value="Modificar" update=":form:infraDetalles" action="#{beanMantenimientoInfraestructura.ocultar()}" actionListener="#{beanMantenimientoInfraestructura.actualizar()}" oncomplete="@all"  ajax="true" />
                     <p:commandButton value="Eliminar" update=":form:infraDetalles" action="#{beanMantenimientoInfraestructura.ocultar()}" actionListener="#{beanMantenimientoInfraestructura.eliminar()}" oncomplete="@all"  ajax="true" />
@@ -131,7 +130,7 @@
                 </div>
             </p:dialog>
             
-            <p:growl  autoUpdate="true" id="messages" showDetail="true" />
+            <p:growl sticky="true" autoUpdate="true" id="messages" showDetail="true" />
             <div class="ui-g-12" style="padding: 0; bottom: 0;margin-bottom: 0; position: fixed">
                 <footer style="height: 50px; background-color: #102b70">
                     <h3 style="text-align: center;color: white; position: relative; top: 15px;">Proyecto Programacion V</h3>

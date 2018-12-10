@@ -15,7 +15,6 @@ import Model.Reservacion;
 import Model.ReservacionDB;
 import Model.TipoReservacion;
 import Model.Usuario;
-import Model.UsuarioDB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -75,6 +74,7 @@ public class ScheduleView implements Serializable {
                 if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
                     mostarMenuMantenimiento = true;
                     mostarMenuReportes = true;
+                    mostrarMenuPrestamos = true;
 
                 } else {
                     if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
@@ -91,6 +91,8 @@ public class ScheduleView implements Serializable {
                 }
             }
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
     }
 
@@ -111,6 +113,8 @@ public class ScheduleView implements Serializable {
 
             }
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
 //        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
@@ -203,7 +207,7 @@ public class ScheduleView implements Serializable {
 
             } catch (Exception e) {
                 FacesMessage mensajeError;
-                mensajeError = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Datelle :" + e.getMessage());
+                mensajeError = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Detalle :" + e.toString());
                 this.addMessage(mensajeError);
             }
 
@@ -278,6 +282,8 @@ public class ScheduleView implements Serializable {
                 context2.addMessage(null, new FacesMessage("Exito", "Su reservacion ha sido modificada"));
 
             } catch (Exception e) {
+                 FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
             }
             
         }
@@ -295,6 +301,8 @@ public class ScheduleView implements Serializable {
             }
 
         } catch (SNMPExceptions | SQLException e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
         return listaInfra;
@@ -312,6 +320,8 @@ public class ScheduleView implements Serializable {
             }
 
         } catch (SNMPExceptions | SQLException e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
         return listaTipo;
@@ -329,6 +339,8 @@ public class ScheduleView implements Serializable {
             }
 
         } catch (SNMPExceptions | SQLException e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
         return listaRecursos;
@@ -340,6 +352,8 @@ public class ScheduleView implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         } catch (Exception e) {
+             FacesContext context2 = FacesContext.getCurrentInstance();
+                    context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
 
     }

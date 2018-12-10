@@ -97,7 +97,7 @@ public class ReservacionDB {
            
 
             strSQL
-                    = "delete from detalleRservacion where idReservacion='" + pReservacion + "'";
+                    = "delete from detalleRservacion where idReservacion='" + pReservacion.id + "'";
                     
                     
                     

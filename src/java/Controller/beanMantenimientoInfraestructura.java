@@ -54,6 +54,7 @@ public class beanMantenimientoInfraestructura implements Serializable {
                 if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
                     mostarMenuMantenimiento = true;
                     mostarMenuReportes = true;
+                    mostrarMenuPrestamos = true;
                     
                 } else {
                     if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
@@ -70,6 +71,8 @@ public class beanMantenimientoInfraestructura implements Serializable {
                 }
             }
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
     }
     
@@ -83,6 +86,8 @@ public class beanMantenimientoInfraestructura implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
         
     }
@@ -94,14 +99,21 @@ public class beanMantenimientoInfraestructura implements Serializable {
         LinkedList<Infraestructura> lista = new LinkedList<Infraestructura>();
         InfraestructuraDB fDB = new InfraestructuraDB();
         Infraestructura n = new Infraestructura();
-        lista = fDB.seleccionarInfraestructura();
+        try {
+            lista = fDB.seleccionarInfraestructura();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         return lista;
     }
 
     public void insertarInfraestructura() throws SNMPExceptions, SQLException {
         Infraestructura cu = this.infra;
-        LinkedList<Infraestructura> lista = new InfraestructuraDB().seleccionarInfraestructuraId(cu);
+        try {
+            LinkedList<Infraestructura> lista = new InfraestructuraDB().seleccionarInfraestructuraId(cu);
         if (lista.isEmpty()) {
             Infraestructura nInfraestructura = new Infraestructura();
             nInfraestructura.idInfraestructura = cu.idInfraestructura;
@@ -117,13 +129,19 @@ public class beanMantenimientoInfraestructura implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Error!", "Datos incorrectos!"));
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
     public void actualizar() throws SNMPExceptions, SQLException {
         Infraestructura us = this.getInfra();
 
-        LinkedList<Infraestructura> lista = new InfraestructuraDB().seleccionarInfraestructuraId(us);
+        try {
+            LinkedList<Infraestructura> lista = new InfraestructuraDB().seleccionarInfraestructuraId(us);
         if (lista.isEmpty()) {
 
         } else {
@@ -139,13 +157,19 @@ public class beanMantenimientoInfraestructura implements Serializable {
             context.addMessage(null, new FacesMessage("Exito!", "Infraestructura actualizada correctamente!"));
 
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
     public void eliminar() throws SNMPExceptions, SQLException {
         Infraestructura us = this.getInfra();
 
-        LinkedList<Infraestructura> lista = new InfraestructuraDB().seleccionarInfraestructuraId(us);
+        try {
+            LinkedList<Infraestructura> lista = new InfraestructuraDB().seleccionarInfraestructuraId(us);
         if (lista == null) {
 
         } else {
@@ -158,6 +182,11 @@ public class beanMantenimientoInfraestructura implements Serializable {
             context.addMessage(null, new FacesMessage("Exito!", "Infraestructura eliminada correctamente!"));
 
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
     }
 
     public void limpiaCampos() {

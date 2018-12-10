@@ -67,6 +67,7 @@ public class beanMantenimientoCursoDeas implements Serializable {
                 if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Administrativo")) {
                     mostarMenuMantenimiento = true;
                     mostarMenuReportes = true;
+                    mostrarMenuPrestamos = true;
                     
                 } else {
                     if (Usuario.tipoFuncionario.TipoUsuario.equalsIgnoreCase("Docente")) {
@@ -83,6 +84,8 @@ public class beanMantenimientoCursoDeas implements Serializable {
                 }
             }
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
         
     }
@@ -92,6 +95,8 @@ public class beanMantenimientoCursoDeas implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
         
     }
@@ -103,7 +108,13 @@ public class beanMantenimientoCursoDeas implements Serializable {
         LinkedList<CursoDeas> lista = new LinkedList<CursoDeas>();
         CursoDeasDB fDB = new CursoDeasDB();
         CursoDeas n = new CursoDeas();
-        lista = fDB.seleccionarCursosDeas();
+        try {
+            lista = fDB.seleccionarCursosDeas();
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
         return lista;
     }
@@ -115,17 +126,25 @@ public class beanMantenimientoCursoDeas implements Serializable {
         LinkedList<ProgramaDeas> lista = new LinkedList<ProgramaDeas>();
         ProgramaDeasDB fDB = new ProgramaDeasDB();
         ProgramaDeas n = new ProgramaDeas();
-        lista = fDB.seleccionarProgramaDeas();
-
         LinkedList resultList = new LinkedList();
+        
+        try {
+            lista = fDB.seleccionarProgramaDeas();
+            
 
-        for (Iterator iter = lista.iterator(); iter.hasNext();) {
-
-            ProgramaDeas tipoFun = (ProgramaDeas) iter.next();
-            id = tipoFun.getId();
-            nombre = tipoFun.getNombrePrograma();
-            resultList.add(new SelectItem(id, nombre));
+            for (ProgramaDeas tipoFun : lista) {
+                id = tipoFun.getId();
+                nombre = tipoFun.getNombrePrograma();
+                resultList.add(new SelectItem(id, nombre));
+            }
+            
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
         }
+        
+
+        
         return resultList;
 
     }
@@ -142,7 +161,9 @@ public class beanMantenimientoCursoDeas implements Serializable {
 
     public void insertarCurso() throws SNMPExceptions, SQLException {
         CursoDeas cu = this.cursoDeas;
-        LinkedList<ProgramaDeas> lista1 = new ProgramaDeasDB().seleccionarProgramaDeasId(this.getIdProgra());
+        try {
+            
+            LinkedList<ProgramaDeas> lista1 = new ProgramaDeasDB().seleccionarProgramaDeasId(this.getIdProgra());
         LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(cu.id);
         if (lista.isEmpty()) {
             CursoDeas nCurso = new CursoDeas();
@@ -159,13 +180,19 @@ public class beanMantenimientoCursoDeas implements Serializable {
         } else {
             //mensajito
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
     public void actualizar() throws SNMPExceptions, SQLException {
         CursoDeas us = this.getCursoDeas();
 
-        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.id);
+        try {
+            LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.id);
         LinkedList<ProgramaDeas> lista1 = new ProgramaDeasDB().seleccionarProgramaDeasId(this.getIdProgra());
         
         if (lista.isEmpty()) {
@@ -184,13 +211,19 @@ public class beanMantenimientoCursoDeas implements Serializable {
             context.addMessage(null, new FacesMessage("Exito!", "Curso editado correctamente!"));
 
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
 
     }
 
     public void eliminar() throws SNMPExceptions, SQLException {
         CursoDeas us = this.getCursoDeas();
 
-        LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.id);
+        try {
+            LinkedList<CursoDeas> lista = new CursoDeasDB().seleccionarCursosDeasId(us.id);
         if (lista == null) {
 
         } else {
@@ -202,6 +235,11 @@ public class beanMantenimientoCursoDeas implements Serializable {
             context.addMessage(null, new FacesMessage("Exito!", "Curso eliminado correctamente!"));
 
         }
+        } catch (Exception e) {
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            context2.addMessage(null, new FacesMessage("Error", e.toString()));
+        }
+        
     }
 
     public void limpiaCampos() {
